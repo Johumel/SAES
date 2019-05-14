@@ -1,2 +1,2 @@
-# essa
-Earthquake source spectral analysis
+# Spectral Analysis for Earthquake Source (SAES)
+Spectral Analysis for Earthquake Source
