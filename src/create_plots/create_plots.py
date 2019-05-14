@@ -13,7 +13,7 @@ from ..handlers.save_output import save_output
 from ..optimizer.fit_sin_spec import fit_sin_spec
 from ..optimizer.fit_sin_spec_pll import fit_sin_spec_pll
 from ..optimizer.sinspec_model import sinspec_model
-#from sasd import fit_sin_spec, save_output,fit_sin_spec_pll,specr_model
+#from saes import fit_sin_spec, save_output,fit_sin_spec_pll,specr_model
 from matplotlib import colors as clors
 import math,datetime
 
@@ -60,7 +60,7 @@ def plot_waveform(self,stn,nsstart,Ptime,Stime,time_win,evtype,axz,wv):
             axz.annotate("", xy=(Ptimex - 0.55, max(tr.data)*0.55), xytext=(Ptimex - 0.15, max(tr.data)*0.05),
                          arrowprops=dict(arrowstyle="<-",facecolor='k',connectionstyle="arc3"))
         axz.tick_params(axis='both',which='both',length=5.,labelsize='large')
-        axz.get_yaxis().get_major_formatter().set_powerlimits((0, 0))       
+        axz.get_yaxis().get_major_formatter().set_powerlimits((0, 0))
         for tick in axz.yaxis.get_major_ticks():
             tick.label.set_fontsize(24)
         for tick in axz.xaxis.get_major_ticks():
@@ -69,20 +69,20 @@ def plot_waveform(self,stn,nsstart,Ptime,Stime,time_win,evtype,axz,wv):
         axz.yaxis.get_offset_text().set_fontsize(24)
         axz.set_xlabel('Time (s)',fontsize = 26,fontweight='bold')
         if evtype[0] == 'e':
-            axz.set_title('%s' % ('Auxiliary event'),fontweight='bold',fontsize=22)                
+            axz.set_title('%s' % ('Auxiliary event'),fontweight='bold',fontsize=22)
             axz.text(0.2,0.10,tr.stats.station.strip(),fontsize=22,fontweight='bold',transform=axz.transAxes)
         else:
-            axz.set_title('%s' % ('Main event'),fontweight='bold',fontsize=22) 
+            axz.set_title('%s' % ('Main event'),fontweight='bold',fontsize=22)
             axz.set_title('%s%s' % (evtype.capitalize(),' event'),fontweight='bold',fontsize=22)
-        axz.text(0.2,0.10,stn[0].stats.station.strip(),fontsize=22,fontweight='bold',transform=axz.transAxes) 
+        axz.text(0.2,0.10,stn[0].stats.station.strip(),fontsize=22,fontweight='bold',transform=axz.transAxes)
         axz.yaxis.set_major_locator(MaxNLocator(integer=True,nbins=3))
         axz.xaxis.set_major_locator(MaxNLocator(integer=True,nbins=5))
     return None
-       
-    
 
-#make some of the spectra ratio figures           
-def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,time_win,mainfile,egffile,wv):                               
+
+
+#make some of the spectra ratio figures
+def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,time_win,mainfile,egffile,wv):
     #The representative spectra ratio is the median of all spectra ratios
     #this section deals with the figures and aesthetics
     from obspy.core import read
@@ -96,7 +96,7 @@ def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,time
     axx = plt.subplot2grid((3, 2), (1, 0), rowspan = 2)
     colornum = 0
     Ptime,Stime = None,None
-    if indexx: 
+    if indexx:
         et1 = egffile[indexx]
         axs = plt.subplot2grid((3, 2), (0, 1))
         st = read(et1)
@@ -123,7 +123,7 @@ def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,time
         stn,_,nsstart = get_sig_nois_data(et1,origtime,Ptime,Stime,time_win,True,None)
         stn,_ = remove_ir(self,stn,None,baz,self.egfev,'VEL')
         trn = stn.select(component='N')
-        trn += stn.select(component='E') 
+        trn += stn.select(component='E')
         trn.rotate('NE->RT',back_azimuth=baz)
         stn[1] = trn[1]
         plot_waveform(self,stn,nsstart,Ptime,Stime,time_win,'egf',axs,wv)
@@ -148,17 +148,17 @@ def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,time
         stn,_,nsstart = get_sig_nois_data(et2,origtime,Ptime,Stime,time_win,True,None)
         stn,_ = remove_ir(self,stn,None,baz,self.egfev,'VEL')
         trn = stn.select(component='N')
-        trn += stn.select(component='E') 
+        trn += stn.select(component='E')
         trn.rotate('NE->RT',back_azimuth=baz)
         stn[1] = trn[1]
-        axs = plt.subplot2grid((3, 2), (0, 0))   
+        axs = plt.subplot2grid((3, 2), (0, 0))
         plot_waveform(self,stn,nsstart,Ptime,Stime,time_win,'main',axs,wv)
     for index in range(len(lste)):
         station=lste[index]
-        ax_spec.loglog(freqmain[lste[index]],specmain[lste[index]],linewidth = 1,color = colortype[colornum],label = station) 
+        ax_spec.loglog(freqmain[lste[index]],specmain[lste[index]],linewidth = 1,color = colortype[colornum],label = station)
         if lste[index] == indexx:
             x_begin = min(freqmain[indexx])
-            x_end = self.stationlist[indexx]['pre_filt'][2]            
+            x_end = self.stationlist[indexx]['pre_filt'][2]
             ploting(x1 = wmfc[indexx],y1 = wm[indexx],y12 = wmn[indexx],x2 = wefc[indexx],
                     y2 = we[indexx],y22 = wen[indexx],ax = axx,station = station,color = colortype[colornum],x_begin=x_begin,x_end=x_end,wv=wv)
         colornum += 1
@@ -181,7 +181,7 @@ def ploting(x1,y1,y12,x2,y2,y22,ax,station,color,x_begin,x_end,wv):
     for tick in ax.yaxis.get_major_ticks():
         tick.label.set_fontsize(20)
     ax.get_xaxis().get_major_formatter().labelOnlyBase = True
-    ax.get_xaxis().get_minor_formatter().labelOnlyBase = False 
+    ax.get_xaxis().get_minor_formatter().labelOnlyBase = False
     ax.tick_params(axis='x',which='minor',bottom='on')
     ax.tick_params(axis='both',which='both',length=4.0)
     for tick in ax.xaxis.get_major_ticks():
@@ -202,8 +202,8 @@ def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,allresidua1,ax,popt
         ax.loglog(freqbin,np.divide(specr_model(freqbin, *popt),mtpl), 'g--', label='model fit',linewidth = 5)
         ax.text(0.55,0.1,'M$_L$$_($$_1$$_)$ = %s' % self.evlist[self.mainev][1][3],style = 'normal',weight='bold',size=14,transform=ax.transAxes)
         ax.text(0.55,0.05,'M$_L$$_($$_2$$_)$ = %s' % self.evlist[self.egfev][1][3],style = 'normal',weight='bold',size=14,transform=ax.transAxes)
-        ax.text(0.55,0.15,'rms = %.2f' %(normresidua),style = 'normal',weight='bold',size=14,transform=ax.transAxes)  
-        
+        ax.text(0.55,0.15,'rms = %.2f' %(normresidua),style = 'normal',weight='bold',size=14,transform=ax.transAxes)
+
         #Displaying Corner Frequency on plot
         try:
             xbin = np.where(freqbin >= popt[0])[0][0]
@@ -222,7 +222,7 @@ def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,allresidua1,ax,popt
         upl = 10**(math.floor(np.log10(maxy*10)))
         upl1 = 10**(math.floor(np.log10(maxy)))
         if upl/upl1 > 20:
-           upl = 10**(math.floor(np.log10(maxy*10))) 
+           upl = 10**(math.floor(np.log10(maxy*10)))
         ax.set_ylim([min(specratio)*0.15/mtpl,upl*3])#0.025
         ax.get_xaxis().get_major_formatter().labelOnlyBase = True
         ax.get_xaxis().get_minor_formatter().labelOnlyBase = True
@@ -235,9 +235,9 @@ def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,allresidua1,ax,popt
         for tick in ax.yaxis.get_major_ticks():
              tick.label.set_fontsize(20)
         if ax:
-            inset_axin = inset_axes(ax, 
-                                    width="30%", 
-                                    height="25%", 
+            inset_axin = inset_axes(ax,
+                                    width="30%",
+                                    height="25%",
                                     loc=3,
                                     borderpad=4.8)
             tempx = []; tempy = []
@@ -251,7 +251,7 @@ def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,allresidua1,ax,popt
             inset_axin.semilogx(tempx,tempy,'o',ms=3,mfc = 'blue')
             inset_axin.semilogx(x1,y1,'*',mfc='blue',ms=8,mec='red')
             bb = np.log10(min(tempx)).round()-1
-            inset_axin.set_xlim([10**bb,max(tempx)*2])                   
+            inset_axin.set_xlim([10**bb,max(tempx)*2])
             inset_axin.xaxis.set_major_locator(LogLocator(base=10.0, numticks=3))
             inset_axin.set_ylim([0,0.6])
             inset_axin.set_yticks(np.linspace(0,0.6,endpoint=True,num=4))
@@ -265,11 +265,11 @@ def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,allresidua1,ax,popt
             for tick in inset_axin.yaxis.get_major_ticks():
                 tick.label.set_fontsize(11)
         ax.legend(loc='upper right',ncol=4,prop={'size':11})
-    return None 
+    return None
 
-def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):    
+def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
     #Dumb! but this is meant to calculate individual spectrum and create the figures
-    colornum = 0                                
+    colornum = 0
     fig = plt.figure(figsize=(16,10),tight_layout=True)
     lste = list(wm.keys())
     colortype = colorlist(len(lste))
@@ -280,16 +280,16 @@ def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
         if self.numworkers <= 1:
             popt_ind,pcov_ind = fit_sin_spec(wm[lste[index]],fn,station,\
                                          min(wmfc[lste[index]]),max(wmfc[lste[index]])*0.5,trtm[lste[index]],self.autofit_single_spec,\
-                                         self.source_model) 
+                                         self.source_model)
         elif self.numworkers > 1:
             startt = datetime.datetime.now()
             popt_ind,pcov_ind = fit_sin_spec_pll(wm[lste[index]],fn,station,\
                                          min(wmfc[lste[index]]),max(wmfc[lste[index]])*0.5,trtm[lste[index]],\
-                                         self.source_model,self.numworkers) 
+                                         self.source_model,self.numworkers)
             endt = datetime.datetime.now()
-            print('fitsinspecpll Run time = {}'.format(endt-startt))            
+            print('fitsinspecpll Run time = {}'.format(endt-startt))
         axx2 = fig.add_subplot(2,3,n)
-        axx2.loglog(fn, sinspec_model(fn, *popt_ind), 'k--', label='model fit',linewidth=2)           
+        axx2.loglog(fn, sinspec_model(fn, *popt_ind), 'k--', label='model fit',linewidth=2)
         bb = np.log10(min(fn)).round()
         x_end = self.stationlist[station]['pre_filt'][2]
         axx2.set_xlim([10**bb,x_end])
@@ -330,7 +330,7 @@ def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
             save_fig(self,fig,'ind',m)
     except:
         pass
-    return None 
+    return None
 
 
 #saves the figures
@@ -345,5 +345,5 @@ def save_fig(self,fig,figtype,mm):
     if figtype == 'ind':
         imagefile = self.output_dir+self.mainev+'_sinspec_'+str(mm)+'.pdf'
         fig.savefig(imagefile, format='pdf', dpi=300)
-        fig.clf()  
+        fig.clf()
     return None

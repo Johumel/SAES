@@ -7,16 +7,15 @@ Created on Tue May  7 09:16:40 2019
 """
 
 import os
-#from .sasdutils import read_xml,controlfile, get_prefilts
-from .handlers.sasd_main import sasd_main
-from .sasdutils.read_controlfile import read_controlfile
-from .sasdutils.get_prefilts import get_prefilts
-from .sasdutils.read_xml import read_xml
+from .handlers.saes_main import saes_main
+from .saesutils.read_controlfile import read_controlfile
+from .saesutils.get_prefilts import get_prefilts
+from .saesutils.read_xml import read_xml
 
 
 
 
-class sasd_core(object):
+class saes_core(object):
 
     def __init__(self,controlfilename):
 
@@ -61,7 +60,4 @@ class sasd_core(object):
             raise FileNotFoundError('stationxml file not found')
         if self.stationlist and os.path.exists(self.maindir+'/input/pre_filt.list'):
             get_prefilts(self)
-        sasd_main(self)
-
-
-
+        saes_main(self)

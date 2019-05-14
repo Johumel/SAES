@@ -8,7 +8,7 @@ Created on Tue Apr 23 23:31:20 2019
 import numpy as np
 from ..create_plots import *
 from .analyze_spec import *
-from ..sasdutils.get_time_window import *
+from ..saesutils.get_time_window import *
 from obspy.core import read
 
 def spec_calc(self,file1,file2,wv):
@@ -28,23 +28,23 @@ def spec_calc(self,file1,file2,wv):
     elif read(file1)[0].stats.channel == read(file2)[0].stats.channel and self.method in [2,3]:
         snr1, freqsignal1, signal1,noise1,snr_no_resp1,freq_no_resp1,signal_no_resp1,noise_no_resp1,\
         trt1 = analyze_spec(self,file1,ev1,'main',time_win,False,wv)
-#   
+#
 #    else:
 #        snr1, freqsignal1, signal1,noise1,snr_no_resp1,freq_no_resp1,signal_no_resp1,noise_no_resp1,trt1 = analyze_spec(self,file1,ev1,'main',time_win,False)
     rawm = signal_no_resp1; rawmfc = freq_no_resp1; rawmn = noise_no_resp1
     signalm = np.asarray([])
     if file2:
-        
+
         if read(file1)[0].stats.channel != read(file2)[0].stats.channel or self.remove_resp.lower() == 'yes':
             snr2, freqsignal2, signal2,noise2,snr_no_resp2,freq_no_resp2,signal_no_resp2,\
             noise_no_resp2,trt2 = analyze_spec(self,file2,ev2,'egf',time_win,True,wv)
-            
+
         else:
             snr2, freqsignal2, signal2,noise2,snr_no_resp2,freq_no_resp2,signal_no_resp2,\
             noise_no_resp2,trt2 = analyze_spec(self,file2,ev2,'egf',time_win,False,wv)
         rawe = signal_no_resp2; rawefc = freq_no_resp2; rawen = noise_no_resp2
         signalm,signale,freqsignalm,freqsignale,_,_ = get_good_snr_freq_range(self.snrthres,signal1,signal2,snr1,snr2,freqsignal1,
-                                freqsignal2,noise1,noise2) 
+                                freqsignal2,noise1,noise2)
         if signalm.any() and signale.any():
             specratio = np.divide(signalm,signale,dtype=float)
 #            print(specratio)

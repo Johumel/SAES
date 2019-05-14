@@ -5,21 +5,21 @@ Created on Tue Apr 23 10:27:01 2019
 
 @author: john.onwuemeka
 """
-#from .sasdutils.read_cclist import read_cclist
-#from .sasdutils.read_ext_timetable import read_ext_timetable
-#from .sasdutils.get_arv_time_from_pyrocko import get_arv_time_from_pyrocko
+#from .saesutils.read_cclist import read_cclist
+#from .saesutils.read_ext_timetable import read_ext_timetable
+#from .saesutils.get_arv_time_from_pyrocko import get_arv_time_from_pyrocko
 #from .handlers.spec_ratio_guru import spec_ratio_guru
 #from .handlers.sin_spec_guru import sin_spec_guru
 #import os
 
-from ..sasdutils.read_cclist import read_cclist
-from ..sasdutils.read_ext_timetable import read_ext_timetable
-from ..sasdutils.get_arv_time_from_pyrocko import get_arv_time_from_pyrocko
+from ..saesutils.read_cclist import read_cclist
+from ..saesutils.read_ext_timetable import read_ext_timetable
+from ..saesutils.get_arv_time_from_pyrocko import get_arv_time_from_pyrocko
 from .spec_ratio_guru import spec_ratio_guru
 from .sin_spec_guru import sin_spec_guru
 import os,datetime
 
-def sasd_main(self):
+def saes_main(self):
     sol = self.method#input("Please enter 1 for sinspec, 2 for specratio or 3 for both: ")
     if int(sol) in [1,2,3]:
         if int(sol) == 1:
