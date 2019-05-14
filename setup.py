@@ -18,6 +18,6 @@ setup(
               'sasd.handlers',
               'sasd.optimizer',
               'sasd.sasdutils'],
-    package_dir={'sasd': 'src'}
-    #scripts=['scripts/some usefule binary executables'],
+    package_dir={'sasd': 'src'},
+    scripts=['scripts/Source_time_function.py']
 )
