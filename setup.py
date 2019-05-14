@@ -5,11 +5,11 @@ setup(
     version='0.0.1',
     author='Jon Onwuemeka and Ge Li',
     author_email='john.onwuemeka@mail.mcgill.ca;ge.li2@mail.mcgill.ca',
-    description='Earthquake stress drop calculation based on spectral methods ',
-    keywords=['earthquake stress drop','spectral analysis'],
+    description='Earthquake source parameter calculation based on spectral analysis methods ',
+    keywords=['earthquake source parameters','spectral analysis'],
     classifiers=[
         'Programming Language :: Python',
-        'Intended Audience :: Seismologist',
+        'Intended Audience :: Seismologist','Induced Seismicity'
         'Intended Discipline :: Science/Research'
     ],
     packages=['saes',
