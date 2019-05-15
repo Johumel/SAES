@@ -19,5 +19,11 @@ setup(
               'saes.optimizer',
               'saes.saesutils'],
     package_dir={'saes': 'src'},
+    install_requires=[
+          'obspy',
+          'numpy',
+          'mtspec',
+          'matplotlib'
+      ],
     scripts=['scripts/Source_time_function.py']
 )
