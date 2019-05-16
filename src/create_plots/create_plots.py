@@ -238,7 +238,7 @@ def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,allresidua1,ax,popt
             x1 = freqperturb[index1]
             inset_axin.semilogx(tempx,tempy,'o',ms=3,mfc = 'blue')
             inset_axin.semilogx(x1,y1,'*',mfc='blue',ms=8,mec='red')
-            bb = np.log10(min(tempx)).round()-1
+            bb = np.floor(np.log10(min(tempx)))#.round()-1
             inset_axin.set_xlim([10**bb,max(tempx)*2])
             inset_axin.xaxis.set_major_locator(LogLocator(base=10.0, numticks=3))
             inset_axin.set_ylim([0,0.6])
