@@ -10,7 +10,7 @@ from obspy.core import UTCDateTime
 
 def get_arv_time_from_pyrocko(self):
     evids = self.evlist.keys()
-    markers = mk.load_markers(self.maindir+'/input/tt.dat')
+    markers = mk.load_markers(self.maindir+'/input/tt_pyrocko.dat')
     mk.associate_phases_to_events(markers)
     indexs = [i for i in range(len(markers)) if isinstance(markers[i],(mk.PhaseMarker))]
     evid_markers_index = [j for i in evids for j in indexs if markers[j]._event.name == i]
