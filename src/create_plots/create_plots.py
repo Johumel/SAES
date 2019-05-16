@@ -86,7 +86,7 @@ def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,time
     #The representative spectra ratio is the median of all spectra ratios
     #this section deals with the figures and aesthetics
     from obspy.core import read
-    from ..analyzer import get_sig_nois_data, remove_ir
+    from ..analyzer import get_sig_nois_data
 #    from obspy.clients.iris import Client
     lste = list(specmain.keys())
     colortype = colorlist(len(lste))
@@ -109,19 +109,11 @@ def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,time
             for i in self.P_tt[self.egfev]:
                 if i[1] == st[0].stats.station.strip():
                     Ptime = i[0]
-#        Ptime,Stime = self.P_tt[self.egfev],self.S_tt[self.egfev]
         origtime = self.evlist[self.egfev][0]
-#        late = self.evlist[self.egfev][1][0]
-#        lone = self.evlist[self.egfev][1][1]
-#        lats = self.stationlist[st[0].stats.station.strip()]['lat']
-#        lons = self.stationlist[st[0].stats.station.strip()]['lon']
-#        baz = Client().distaz(lats,lons,late,lone)['backazimuth']
-#        _,baz,dist = gref.inv(lone,late,lons,lats,radians=False)
         baz = self.baz['egf']
         if baz < 0:
             baz = baz + 360
-        stn,_,nsstart = get_sig_nois_data(et1,origtime,Ptime,Stime,time_win,True,None)
-        stn,_ = remove_ir(self,stn,None,baz,self.egfev,'VEL')
+        _,_,nsstart,stn,_ = get_sig_nois_data(self,et1,origtime,Ptime,Stime,time_win,True,None,self.egfev,baz,'yes')
         trn = stn.select(component='N')
         trn += stn.select(component='E')
         trn.rotate('NE->RT',back_azimuth=baz)
@@ -136,17 +128,11 @@ def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,time
             for i in self.P_tt[self.mainev]:
                 if i[1] == st[0].stats.station.strip():
                     Ptime = i[0]
-#        Ptime,Stime = self.P_tt[self.mainev],self.S_tt[self.mainev]
         origtime = self.evlist[self.mainev][0]
-#        late = self.evlist[self.mainev][1][0]
-#        lone = self.evlist[self.mainev][1][1]
-#        baz = Client().distaz(lats,lons,late,lone)['backazimuth']
-#        _,baz,dist = gref.inv(lone,late,lons,lats,radians=False)
         baz = self.baz['main']
         if baz < 0:
             baz = baz + 360
-        stn,_,nsstart = get_sig_nois_data(et2,origtime,Ptime,Stime,time_win,True,None)
-        stn,_ = remove_ir(self,stn,None,baz,self.egfev,'VEL')
+        _,_,nsstart,stn,_ = get_sig_nois_data(self,et2,origtime,Ptime,Stime,time_win,True,None,self.mainev,baz,'yes')
         trn = stn.select(component='N')
         trn += stn.select(component='E')
         trn.rotate('NE->RT',back_azimuth=baz)
@@ -161,6 +147,8 @@ def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,time
             x_end = self.stationlist[indexx]['pre_filt'][2]
             ploting(x1 = wmfc[indexx],y1 = wm[indexx],y12 = wmn[indexx],x2 = wefc[indexx],
                     y2 = we[indexx],y22 = wen[indexx],ax = axx,station = station,color = colortype[colornum],x_begin=x_begin,x_end=x_end,wv=wv)
+            xlim1 = 10**(np.floor(np.log10(x_begin)))
+            ax_spec.set_xlim([xlim1,x_end])
         colornum += 1
     return fig,ax_spec
 
@@ -290,7 +278,7 @@ def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
             print('fitsinspecpll Run time = {}'.format(endt-startt))
         axx2 = fig.add_subplot(2,3,n)
         axx2.loglog(fn, sinspec_model(fn, *popt_ind), 'k--', label='model fit',linewidth=2)
-        bb = np.log10(min(fn)).round()
+        bb = np.floor(np.log10(min(fn)))
         x_end = self.stationlist[station]['pre_filt'][2]
         axx2.set_xlim([10**bb,x_end])
         fig.subplots_adjust(hspace = .2,wspace = 0.0)
