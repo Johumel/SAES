@@ -1,0 +1,14 @@
+method:  1
+wave_type: both
+remove_instr_response: no
+soltype: 1
+whitelist_events: [20181130021501,20181130020602,20181130012707]
+blacklist_events: []
+blacklist_stations: [XL.MG01,XL.MG02]
+remove_resp: no
+showfc2: yes
+freesurface_cor: no
+sumtype:median
+source_model: vb
+snr_threshold: 2
+numworkers: 3
