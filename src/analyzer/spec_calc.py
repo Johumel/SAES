@@ -14,6 +14,7 @@ def spec_calc(self,file1,file2,wv):
     ev1 = self.mainev
     ev2 = self.egfev
     sts2 = None
+    sts1 = None
     if ev1 and ev2:
         t1 = get_time_window(self.evlist[ev1][1][3])
         t2 = get_time_window(self.evlist[ev2][1][3])
