@@ -14,7 +14,6 @@ def get_arv_time_from_pyrocko(self):
     mk.associate_phases_to_events(markers)
     indexs = [i for i in range(len(markers)) if isinstance(markers[i],(mk.PhaseMarker))]
     evid_markers_index = [j for i in evids for j in indexs if markers[j]._event.name == i]
-#    origtime = [UTCDateTime(markers[i]._event.time) for i in evid_markers_index]
     P_tt,S_tt= {},{}
     for i in evids:
         P_tt[i] = []
@@ -24,9 +23,6 @@ def get_arv_time_from_pyrocko(self):
                        markers[j].get_nslc_ids()[0][1]])
         if markers[j]._phasename == 'S': S_tt[markers[j]._event.name].append([UTCDateTime(util.time_to_str(markers[j].tmin)),
                        markers[j].get_nslc_ids()[0][1]])
-#    evidP = [i for i in P_tt.keys() if P_tt[i]]
-#    evidS = [i for i in S_tt.keys() if S_tt[i]]
-#    evid_tt = np.asarray(list(set(evidP).intersection(evidS)))
     self.P_tt = P_tt
     self.S_tt = S_tt
     return None
