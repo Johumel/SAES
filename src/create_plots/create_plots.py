@@ -139,7 +139,11 @@ def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,time
         ax_spec.loglog(freqmain[lste[index]],specmain[lste[index]],linewidth = 1,color = colortype[colornum],label = station)
         if lste[index] == indexx:
             x_begin = min(freqmain[indexx])
-            x_end = self.stationlist[indexx]['pre_filt'][2]
+            try:
+                x_end = self.stationlist[indexx]['pre_filt'][2]
+            except:
+                x_end = 45.
+                pass
             ploting(x1 = wmfc[indexx],y1 = wm[indexx],y12 = wmn[indexx],x2 = wefc[indexx],
                     y2 = we[indexx],y22 = wen[indexx],ax = axx,station = station,color = colortype[colornum],x_begin=x_begin,x_end=x_end,wv=wv)
             xlim1 = 10**(np.floor(np.log10(x_begin)))
