@@ -16,6 +16,18 @@ from .saesutils.read_xml import read_xml
 
 
 class saes_core(object):
+    """
+    A class used to ...
+
+    ...
+
+    Attributes
+    ----------
+
+    Methods
+    -------
+    
+    """
 
     def __init__(self,controlfilename):
 
