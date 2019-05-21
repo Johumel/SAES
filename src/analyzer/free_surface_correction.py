@@ -25,8 +25,7 @@ def free_surface_correction(self,stream,evid):
     evid (int): Event id.
 
     Returns:
-    int: Description of return value
-
+    
     """
 
     tr = stream.select(component='T')
