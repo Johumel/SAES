@@ -8,7 +8,7 @@ Created on Tue Apr 23 09:47:33 2019
 import numpy as np
 import os
 #Saves the output result(parameters) 
-def save_output(self,popt_spec,pcov_spec,norm_spec,tiplier,popt_ind,pcov_ind,station,wv):  
+def save_output(self,popt_spec,pcov_spec,norm_spec,popt_ind,pcov_ind,station,wv):  
 
     #Begin fitting the spectral ratio
     if self.do_spec_rat == 'Y':
@@ -18,19 +18,19 @@ def save_output(self,popt_spec,pcov_spec,norm_spec,tiplier,popt_ind,pcov_ind,sta
         datafile = self.output_dir + self.mainev +'_multiple.dat'
         if not os.path.exists(datafile):
             with open(datafile, 'w') as f:
-                f.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s' %('EGF','fcm','fce','omega_main','omega_egf','fcmerror','residual',
-                                                                   'nvalue','gamma','multiplier','WaveType'))
-                f.write('\n%s\t%.2f\t%.2f\t%.2f\t%.2f\t%.3f\t%.3f\t%.2f\t%.2f\t%.2f\t%s' % (self.egfev,round(popt_spec[0],1),round(popt_spec[1],1),
+                f.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s' %('EGF','fcm','fce','omega_main','omega_egf','fcmerror','residual',
+                                                                   'nvalue','gamma','WaveType'))
+                f.write('\n%s\t%.2f\t%.2f\t%.2f\t%.2f\t%.3f\t%.3f\t%.2f\t%.2f\t%s' % (self.egfev,round(popt_spec[0],1),round(popt_spec[1],1),
                                                                                         round(popt_spec[2],2),round(popt_spec[3],2),
                                                                                         fcerr,norm_spec,round(popt_spec[4],1),
-                                                                                        round(popt_spec[5],1),tiplier,wv))
+                                                                                        round(popt_spec[5],1),wv))
                 f.close()
         else:
             with open(datafile, 'a') as f:
-                f.write('\n%s\t%.2f\t%.2f\t%.2f\t%.2f\t%.3f\t%.3f\t%.2f\t%.2f\t%.2f\t%s' % (self.egfev,round(popt_spec[0],1),round(popt_spec[1],1),
+                f.write('\n%s\t%.2f\t%.2f\t%.2f\t%.2f\t%.3f\t%.3f\t%.2f\t%.2f\t%s' % (self.egfev,round(popt_spec[0],1),round(popt_spec[1],1),
                                                                                         round(popt_spec[2],2),round(popt_spec[3],2),
                                                                                         fcerr,norm_spec,round(popt_spec[4],1),
-                                                                                        round(popt_spec[5],1),tiplier,wv))
+                                                                                        round(popt_spec[5],1),wv))
                 f.close() 
     if self.do_ind_spec == 'Y':
         perr = np.sqrt(np.diag(pcov_ind))

@@ -13,9 +13,7 @@ from ..handlers.save_output import save_output
 from ..optimizer.fit_sin_spec import fit_sin_spec
 from ..optimizer.fit_sin_spec_pll import fit_sin_spec_pll
 from ..optimizer.sinspec_model import sinspec_model
-#from saes import fit_sin_spec, save_output,fit_sin_spec_pll,specr_model
 from matplotlib import colors as clors
-import math,datetime
 
 
 def colorlist(numspec):
@@ -25,7 +23,6 @@ def colorlist(numspec):
              'teal','firebrick','orchid','olivedrab','bisque',\
              'thistle','orangered','darkcyan','wheat','azure','salmon','linen']
     else:
-        #from joelostblom www.stakeoverflow.com
         colors = dict(clors.BASE_COLORS, **clors.CSS4_COLORS)
         hsv_sort = sorted((tuple(clors.rgb_to_hsv(clors.to_rgba(color)[:3])), name)
                 for name, color in colors.items())
@@ -87,7 +84,6 @@ def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,time
     #this section deals with the figures and aesthetics
     from obspy.core import read
     from ..analyzer import get_sig_nois_data
-#    from obspy.clients.iris import Client
     lste = list(specmain.keys())
     colortype = colorlist(len(lste))
     fig = plt.figure(1,figsize=(16,9),tight_layout=True)
@@ -100,7 +96,6 @@ def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,time
         et1 = egffile[indexx]
         axs = plt.subplot2grid((3, 2), (0, 1))
         st = read(et1)
-#        stn,nsstart,Ptime,Stime,time_win,evtype,axz
         if self.S_tt[self.egfev]:
             for i in self.S_tt[self.egfev]:
                 if i[1] == st[0].stats.station.strip():
@@ -202,15 +197,13 @@ def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,allresidua1,ax,popt
                 xbin2 = np.where(freqbin >= popt[1])[0][0]
                 ybin2 = np.divide(specr_model(freqbin, *popt),mtpl)[xbin2]
                 ax.text(popt[1]*0.55,ybin2*0.7,'f$_c$$_($$_2$$_)$ =  %s' %(float(round(popt[1],1))),style = 'normal',weight='bold',size=14)
-            #else:
-                #ax.text(7,80,'f$_c$$_($$_2$$_)$ =  %s' %(float(round(popt[1],1))),style = 'normal',weight='bold',size=18)
                 ax.loglog(popt[1],ybin2*0.9,marker="^",color='green',markersize=10)
         except:
             pass
-        upl = 10**(math.floor(np.log10(maxy*10)))
-        upl1 = 10**(math.floor(np.log10(maxy)))
+        upl = 10**(np.floor(np.log10(maxy*10)))
+        upl1 = 10**(np.floor(np.log10(maxy)))
         if upl/upl1 > 20:
-           upl = 10**(math.floor(np.log10(maxy*10)))
+           upl = 10**(np.floor(np.log10(maxy*10)))
         ax.set_ylim([min(specratio)*0.15/mtpl,upl*3])#0.025
         ax.get_xaxis().get_major_formatter().labelOnlyBase = True
         ax.get_xaxis().get_minor_formatter().labelOnlyBase = True
@@ -239,7 +232,7 @@ def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,allresidua1,ax,popt
             inset_axin.semilogx(tempx,tempy,'o',ms=3,mfc = 'blue')
             inset_axin.semilogx(x1,y1,'*',mfc='blue',ms=8,mec='red')
             bb = np.floor(np.log10(min(tempx)))#.round()-1
-            inset_axin.set_xlim([10**bb,max(tempx)*2])
+            inset_axin.set_xlim([(10**bb)*5,max(tempx)*2])
             inset_axin.xaxis.set_major_locator(LogLocator(base=10.0, numticks=3))
             inset_axin.set_ylim([0,0.6])
             inset_axin.set_yticks(np.linspace(0,0.6,endpoint=True,num=4))
@@ -256,7 +249,6 @@ def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,allresidua1,ax,popt
     return None
 
 def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
-    #Dumb! but this is meant to calculate individual spectrum and create the figures
     colornum = 0
     fig = plt.figure(figsize=(16,10),tight_layout=True)
     lste = list(wm.keys())
@@ -270,12 +262,9 @@ def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
                                          min(wmfc[lste[index]]),max(wmfc[lste[index]])*0.5,trtm[lste[index]],self.autofit_single_spec,\
                                          self.source_model)
         elif self.numworkers > 1:
-            startt = datetime.datetime.now()
             popt_ind,pcov_ind = fit_sin_spec_pll(wm[lste[index]],fn,station,\
                                          min(wmfc[lste[index]]),max(wmfc[lste[index]])*0.5,trtm[lste[index]],\
                                          self.source_model,self.numworkers)
-            endt = datetime.datetime.now()
-            print('fitsinspecpll Run time = {}'.format(endt-startt))
         axx2 = fig.add_subplot(2,3,n)
         axx2.loglog(fn, sinspec_model(fn, *popt_ind), 'k--', label='model fit',linewidth=2)
         bb = np.floor(np.log10(min(fn)))
@@ -306,7 +295,7 @@ def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
         axx2.text(0.6,0.2,'%s Wave' % wv,style = 'normal',weight='bold',size=14,transform=axx2.transAxes)
         colornum += 1
         if pcov_ind[0] is not None:
-            save_output(self,None,None, None,None, popt_ind, pcov_ind,station,wv)
+            save_output(self,None,None, None,popt_ind, pcov_ind,station,wv)
         n = len(fig.axes)+1
         if n > 6:
             save_fig(self,fig,'ind', m)
@@ -321,6 +310,21 @@ def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
     return None
 
 
+
+def stf_plot(self,x,y):
+    fig = plt.figure(figsize=(8,5))
+    ax = fig.add_subplot(111)
+    ax.plot(x,y,'k',linewidth=1.5)#,label='Source Time Function')
+    ax.set_xlabel('Time (s)',fontsize=20)
+    ax.fill_between(x, y, facecolor='gray', alpha=0.5)
+    for tick in ax.xaxis.get_major_ticks():tick.label.set_fontsize(18)
+    for tick in ax.yaxis.get_major_ticks():tick.label.set_fontsize(18)  
+    save_fig(self,fig,'stf',None)
+    return None
+    
+    
+
+
 #saves the figures
 def save_fig(self,fig,figtype,mm):
     if figtype == 'spec':
@@ -329,9 +333,13 @@ def save_fig(self,fig,figtype,mm):
         imagefile = self.output_dir+self.mainev+'_'+self.egfev+'_'+str(mm)+'.pdf'
         fig.savefig(imagefile, format='pdf', dpi=300)
         fig.clf()
-        plt.close()
+#        plt.close()
     if figtype == 'ind':
         imagefile = self.output_dir+self.mainev+'_sinspec_'+str(mm)+'.pdf'
+        fig.savefig(imagefile, format='pdf', dpi=300)
+        fig.clf()
+    if figtype == 'stf':
+        imagefile = self.output_dir+self.mainev+'_'+self.egfev+'_STF.pdf'
         fig.savefig(imagefile, format='pdf', dpi=300)
         fig.clf()
     return None

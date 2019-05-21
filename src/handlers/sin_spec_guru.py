@@ -38,7 +38,7 @@ def sin_spec_guru(self,evid1,wv,dlist):
                 netsta = mt[0].stats.network.strip()+'.'+mt[0].stats.station.strip()
                 if time1 and netsta  not in self.blacklist_stations:
                     self.mainev = evid1[j]
-                    _,_,_,_,_,rawmfc,rawm,rawmn,trt1,_,time_win = spec_calc(self,file1,None,wv)
+                    _,_,_,_,_,rawmfc,rawm,rawmn,trt1,_,time_win,_,_ = spec_calc(self,file1,None,wv)
                     ind_spec[station] = rawm; freq_ind_spec[station] = rawmfc;
                     time_window[station] = time_win;indv_noise[station] = rawmn
                     ind_trtm[station] =  trt1;
