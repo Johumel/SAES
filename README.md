@@ -9,7 +9,8 @@ a circular patch.
 python setup.py install
 ```
 ## USAGE
-
+```
+from saes import saes_saes_core
+```
 ## EXAMPLE
 
-AN modification
