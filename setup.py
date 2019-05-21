@@ -26,6 +26,5 @@ setup(
           'matplotlib',
           'pyproj',
           'joblib'
-      ],
-    scripts=['scripts/Source_time_function.py']
+      ]
 )
