@@ -10,8 +10,8 @@ import re
     
 def get_prefilts(self):
     prefilts = open(self.maindir+'/input/pre_filt.list').readlines()
-    list1 = [list(filter(None, re.split('[: \n]',prefilts[j])))[0] for j in range(len(prefilts)-1) if prefilts[j] != '\n']
-    list2 = [list(filter(None, re.split('[: \n]',prefilts[j])))[1] for j in range(len(prefilts)-1) if prefilts[j] != '\n']
+    list1 = [list(filter(None, re.split('[: \n#]',prefilts[j])))[0] for j in range(len(prefilts)-1) if prefilts[j] != '\n']
+    list2 = [list(filter(None, re.split('[: \n#]',prefilts[j])))[1] for j in range(len(prefilts)-1) if prefilts[j] != '\n']
     list1 = np.asarray(list1)
     list2 = np.asarray(list2)
     for i in range(len(list1)):

@@ -11,7 +11,7 @@ from obspy.core import UTCDateTime
 def read_eventlist(self):
     '''event list must be in this format
     year month day hour minute second lat lon depth magnitude eventID'''
-    data = np.genfromtxt(self.maindir+'/input/events.dat',dtype='U16')
+    data = np.genfromtxt(self.maindir+'/input/events.dat',skip_header=1,dtype='U24')
     if self.whitelist_evl and not self.blacklist_evl:
         evids = self.whitelist_evl
     elif self.whitelist_evl and self.blacklist_evl:

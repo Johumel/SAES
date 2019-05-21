@@ -9,7 +9,7 @@ import numpy as np
 
 def read_cclist(self):
     evid1,evid2 = None,None
-    data = np.genfromtxt(self.maindir+'/input/cclist.dat',dtype=['U7','U16','U16','f8'])
+    data = np.genfromtxt(self.maindir+'/input/cclist.dat',skip_header=1,dtype=['U10','U24','U24','f8'])
     evid1 = [data[i][1] for i in range(len(data))]
     evid2 = [data[i][2] for i in range(len(data))]  
     sta_cc = [data[i][0] for i in range(len(data))] 

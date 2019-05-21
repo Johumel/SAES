@@ -10,7 +10,7 @@ from obspy.core import UTCDateTime
 
 def read_ext_timetable(self):
     #time table format --> eventID station timepick phasename(P,S)
-    data = np.genfromtxt(self.maindir+'/input/tt.dat',dtype=['U24','U12','U32','U2'])
+    data = np.genfromtxt(self.maindir+'/input/tt.dat',skip_header = 1,dtype=['U24','U12','U32','U2'])
     evid_tt = [data[i][0] for i in range(len(data))]
     P_tt,S_tt = {},{}
     for i in range(len(data)):
