@@ -9,11 +9,9 @@ a circular patch.
 python setup.py install
 ```
 ## USAGE
-=======
-
+```
 from saes.saes_core import saes_core
 saes_core('path/to/your/control.file')
-
-=======
+```
 ## EXAMPLE
 
