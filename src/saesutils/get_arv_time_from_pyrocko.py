@@ -21,6 +21,7 @@ def get_arv_time_from_pyrocko(self):
     P_tt (dict): P travel time data
     S_tt (dict): S travel time data
     """
+     
     evids = self.evlist.keys()
     markers = mk.load_markers(self.maindir+'/input/tt.dat')
     mk.associate_phases_to_events(markers)
