@@ -10,7 +10,8 @@ python setup.py install
 ```
 ## USAGE
 ```
-from saes import saes_core
+from saes.saes_core import saes_core
+saes_core('path/to/your/control.file')
 ```
 ## EXAMPLE
 
