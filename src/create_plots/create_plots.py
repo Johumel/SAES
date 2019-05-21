@@ -14,7 +14,6 @@ from ..optimizer.fit_sin_spec import fit_sin_spec
 from ..optimizer.fit_sin_spec_pll import fit_sin_spec_pll
 from ..optimizer.sinspec_model import sinspec_model
 from matplotlib import colors as clors
-import math,datetime
 
 
 def colorlist(numspec):
@@ -201,10 +200,10 @@ def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,allresidua1,ax,popt
                 ax.loglog(popt[1],ybin2*0.9,marker="^",color='green',markersize=10)
         except:
             pass
-        upl = 10**(math.floor(np.log10(maxy*10)))
-        upl1 = 10**(math.floor(np.log10(maxy)))
+        upl = 10**(np.floor(np.log10(maxy*10)))
+        upl1 = 10**(np.floor(np.log10(maxy)))
         if upl/upl1 > 20:
-           upl = 10**(math.floor(np.log10(maxy*10)))
+           upl = 10**(np.floor(np.log10(maxy*10)))
         ax.set_ylim([min(specratio)*0.15/mtpl,upl*3])#0.025
         ax.get_xaxis().get_major_formatter().labelOnlyBase = True
         ax.get_xaxis().get_minor_formatter().labelOnlyBase = True
@@ -233,7 +232,7 @@ def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,allresidua1,ax,popt
             inset_axin.semilogx(tempx,tempy,'o',ms=3,mfc = 'blue')
             inset_axin.semilogx(x1,y1,'*',mfc='blue',ms=8,mec='red')
             bb = np.floor(np.log10(min(tempx)))#.round()-1
-            inset_axin.set_xlim([10**bb,max(tempx)*2])
+            inset_axin.set_xlim([(10**bb)*5,max(tempx)*2])
             inset_axin.xaxis.set_major_locator(LogLocator(base=10.0, numticks=3))
             inset_axin.set_ylim([0,0.6])
             inset_axin.set_yticks(np.linspace(0,0.6,endpoint=True,num=4))
@@ -263,12 +262,9 @@ def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
                                          min(wmfc[lste[index]]),max(wmfc[lste[index]])*0.5,trtm[lste[index]],self.autofit_single_spec,\
                                          self.source_model)
         elif self.numworkers > 1:
-            startt = datetime.datetime.now()
             popt_ind,pcov_ind = fit_sin_spec_pll(wm[lste[index]],fn,station,\
                                          min(wmfc[lste[index]]),max(wmfc[lste[index]])*0.5,trtm[lste[index]],\
                                          self.source_model,self.numworkers)
-            endt = datetime.datetime.now()
-            print('fitsinspecpll Run time = {}'.format(endt-startt))
         axx2 = fig.add_subplot(2,3,n)
         axx2.loglog(fn, sinspec_model(fn, *popt_ind), 'k--', label='model fit',linewidth=2)
         bb = np.floor(np.log10(min(fn)))
@@ -299,7 +295,7 @@ def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
         axx2.text(0.6,0.2,'%s Wave' % wv,style = 'normal',weight='bold',size=14,transform=axx2.transAxes)
         colornum += 1
         if pcov_ind[0] is not None:
-            save_output(self,None,None, None,None, popt_ind, pcov_ind,station,wv)
+            save_output(self,None,None, None,popt_ind, pcov_ind,station,wv)
         n = len(fig.axes)+1
         if n > 6:
             save_fig(self,fig,'ind', m)
@@ -337,7 +333,7 @@ def save_fig(self,fig,figtype,mm):
         imagefile = self.output_dir+self.mainev+'_'+self.egfev+'_'+str(mm)+'.pdf'
         fig.savefig(imagefile, format='pdf', dpi=300)
         fig.clf()
-        plt.close()
+#        plt.close()
     if figtype == 'ind':
         imagefile = self.output_dir+self.mainev+'_sinspec_'+str(mm)+'.pdf'
         fig.savefig(imagefile, format='pdf', dpi=300)
