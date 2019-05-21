@@ -10,7 +10,7 @@ python setup.py install
 ```
 ## USAGE
 ```
-from saes import saes_saes_core
+from saes import saes_core
 ```
 ## EXAMPLE
 
