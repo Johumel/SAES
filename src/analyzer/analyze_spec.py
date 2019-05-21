@@ -38,4 +38,4 @@ def analyze_spec(self,fname,evid,evtype,time_win,rmv_instr_resp,wv):
         trt = Ptime - origtime
         sts1,nss1,nsstart,sts2,nss2 = get_sig_nois_data(self,fname,None,Ptime,Stime,time_win,False,'P',evid,baz,rmv_instr_resp)   
     snr, freqsignal, signal,noise,snr_no_resp,freq_no_resp,signal_no_resp,noise_no_resp = get_spectrum(self,sts1,nss1,sts2,nss2)
-    return snr, freqsignal, signal,noise,snr_no_resp,freq_no_resp,signal_no_resp,noise_no_resp,trt
+    return snr, freqsignal, signal,noise,snr_no_resp,freq_no_resp,signal_no_resp,noise_no_resp,trt,sts1
