@@ -6,14 +6,6 @@ Created on Wed Apr 24 22:35:41 2019
 @author: john.onwuemeka
 """
 
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Apr 19 02:53:55 2019
-
-@author: john.onwuemeka
-"""
-
 import numpy as np
 import matplotlib.pyplot as plt
 from obspy.core import read
@@ -23,8 +15,8 @@ from obspy.signal.filter import lowpass
 def plot_source_time_func(self,file1,file2,evname):
     #adapted from mtspec manual
     st1 = read(file1)
-    st2 = read(file2)   
-    delt = st1[0].stats.delta 
+    st2 = read(file2)
+    delt = st1[0].stats.delta
     channel = st1[0].stats.channel
     chalist = [channel[0:2]+i for i in ('Z','N','E')]
     RSTF = {}
@@ -33,7 +25,7 @@ def plot_source_time_func(self,file1,file2,evname):
             st1 = read(file1.replace(chalist[0],i))
             st2 = read(file2.replace(chalist[0],i))
             st_mtd = mt_deconvolve(st1[0].data, st2[0].data, delt,nfft=len(st1[0].data),
-                      time_bandwidth=4, number_of_tapers=7,weights='constant', 
+                      time_bandwidth=4, number_of_tapers=7,weights='constant',
                       demean=True)
         except OSError:
             pass
@@ -43,7 +35,7 @@ def plot_source_time_func(self,file1,file2,evname):
         time = np.linspace(0, xlen*delt,xlen)
         l1 = np.arange(0, xlen)
         index1 = np.where((l1 >= 0,l1 <= xlen / 2))[0]
-        sla = st_dec[index1]  
+        sla = st_dec[index1]
 #        sla_freq = freq_dec[index1[:-1]]
         index2 = np.where((l1 > xlen / 2) & (l1 <= xlen + 1))[0]
         slb = st_dec[index2]
