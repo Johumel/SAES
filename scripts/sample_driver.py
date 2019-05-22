@@ -1,4 +1,3 @@
-from saes import saes_core
-from saes.handlers.saes_main import saes_main
+from saes.saes_core import saes_core
 
-saes_obj = saes_core.saes_core('../input/control.file')
+saes_obj = saes_core('../input/control.file')
