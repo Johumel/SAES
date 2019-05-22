@@ -41,7 +41,6 @@ def saes_main(self):
             for j in range(0,len(evid1)):#51
             #Set minimum CC value allowed in the computation
                 if  '%s' %(evid1[j]) not in dlist:
-                    print(datetime.datetime.now())
                     self.output_dir  = self.maindir+'/output/'+evid1[j]+'/'
                     if not os.path.exists(self.output_dir ):
                         os.makedirs(self.output_dir )
