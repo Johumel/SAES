@@ -27,5 +27,5 @@ setup(
           'pyproj',
           'joblib'
       ],
-      scripts=['scripts/'],
+      scripts=['scripts/']# some usefull scripts
 )
