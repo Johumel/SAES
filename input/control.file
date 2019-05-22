@@ -1,15 +1,15 @@
 method:  2
-wave_type: both
-remove_instr_response: no
-whitelist_events: [20181130021501,20181130020602,20181130012707]
+wave_type: S
+soltype: 1
+whitelist_events: [201307112016,201307112058]
 blacklist_events: []
-blacklist_stations: [XL.MG01,CN.NBC4]
+blacklist_stations: [CN.A11,CN.A54]
 remove_resp: no
 showfc2: yes
 freesurface_cor: no
 sumtype:median
 source_model: vb
 snr_threshold: 2
-numworkers: 3
+numworkers: 6
 num_tapers: 6
 fixed_window: 4
