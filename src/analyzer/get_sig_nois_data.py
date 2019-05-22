@@ -10,7 +10,7 @@ from .remove_ir import remove_ir
 import warnings
 
 def get_sig_nois_data(self,fname,origtime,Atime,Btime,time_win,wv_fig,phase,evid,baz,rmv_instr_resp):
-    sts,nss,nsstart = [],None,None
+    sts,nss,nsstart,st,ns = [],None,None,None,None
     st = read(fname)
     if Atime:
         Atime = Atime - max(0.05,st[0].stats.delta)  

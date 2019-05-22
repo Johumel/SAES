@@ -112,7 +112,7 @@ def read_controlfile(self):
         self.num_tapers = int(list2[index[0]])
     index = np.where(list1 == 'fixed_window')[0]
     if index.tolist():
-        if list2[index[0]].replace('.','',1).isdigit():
+        if not list2[index[0]].replace('.','',1).isdigit():
             raise AttributeError('fixed window length must be a number')
         self.fixed_window = float(list2[index[0]])
     read_eventlist(self)
