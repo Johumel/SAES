@@ -7,8 +7,17 @@ Created on Tue May  7 11:03:38 2019
 """
 import numpy as np
 import re
-    
+
 def get_prefilts(self):
+    """
+    
+
+    Parameters:
+    self (class saes_core),
+
+    Returns/Modificatoins:
+
+    """
     prefilts = open(self.maindir+'/input/pre_filt.list').readlines()
     list1 = [list(filter(None, re.split('[: \n#]',prefilts[j])))[0] for j in range(len(prefilts)-1) if prefilts[j] != '\n']
     list2 = [list(filter(None, re.split('[: \n#]',prefilts[j])))[1] for j in range(len(prefilts)-1) if prefilts[j] != '\n']

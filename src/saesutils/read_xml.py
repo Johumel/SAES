@@ -8,20 +8,21 @@ Created on Mon Apr 22 08:20:07 2019
 
 def read_xml(self,xml_format):
         """
+        Read
         input_file_type : 1 : obspy; 2: pyrocko;
         """
         #load stationxml
         stationlist = {}
         if xml_format == 1:
             from obspy import read_inventory
-            stationxml = read_inventory(self.maindir+'/input/stations.xml',format='STATIONXML')            
+            stationxml = read_inventory(self.maindir+'/input/stations.xml',format='STATIONXML')
             if len(stationxml._networks) == 1:
                 for i in stationxml._networks[0]:#                for j in i:
                     stationlist[i._code] = {}
                     stationlist[i._code]['lat'] = i._latitude
                     stationlist[i._code]['lon'] = i._longitude
                     stationlist[i._code]['elev'] = i._elevation/1000.
-                    stationlist[i._code]['pre_filt'] = []       
+                    stationlist[i._code]['pre_filt'] = []
             else:
                 for i in stationxml._networks:#                for j in i:
                     stationlist[i._stations[0].code] = {}
