@@ -8,8 +8,21 @@ Created on Mon Apr 22 08:20:07 2019
 
 def read_xml(self,xml_format):
         """
-        Read 
-        input_file_type : 1 : obspy; 2: pyrocko;
+        Read station meta data and response file.
+
+        Parameters:
+        xml_format (int): input_file_type, 1--obspy; 2--pyrocko;
+
+        Returns/Modifications:
+        stationxml (): station metadata, e.g. location and name network, and response file.
+        stationlist (dict): two-level dictionary contains the stations info.
+            [station_name][station_info],
+                          station_info:
+                          'lat':latitude
+                          'lon':longitude
+                          'elev':elevation
+                          'pre_filt': pre-defined filtering frequency range for response removal
+
         """
         #load stationxml
         stationlist = {}

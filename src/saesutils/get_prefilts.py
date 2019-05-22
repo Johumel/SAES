@@ -10,10 +10,9 @@ import re
 
 def get_prefilts(self):
     """
-    
+    Read the pre-defined response removal frequency range for each station.
 
     Parameters:
-    self (class saes_core),
 
     Returns/Modificatoins:
 
