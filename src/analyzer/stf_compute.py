@@ -11,7 +11,6 @@ from mtspec import mt_deconvolve
 
 # Read the data
 def stf_compute(st_main,st_egf,num_tapers):
-
     nfftlen = max(1000,st_main[0].stats.npts)
     delta = st_main[0].stats.delta
     half_nyq = np.arange(0,nfftlen)
@@ -19,6 +18,12 @@ def stf_compute(st_main,st_egf,num_tapers):
     time_bandwidth = (num_tapers+1)/2
     y = []
     for tr_main, tr_egf in zip(st_main,st_egf):
+        if len(tr_main.data) < len(tr_egf.data):
+            lendif = len(tr_egf.data) - len(tr_main.data)
+            tr_main.data = np.pad(tr_main.data,(0,lendif),'constant',constant_values=(0))
+        elif len(tr_main.data) > len(tr_egf.data):
+            lendif = len(tr_main.data) - len(tr_egf.data)
+            tr_egf.data = np.pad(tr_egf.data,(0,lendif),'constant',constant_values=(0))
         pms = mt_deconvolve(tr_main.data, tr_egf.data, delta,
                           nfft=nfftlen,
                           time_bandwidth=time_bandwidth, number_of_tapers=num_tapers,
