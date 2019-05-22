@@ -1,8 +1,11 @@
 # STILL UNDER DEVELOPMENT!
 # Spectral Analysis for Earthquake Source (SAES) Parameters
+
+## Description
 This code is intended to perform a spectral analysis to calculate earthquake
 source parameters, i.e. corner frequencies and source radius, assuming
 a circular patch.
+
 
 ## INSTALLATION
 ```
