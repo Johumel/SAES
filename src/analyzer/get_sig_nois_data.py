@@ -10,6 +10,7 @@ from .remove_ir import remove_ir
 import warnings
 
 def get_sig_nois_data(self,fname,origtime,Atime,Btime,time_win,wv_fig,phase,evid,baz,rmv_instr_resp):
+    sts,nss,nsstart = [],None,None
     st = read(fname)
     if Atime:
         Atime = Atime - max(0.05,st[0].stats.delta)  
@@ -46,38 +47,37 @@ def get_sig_nois_data(self,fname,origtime,Atime,Btime,time_win,wv_fig,phase,evid
         st = remove_ir(self,st,baz,evid,'DISP')
         ns = st.copy()
         nss = sts.copy() 
-        if phase == 'S':
-            sts.trim(starttime = Btime, endtime = Btime + time_win)
-            st.trim(starttime = Btime, endtime = Btime + time_win)
-        elif phase == 'P':
-            sts.trim(starttime = Atime, endtime = Atime + time_win)
-            st.trim(starttime = Atime, endtime = Atime + time_win)
-        if not Atime and phase == 'S':
-            nss.trim(starttime = st[0].stats.starttime + 1. ,\
-                        endtime = st[0].stats.starttime + 1.+time_win)
-            ns.trim(starttime = st[0].stats.starttime + 1. ,\
-                        endtime = st[0].stats.starttime + 1.+time_win)
-            nsstart = st[0].stats.starttime + 1.
-        elif Atime and phase == 'S':
-            nss.trim(starttime = Atime - (time_win+1) ,\
-                        endtime = Atime - 1) 
-            ns.trim(starttime = Atime - (time_win+1) ,\
-                        endtime = Atime - 1) 
-            nsstart = Atime - (time_win+1)
-        elif phase == 'P':
-            nss.trim(starttime = Atime - (time_win+1) ,\
-                        endtime = Atime - 1) 
-            ns.trim(starttime = Atime - (time_win+1) ,\
-                        endtime = Atime - 1) 
-            nsstart = Atime - (time_win+1)
+        if Btime or Atime:
+            if phase == 'S':
+                sts.trim(starttime = Btime, endtime = Btime + time_win)
+                st.trim(starttime = Btime, endtime = Btime + time_win)
+            elif phase == 'P':
+                sts.trim(starttime = Atime, endtime = Atime + time_win)
+                st.trim(starttime = Atime, endtime = Atime + time_win)
+            if not Atime and phase == 'S':
+                nss.trim(starttime = st[0].stats.starttime + 1. ,\
+                            endtime = st[0].stats.starttime + 1.+time_win)
+                ns.trim(starttime = st[0].stats.starttime + 1. ,\
+                            endtime = st[0].stats.starttime + 1.+time_win)
+                nsstart = st[0].stats.starttime + 1.
+            elif Atime and phase == 'S':
+                nss.trim(starttime = Atime - (time_win+1) ,\
+                            endtime = Atime - 1) 
+                ns.trim(starttime = Atime - (time_win+1) ,\
+                            endtime = Atime - 1) 
+                nsstart = Atime - (time_win+1)
+            elif phase == 'P':
+                nss.trim(starttime = Atime - (time_win+1) ,\
+                            endtime = Atime - 1) 
+                ns.trim(starttime = Atime - (time_win+1) ,\
+                            endtime = Atime - 1) 
+                nsstart = Atime - (time_win+1)
+        else:
+            st,ns,sts,nss,nsstart  = None,None,[],None,None           
     elif wv_fig is True:
-        sts = None
-        nss = None
-        ns = None
         st = remove_ir(self,st,baz,evid,'VEL')
         nsstart = None
         time_win_add = 5.0
-        sts
         if Btime and not Atime:    
             st.trim(starttime = origtime,endtime = \
                        (Btime + time_win+time_win_add+.1))

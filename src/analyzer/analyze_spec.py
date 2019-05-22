@@ -13,7 +13,9 @@ gref = Geod(ellps='WGS84')
 
 def analyze_spec(self,fname,evid,evtype,time_win,rmv_instr_resp,wv):
     st = read(fname)
-    Ptime,Stime = None,None
+    Ptime,Stime,sts1,sts2 = None,None,[],None
+    snr, freqsignal, signal,noise,snr_no_resp,freq_no_resp,signal_no_resp,\
+    noise_no_resp,trt = None,None,None,None,None,None,None,None,None
     if self.S_tt[evid]:
         for i in self.S_tt[evid]:
             if i[1] == st[0].stats.station.strip():
@@ -36,6 +38,7 @@ def analyze_spec(self,fname,evid,evtype,time_win,rmv_instr_resp,wv):
         sts1,nss1,nsstart,sts2,nss2 = get_sig_nois_data(self,fname,None,Ptime,Stime,time_win,False,'S',evid,baz,rmv_instr_resp)
     if wv.upper() == 'P' and Ptime:
         trt = Ptime - origtime
-        sts1,nss1,nsstart,sts2,nss2 = get_sig_nois_data(self,fname,None,Ptime,Stime,time_win,False,'P',evid,baz,rmv_instr_resp)   
-    snr, freqsignal, signal,noise,snr_no_resp,freq_no_resp,signal_no_resp,noise_no_resp = get_spectrum(self,sts1,nss1,sts2,nss2)
+        sts1,nss1,nsstart,sts2,nss2 = get_sig_nois_data(self,fname,None,Ptime,Stime,time_win,False,'P',evid,baz,rmv_instr_resp) 
+    if len(sts1) != 0 or sts2:
+        snr, freqsignal, signal,noise,snr_no_resp,freq_no_resp,signal_no_resp,noise_no_resp = get_spectrum(self,sts1,nss1,sts2,nss2)
     return snr, freqsignal, signal,noise,snr_no_resp,freq_no_resp,signal_no_resp,noise_no_resp,trt,sts1

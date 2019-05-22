@@ -153,7 +153,7 @@ def ploting(x1,y1,y12,x2,y2,y22,ax,station,color,x_begin,x_end,wv):
     ax.loglog(x1,y12,linewidth = 2,ls='--', alpha=0.7,label =  'Main event noise',color=color)
     ax.loglog(x2,y2,linewidth = 2, ls='-',label =  'Auxiliary event',color='darkgray') #EGFs for single EGF analysis
     ax.loglog(x2,y22,linewidth = 1.5,ls='-.',label =  'Auxiliary event noise',color='lightgray')
-    ax.text(0.7,0.1,'%s-wave' % wv,style = 'normal',weight='bold',size=16,transform=ax.transAxes)
+    ax.text(0.7,0.1,'%s wave' % wv,style = 'normal',weight='bold',size=16,transform=ax.transAxes)
 
     ax.text(0.7,0.9,station,style = 'normal',weight='bold',size=18,transform = ax.transAxes)
     ax.set_xlim([x_begin,x_end])
@@ -292,26 +292,26 @@ def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
         axx2.text(popt_ind[1]*.8,wm[lste[index]][xbin]*1.8,'f$_c$ =  %s' %(float(round(popt_ind[1],1))),style = 'normal',weight='bold',size=17)
         axx2.loglog(popt_ind[1],wm[lste[index]][xbin]*1.2,marker="v",color='green',markersize=10)
         axx2.yaxis.set_major_locator(LogLocator(base=10.0, numticks=4))
-        axx2.text(0.6,0.2,'%s Wave' % wv,style = 'normal',weight='bold',size=14,transform=axx2.transAxes)
+        axx2.text(0.6,0.2,'%s wave' % wv,style = 'normal',weight='bold',size=16,transform=axx2.transAxes)
         colornum += 1
         if pcov_ind[0] is not None:
             save_output(self,None,None, None,popt_ind, pcov_ind,station,wv)
         n = len(fig.axes)+1
         if n > 6:
-            save_fig(self,fig,'ind', m)
+            save_fig(self,fig,'ind', m,wv)
             fig = plt.figure(figsize=(16,10),tight_layout=True)
             n = 1
             m += 1
     try:
         if fig.axes[0]:
-            save_fig(self,fig,'ind',m)
+            save_fig(self,fig,'ind',m,wv)
     except:
         pass
     return None
 
 
 
-def stf_plot(self,x,y):
+def stf_plot(self,x,y,wv):
     fig = plt.figure(figsize=(8,5))
     ax = fig.add_subplot(111)
     ax.plot(x,y,'k',linewidth=1.5)#,label='Source Time Function')
@@ -319,27 +319,27 @@ def stf_plot(self,x,y):
     ax.fill_between(x, y, facecolor='gray', alpha=0.5)
     for tick in ax.xaxis.get_major_ticks():tick.label.set_fontsize(18)
     for tick in ax.yaxis.get_major_ticks():tick.label.set_fontsize(18)  
-    save_fig(self,fig,'stf',None)
+    save_fig(self,fig,'stf',None,wv)
     return None
     
     
 
 
 #saves the figures
-def save_fig(self,fig,figtype,mm):
+def save_fig(self,fig,figtype,mm,wv):
     if figtype == 'spec':
         fig.subplots_adjust(hspace = .1,wspace=0.1)
         fig.tight_layout()
-        imagefile = self.output_dir+self.mainev+'_'+self.egfev+'_'+str(mm)+'.pdf'
+        imagefile = self.output_dir+self.mainev+'_'+self.egfev+'_'+wv+'_'+str(mm)+'.pdf'
         fig.savefig(imagefile, format='pdf', dpi=300)
         fig.clf()
 #        plt.close()
     if figtype == 'ind':
-        imagefile = self.output_dir+self.mainev+'_sinspec_'+str(mm)+'.pdf'
+        imagefile = self.output_dir+self.mainev+'_sinspec_'+wv+'_'+str(mm)+'.pdf'
         fig.savefig(imagefile, format='pdf', dpi=300)
         fig.clf()
     if figtype == 'stf':
-        imagefile = self.output_dir+self.mainev+'_'+self.egfev+'_STF.pdf'
+        imagefile = self.output_dir+self.mainev+'_'+self.egfev+'_'+wv+'_STF.pdf'
         fig.savefig(imagefile, format='pdf', dpi=300)
         fig.clf()
     return None

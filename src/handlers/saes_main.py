@@ -47,9 +47,7 @@ def saes_main(self):
                         os.makedirs(self.output_dir )
                     if self.wvtype2 == 'S':
                         spec_ratio_guru(self,evid1[j],'S')
-
-
-                    elif self.wvtype1=='P':
+                    if self.wvtype1=='P':
                         spec_ratio_guru(self,evid1[j],'P')
                     dlist.append('%s' %(evid1[j]))
                     if self.method == 3:
@@ -64,7 +62,7 @@ def saes_main(self):
                 pass
             if self.wvtype2 == 'S':
                 sin_spec_guru(self,evid1,'S',dlist_ind)
-            elif self.wvtype1=='P':
+            if self.wvtype1=='P':
                 sin_spec_guru(self,evid1,'P',dlist_ind)
     else:
         raise FileNotFoundError('Travel time file could not be found')

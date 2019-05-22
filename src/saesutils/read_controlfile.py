@@ -14,21 +14,20 @@ def read_controlfile(self):
     paramfile = open(self.controlfilename).readlines()
     list1 = [list(filter(None, re.split('[: \n#]',paramfile[j])))[0] for j in range(len(paramfile))]
     list2 = [list(filter(None, re.split('[: \n#]',paramfile[j])))[1] for j in range(len(paramfile))]
-#        list1 = np.asarray(list1)
     list1 = np.asarray([i.lower() for i in list1])
     list2 = np.asarray(list2)
     index = np.where(list1 == 'maindir' )[0]
     if index.tolist():
-        self.maindir = list2[index[0]]
-        if not os.path.isdir(self.maindir):
-            raise AttributeError('%s does not exist' % self.maindir)
+        if not os.path.isdir(list2[index[0]]):
+            warnings.warn('%s does not exist. Falling back to current working directory' % self.maindir)
+        else:
+            self.maindir = list2[index[0]]
     index = np.where(list1 == 'method' )[0]
     if index.tolist():
         self.method = int(list2[index[0]])
         if self.method not in [1,2,3] :
             raise AttributeError('method must be 1, 2 or 3')
     index = np.where(list1 == 'wave_type')[0]
-
     if index.tolist():
         if list2[index[0]].upper() == 'P':
             self.wvtype1 = 'P'
@@ -56,14 +55,14 @@ def read_controlfile(self):
             raise AttributeError('freesurface_cor must be yes or no')
     index = np.where(list1 == 'freesurface_vs')[0]
     if index.tolist():
-        self.freesurface_vs = list2[index[0]]
-        if self.freesurface_vs is not None and not isinstance(self.freesurface_vs,float):
+        if not  list2[index[0]].replace('.','',1).isdigit():
             raise AttributeError('freesurface_vs must be a float in km/s')
+        self.freesurface_vs = list2[index[0]]
     index = np.where(list1 == 'freesurface_vp')[0]
     if index.tolist():
-        self.freesurface_vp = list2[index[0]]
-        if self.freesurface_vp is not None and not isinstance(self.freesurface_vp,float):
+        if not  list2[index[0]].replace('.','',1).isdigit():
             raise AttributeError('freesurface_vp must be a float in km/s')
+        self.freesurface_vp = float(list2[index[0]])
     index = np.where(list1 == 'sumtype')[0]
     if index.tolist():
         self.sumtype = list2[index[0]]
@@ -98,26 +97,23 @@ def read_controlfile(self):
             self.autofit_single_spec = 'yes'
     index = np.where(list1 == 'numworkers' )[0]
     if index.tolist():
-        if  not isinstance(int(list2[index[0]]),int):
-            raise AttributeError('Number of parallel workers must be an integer.')
+        if not list2[index[0]].replace('.','',1).isdigit():
+            raise AttributeError('Number of parallel workers must be a number.')
         self.numworkers = int(list2[index[0]])
     index = np.where(list1 == 'snr_threshold' )[0]
     if index.tolist():
-        try:
-            if  isinstance(int(list2[index[0]]),int) or isinstance(int(list2[index[0]]),float):
-                self.snrthres = int(list2[index[0]])
-        except:
-            raise AttributeError('SNR must be a float or integer.')
-        pass
+        if not list2[index[0]].replace('.','',1).isdigit():
+            raise AttributeError('SNR threshold must be a number.')
+        self.snrthres = float(list2[index[0]])
     index = np.where(list1 == 'num_tapers' )[0]
     if index.tolist():
-        try:
-            if  isinstance(int(list2[index[0]]),int) or isinstance(int(list2[index[0]]),float):
-                self.num_tapers = int(list2[index[0]])
-        except:
-            raise AttributeError('No. of tapers must be a float or integer.')
-        pass
-
-    #self.evlist = self.read_eventlist()
+        if  not list2[index[0]].replace('.','',1).isdigit():
+            raise AttributeError('No. of tapers must be a number.')
+        self.num_tapers = int(list2[index[0]])
+    index = np.where(list1 == 'fixed_window')[0]
+    if index.tolist():
+        if list2[index[0]].replace('.','',1).isdigit():
+            raise AttributeError('fixed window length must be a number')
+        self.fixed_window = float(list2[index[0]])
     read_eventlist(self)
     return None

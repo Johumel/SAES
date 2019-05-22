@@ -42,7 +42,6 @@ class saes_core(object):
         self.output_dir  = None
         self.wvtype2 = None
         self.wvtype1 = None
-#        self.soltype = None
         self.stlist_ignore = []
         self.remove_resp = 'NO'
         self.snrthres = 2
@@ -66,6 +65,7 @@ class saes_core(object):
         self.baz = {}
         self.baz['main'] = None
         self.baz['egf'] = None
+        self.fixed_window = None
         read_controlfile(self)
         read_xml(self,1)
         if self.method in [1,3] and not self.stationxml:
