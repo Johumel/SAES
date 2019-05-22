@@ -8,7 +8,7 @@ Created on Mon Apr 22 08:20:07 2019
 
 def read_xml(self,xml_format):
         """
-        Read
+        Read 
         input_file_type : 1 : obspy; 2: pyrocko;
         """
         #load stationxml

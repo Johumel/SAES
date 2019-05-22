@@ -13,7 +13,6 @@ def read_controlfile(self):
     """
     Read program parameters from the control file.
 
-    
     """
     paramfile = open(self.controlfilename).readlines()
     list1 = [list(filter(None, re.split('[: \n#]',paramfile[j])))[0] for j in range(len(paramfile))]
