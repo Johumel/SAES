@@ -14,7 +14,8 @@ python setup.py install
 ## USAGE
 ```
 from saes.saes_core import saes_core
-saes_core('path/to/your/control.file')
+from saes.handlers.saes_main import saes_main
+saes_obj=saes_core('path/to/your/control.file')
+
 ```
 ## EXAMPLE
-
