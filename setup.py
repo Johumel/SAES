@@ -26,5 +26,6 @@ setup(
           'matplotlib',
           'pyproj',
           'joblib'
-      ]
+      ],
+      scripts=['scripts/'],
 )
