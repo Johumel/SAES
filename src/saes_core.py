@@ -73,10 +73,11 @@ class saes_core(object):
         #     raise FileNotFoundError('stationxml file not found')
         # if self.stationlist and os.path.exists(self.maindir+'/input/pre_filt.list'):
         #     get_prefilts(self)
+        #saes_main(self)
         self.read_controlfile()
         self.read_xml(1)
         if self.method in [1,3] and not self.stationxml:
             raise FileNotFoundError('stationxml file not found')
         if self.stationlist and os.path.exists(self.maindir+'/input/pre_filt.list'):
             self.get_prefilts()
-        #saes_main(self)
+        self.saes_main()
