@@ -8,7 +8,9 @@ Created on Mon Apr 22 08:20:07 2019
 
 def read_xml(self,xml_format):
         """
-        Read station meta data and response file.
+        Read station meta data and response file. Current version only uses xml created obspy format
+        which is slightly different from xml created with pyrocko. We haven't yet tested with xml created
+        by other applications/codes so it may work for those too.
 
         Parameters:
         xml_format (int): input_file_type, 1--obspy; 2--pyrocko;
