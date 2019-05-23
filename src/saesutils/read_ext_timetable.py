@@ -10,14 +10,17 @@ from obspy.core import UTCDateTime
 
 def read_ext_timetable(self):
     """
-    Read travel time from external timetale file.
-
+    Read arrival time from external timetale file and create a dict
+    of the P and S arrival times.
+    
+    time table format --> eventID station timepick(UTC) phasename(P,S)
+    
     Parameters:
-
+    
     Returns/Modifications:
     
     """
-    #time table format --> eventID station timepick phasename(P,S)
+    
     data = np.genfromtxt(self.maindir+'/input/tt.dat',skip_header = 1,dtype=['U24','U12','U32','U2'])
     evid_tt = [data[i][0] for i in range(len(data))]
     P_tt,S_tt = {},{}
