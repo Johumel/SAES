@@ -21,7 +21,7 @@ def read_xml(self,xml_format):
                           'lat':latitude
                           'lon':longitude
                           'elev':elevation
-                          'pre_filt': pre-defined filtering frequency range for response removal
+                          'pre_filt': pre-defined filtering frequency range for response correction
 
         """
         #load stationxml
