@@ -10,7 +10,10 @@ import re, warnings,os
 from .read_eventlist import read_eventlist
 
 def read_controlfile(self):
-    
+    """
+    Read program parameters from the control file.
+
+    """
     paramfile = open(self.controlfilename).readlines()
     list1 = [list(filter(None, re.split('[: \n#]',paramfile[j])))[0] for j in range(len(paramfile))]
     list2 = [list(filter(None, re.split('[: \n#]',paramfile[j])))[1] for j in range(len(paramfile))]
