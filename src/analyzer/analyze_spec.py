@@ -12,6 +12,20 @@ from pyproj import Geod
 gref = Geod(ellps='WGS84')
 
 def analyze_spec(self,fname,evid,evtype,time_win,rmv_instr_resp,wv):
+    
+    """
+    Gets event & noise waveforms, and spectra
+
+    Parameters:
+    Event filename, event ID, waveform time window, wavetype, instrument response
+    removal hanb;e (boolean)
+    
+    Returns:
+    It returns the output of get_spectrum() plus phase travel time
+    
+    """    
+        
+    
     st = read(fname)
     Ptime,Stime,sts1,sts2 = None,None,[],None
     snr, freqsignal, signal,noise,snr_no_resp,freq_no_resp,signal_no_resp,\

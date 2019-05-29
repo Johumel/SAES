@@ -30,7 +30,6 @@ def colorlist(numspec):
     return colortype
 
 def plot_waveform(self,stn,nsstart,Ptime,Stime,time_win,evtype,axz,wv):
-    # This section draws raw waveform indicating signal and noise windows
     if axz:
         if wv.upper() == 'S':
             tr = stn.select(component= 'T')[0]
@@ -76,12 +75,7 @@ def plot_waveform(self,stn,nsstart,Ptime,Stime,time_win,evtype,axz,wv):
         axz.xaxis.set_major_locator(MaxNLocator(integer=True,nbins=5))
     return None
 
-
-
-#make some of the spectra ratio figures
 def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,time_win,mainfile,egffile,wv):
-    #The representative spectra ratio is the median of all spectra ratios
-    #this section deals with the figures and aesthetics
     from obspy.core import read
     from ..analyzer import get_sig_nois_data
     lste = list(specmain.keys())
@@ -151,7 +145,6 @@ def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,time
         colornum += 1
     return fig,ax_spec
 
-#this section plots the individual spectra ratios
 def ploting(x1,y1,y12,x2,y2,y22,ax,station,color,x_begin,x_end,wv):
     ax.loglog(x1,y1,linewidth = 3, label =  'Main event',color = color ) # Main event
     ax.loglog(x1,y12,linewidth = 2,ls='--', alpha=0.7,label =  'Main event noise',color=color)
@@ -176,8 +169,7 @@ def ploting(x1,y1,y12,x2,y2,y22,ax,station,color,x_begin,x_end,wv):
     ax.legend(loc='lower left',ncol=1,prop={'size':17})
     return None
 
-# This section plots the spectra fitting #
-def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,allresidua1,ax,popt,maxy): #(freqbin,specratio,mtpl,up_bound1,low_bound1,up_bound2,low_bound2,freqperturb,allresidua1,fcmin,fcmax,ax,ax1,popt):
+def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,allresidua1,ax,popt,maxy): 
     from mpl_toolkits.axes_grid1.inset_locator import inset_axes
     from ..optimizer import specr_model
     mtpl = mtpl
@@ -191,7 +183,6 @@ def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,allresidua1,ax,popt
         ax.text(0.55,0.05,'M$_L$$_($$_2$$_)$ = %s' % self.evlist[self.egfev][1][3],style = 'normal',weight='bold',size=14,transform=ax.transAxes)
         ax.text(0.55,0.15,'rms = %.2f' %(normresidua),style = 'normal',weight='bold',size=14,transform=ax.transAxes)
 
-        #Displaying Corner Frequency on plot
         try:
             xbin = np.where(freqbin >= popt[0])[0][0]
             ybin = np.divide(specr_model(freqbin, *popt),mtpl)[xbin]
@@ -314,11 +305,10 @@ def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
     return None
 
 
-
 def stf_plot(self,x,y,wv):
     fig = plt.figure(figsize=(8,5))
     ax = fig.add_subplot(111)
-    ax.plot(x,y,'k',linewidth=1.5)#,label='Source Time Function')
+    ax.plot(x,y,'k',linewidth=1.5)
     ax.set_xlabel('Time (s)',fontsize=20)
     ax.fill_between(x, y, facecolor='gray', alpha=0.5)
     for tick in ax.xaxis.get_major_ticks():tick.label.set_fontsize(18)
@@ -327,9 +317,6 @@ def stf_plot(self,x,y,wv):
     return None
     
     
-
-
-#saves the figures
 def save_fig(self,fig,figtype,mm,wv):
     if figtype == 'spec':
         fig.subplots_adjust(hspace = .1,wspace=0.1)
@@ -337,7 +324,6 @@ def save_fig(self,fig,figtype,mm,wv):
         imagefile = self.output_dir+self.mainev+'_'+self.egfev+'_'+wv+'_'+str(mm)+'.pdf'
         fig.savefig(imagefile, format='pdf', dpi=300)
         fig.clf()
-#        plt.close()
     if figtype == 'ind':
         imagefile = self.output_dir+self.mainev+'_sinspec_'+wv+'_'+str(mm)+'.pdf'
         fig.savefig(imagefile, format='pdf', dpi=300)

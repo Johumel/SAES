@@ -9,6 +9,28 @@ import numpy as np
 from mtspec import mtspec
 
 def get_spectrum(self,st1,ns1,st2,ns2):
+ 
+    """
+    Take waveforms of signal and noise (pre-Pphase arrrival waveform) and 
+    generates spectra using the multiptaper spectrum estimation method of
+    Prieto et al., (2009) implemented in python by Krischer (2016).
+
+    Parameters:
+    st1 and st2 --> signal waveforms
+    ns1 and ns2 --> noise waveforms
+    
+    Returns:
+    snr            --> signal-to-noise ratio (SNR)
+    freqsignal     --> frequency bins of spectra
+    signal         --> signal spectrum
+    noise          --> noise spectrum
+    snr_no_resp    --> SNR of instrument response corrected signal
+    freq_no_resp   --> frequency bins of instrument response corrected signal
+    signal_no_resp --> spectrum of instrument response corrected signal waveform
+    noise_no_resp  --> spectrum of instrument response corrected noise waveform
+   
+    """
+    
     numtapers,stationlist = self.num_tapers,self.stationlist
     pms = {}; fsds = {}; pmn ={}; fsdn = {}; fsd = {}; pms_no_ir = {}; pmn_no_ir = {};
     snr = None; freqsignal = None; signal = None; noise = None; 
@@ -27,7 +49,6 @@ def get_spectrum(self,st1,ns1,st2,ns2):
         noise_no_resp = np.sqrt(sum(pmn_no_ir.values()))
         snr_no_resp = np.divide(signal_no_resp,noise_no_resp,dtype='float64')
         freq_no_resp = fsd[0]
-#    print(max(noise_no_resp))
     if self.method == 1 or self.remove_resp == 'yes':
         fact = 1.0e9
     else:
@@ -55,7 +76,6 @@ def get_spectrum(self,st1,ns1,st2,ns2):
             signal= np.lib.pad(signal,(0,padlen),'edge')
     pre_filt = stationlist[st1[0].stats.station.strip()]['pre_filt']
     if pre_filt:
-#        print(pre_filt)
         highend = np.where(freq_no_resp >= pre_filt[2] )[0][0]
         lowend = np.where(freq_no_resp >= pre_filt[1] )[0][0]
     else:       
@@ -65,7 +85,7 @@ def get_spectrum(self,st1,ns1,st2,ns2):
     if lowend and highend:
         if st1:
             freqsignal = freqsignal[slice(lowend,highend)]; snr = snr[slice(lowend,highend)];signal = signal[slice(lowend,highend)]
-            noise = noise[slice(lowend,highend)]; # stm = stm[slice(lowend,highend)];
+            noise = noise[slice(lowend,highend)];
         if st2:
             freq_no_resp = freq_no_resp[slice(lowend,highend)]; snr_no_resp = snr_no_resp[slice(lowend,highend)]
             signal_no_resp = signal_no_resp[slice(lowend,highend)]; noise_no_resp = noise_no_resp[slice(lowend,highend)]
