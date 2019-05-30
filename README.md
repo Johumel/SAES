@@ -8,6 +8,69 @@ a circular patch.
 
 ## 2.Input files
 ### 2.1 catalog.dat
+<u>Description:</u>
+
+<u>Parameter:</u>
+
+<u>Example:</u>
+
+### 2.2 cclist.dat
+<u>Description:</u>
+
+<u>Parameter:</u>
+
+<u>Example:</u>
+
+### 2.3 control.file
+<u>Description:</u>
+
+<u>Parameter:</u>
+
+<u>Example:</u>
+
+### 2.4 events.dat
+<u>Description:</u>
+
+<u>Parameter:</u>
+
+<u>Example:</u>
+
+### 2.5 pre_filt.dat
+<u>Description:</u>
+
+<u>Parameter:</u>
+
+<u>Example:</u>
+
+### 2.6 read.me
+<u>Description:</u>
+
+<u>Parameter:</u>
+
+<u>Example:</u>
+
+### 2.7 stations.xml
+<u>Description:</u>
+
+<u>Parameter:</u>
+
+<u>Example:</u>
+
+### 2.8 tt_pyrocky.dat
+<u>Description:</u>
+
+<u>Parameter:</u>
+
+<u>Example:</u>
+
+### 2.9 tt.dat
+<u>Description:</u>
+
+<u>Parameter:</u>
+
+<u>Example:</u>
+
+
 ## 3.Installtion
 ```
 python setup.py install
