@@ -43,8 +43,8 @@ def get_spectrum(self,st1,ns1,st2,ns2):
             pms_no_ir[i], fsd[i],jacknife,_,_ = mtspec(data=np.multiply(tr.data,fact,dtype=float), delta=tr.stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers), nfft=max(10000,len(tr.data)),statistics=True)
             pmn_no_ir[i],_,jacknife,_,_ = mtspec(data=np.multiply(ns2[i].data,fact,dtype=float), delta=ns2[i].stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers), nfft=max(10000,len(ns2[i].data)),statistics=True)
             i+=1
-#        for key in pms_no_ir.keys(): pms_no_ir[key] = np.multiply(pms_no_ir[key],(fsd[0][4]-fsd[0][3]))
-#        for key in pmn_no_ir.keys(): pmn_no_ir[key] = np.multiply(pmn_no_ir[key],(fsd[0][4]-fsd[0][3]))
+        for key in pms_no_ir.keys(): pms_no_ir[key] = np.divide(pms_no_ir[key],st2[0].stats.delta)
+        for key in pmn_no_ir.keys(): pmn_no_ir[key] = np.divide(pmn_no_ir[key],st2[0].stats.delta)
         signal_no_resp = np.sqrt(sum(pms_no_ir.values()))
         noise_no_resp = np.sqrt(sum(pmn_no_ir.values()))
         snr_no_resp = np.divide(signal_no_resp,noise_no_resp,dtype='float64')
