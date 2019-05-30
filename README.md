@@ -8,11 +8,11 @@ a circular patch.
 
 ## 2.Input files
 ### 2.1 catalog.dat
-<u>Description:</u>
+*Description:*
 
-<u>Parameter:</u>
+*Parameter:*
 
-<u>Example:</u>
+*Example:*
 
 ### 2.2 cclist.dat
 <u>Description:</u>
