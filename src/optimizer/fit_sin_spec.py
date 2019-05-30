@@ -10,14 +10,27 @@ from scipy.optimize import curve_fit
 from .sinspec_model import sinspec_model
 import matplotlib.pyplot as plt
 
-def fit_sin_spec(pms,fn,station,fc1min,fc1max,trt,style,model):    	
-	 #Constraining the low frequency asymptote
-	 #this will ensure that any bump in the spectrum does not bias the estimate
-     #of the omega this part gives the user some room to determine good fit but 
-     #can also run without user input '''
+def fit_sin_spec(pms,fn,station,fc1min,fc1max,trt,style,model):
+
+     """
+     Description:
+     -------------
+ 	 Constraining the low frequency asymptote
+ 	 this will ensure that any bump in the spectrum does not bias the estimate
+     of the omega this part gives the user some room to determine good fit but
+     can also run without user input.
+
+     Parameters/Input:
+     -----------------
+
+     Returns/Modifications:
+     ----------------------
+
+     
+     """
      popt = [None]; pcov = [None]
      ''' style options: 'auto','manual' '''
-     ''' model options: 'B' - Brune, 'fB' -- fixed Boatwright, 
+     ''' model options: 'B' - Brune, 'fB' -- fixed Boatwright,
                         'vB' -- variable Boatwright '''
      if model.upper() == 'B':
         n1,n2,n3,n4 = 2,1,2,1
@@ -26,13 +39,13 @@ def fit_sin_spec(pms,fn,station,fc1min,fc1max,trt,style,model):
      elif model.upper() == 'VB':
         n1,n2,n3,n4 = 2,1,3,2
      else:
-        raise Exception('Model options must be B, FB, or VB') 
+        raise Exception('Model options must be B, FB, or VB')
      if style.lower() == 'yes':
         style = 'AUTO'
      elif style.lower() == 'no':
         style = 'MANUAL'
      else:
-        raise Exception("Style must be 'A', 'M', 'AUTO' or 'MANUAL'") 
+        raise Exception("Style must be 'A', 'M', 'AUTO' or 'MANUAL'")
      Q1,Q2 = 200.,2000.
      if 1==1:#try:
          datas,boundregion = pms, np.asarray([])
@@ -48,8 +61,8 @@ def fit_sin_spec(pms,fn,station,fc1min,fc1max,trt,style,model):
              lb = np.median(boundregion)*0.8
          else:
              lb = max(datas)*0.95
-         ub = lb*1.5   
-         #Compute and Plot for variable Q 
+         ub = lb*1.5
+         #Compute and Plot for variable Q
          nn1 = np.arange(n1,n3,0.2)
          nn2 = np.arange(n2,n4,0.2)
          plotok = 'No'
@@ -61,8 +74,8 @@ def fit_sin_spec(pms,fn,station,fc1min,fc1max,trt,style,model):
                                  plotok = 1
                              else:
                                  n1 = i
-                                 n2 = j                       
-                             fn=fn[slice(0,len(datas))]  
+                                 n2 = j
+                             fn=fn[slice(0,len(datas))]
                              popt, pcov = curve_fit(sinspec_model, fn,datas ,method='trf',absolute_sigma=True,bounds=((lb,fc1min,n1-0.01,n2-0.01,Q1,trt-0.0001),(ub,fc1max,n3,n4,Q2,trt)),maxfev=100000)
                              if style.upper() == 'MANUAL':
                                  print('fit for %s' % station)
@@ -72,14 +85,14 @@ def fit_sin_spec(pms,fn,station,fc1min,fc1max,trt,style,model):
                                  bb = np.log10(min(fn)).round()
                                  axb.set_xlim([10**bb,fc1max*1.5])
                                  axb.loglog(fn,datas,linewidth = 1,color = 'r',label = 'data')
-                                 figr.show()                            
+                                 figr.show()
                              if plotok != 1:
                                  plotok = input('Is the fit ok? ')
                              if not plotok or int(plotok) != 1:
                                 plotok = 'No'
                              else:
                                 break
-#             
+#
 #
 #     except:
 #         popt = [None]; pcov = [None]

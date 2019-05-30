@@ -12,11 +12,25 @@ from joblib import Parallel, delayed
 #import warnings
 #import matplotlib.pyplot as plt
 
-def fit_sin_spec_pll(pms,fn,station,fc1min,fc1max,trt,model,numworkers): 	
-	# Constraining the low frequency asymptote
-	# this will ensure that any bump in the spectrum does not bias the estimate of the omega 
+def fit_sin_spec_pll(pms,fn,station,fc1min,fc1max,trt,model,numworkers):
+
+         """
+         Description:
+         -------------
+     	 Constraining the low frequency asymptote
+     	 this will ensure that any bump in the spectrum does not bias the estimate
+         of the omega this part gives the user some room to determine good fit but
+         can also run without user input.
+
+         Parameters/Input:
+         -----------------
+
+         Returns/Modifications:
+         ----------------------
+
+         """
     popt,pcov = None,None
-    if model.lower() == 'vb': 
+    if model.lower() == 'vb':
         Q1,Q2 = 200.,1500.
         datas,boundregion = pms,np.asarray([])
         try:
@@ -38,11 +52,11 @@ def fit_sin_spec_pll(pms,fn,station,fc1min,fc1max,trt,model,numworkers):
         fn=fn[slice(0,len(datas))]
         popt1,pcov1 = [],[]
         for i in range(len(nn1)):
-            popt_pcov_get = Parallel(n_jobs=numworkers)(delayed(ppl_omfc)(fn,datas,lb,ub,fc1min,fc1max,trt,Q1,Q2,nn1[i],nn2[j]) for j in range(len(nn2))) 
+            popt_pcov_get = Parallel(n_jobs=numworkers)(delayed(ppl_omfc)(fn,datas,lb,ub,fc1min,fc1max,trt,Q1,Q2,nn1[i],nn2[j]) for j in range(len(nn2)))
             for k in popt_pcov_get:
                 if k[0] is not None:
                     popt1.append(k[0])
-                    pcov1.append(k[1])        
+                    pcov1.append(k[1])
         numres = []
         popt1 = np.asarray(popt1)
         ''' here we use calculate the normalised RMS and select the fitting
@@ -54,7 +68,7 @@ def fit_sin_spec_pll(pms,fn,station,fc1min,fc1max,trt,model,numworkers):
             numres.append(normresidua)
 #        if min(numres) < 0.3:
         index = np.where(np.asarray(numres)== min(numres))[0][0]
-        popt,pcov = popt1[index], pcov1[index]  
+        popt,pcov = popt1[index], pcov1[index]
 #        else:
 #            warnings.warn('The optimal RMS for station %s is %.3f hence it was discarded' %(station))
 #            popt = None; pcov  = None;

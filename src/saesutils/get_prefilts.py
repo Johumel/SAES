@@ -10,11 +10,15 @@ import re
 
 def get_prefilts(self):
     """
+    Description:
+    ------------
     Read the pre-defined response removal frequency range for each station.
 
-    Parameters:
+    Parameters/Input:
+    -----------------
 
     Returns/Modificatoins:
+    -----------------------
 
     """
     prefilts = open(self.maindir+'/input/pre_filt.list').readlines()

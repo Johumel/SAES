@@ -10,9 +10,23 @@ import numpy as np
 
 
 def sinspec_model(fn,a,b,c,d,f,trt):
-    ''' Here we model the single spectrum with the assumption
+
+    """
+    Description:
+    ------------
+    Here we model the single spectrum with the assumption
     that anaelastic attenuatic and geometrical spreading effects
-    are corrected by quality factor Q and distance term R '''
+    are corrected by quality factor Q and distance term R
+
+    Parameters/Input:
+    ----------
+
+
+    Returns/Modifications:
+    ---------------------
+
+    """
+
     #fn = frequency bins
     # a = seismic momemt
     # b = corner frequency

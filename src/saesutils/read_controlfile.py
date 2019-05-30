@@ -11,6 +11,8 @@ from .read_eventlist import read_eventlist
 
 def read_controlfile(self):
     """
+    Description:
+    ------------
     Read program parameters from the control file.
 
     """

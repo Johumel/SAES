@@ -8,8 +8,20 @@ Created on Tue Apr 16 18:09:06 2019
 import numpy as np
 
 def specr_model(fn, a,b,c1,c2,d,e):
-    ''' Theoretical model for spectral ratio. Preferred model is 
-    determined by the values of d & e and they are user-defined '''
+
+    """
+    Description:
+    ------------
+    Theoretical model for spectral ratio. Preferred model is
+    determined by the values of d & e and they are user-defined.
+
+    Parameters/Input:
+    -----------------
+
+    Returns/Modifications:
+    ---------------------
+
+    """
     # fn = freqeuncy bins
     # a = fc main event
     # b = fc egf

@@ -8,6 +8,9 @@ import numpy as np
 def get_time_window(mag):
 
     """
+
+    Description:
+    ------------
     This is to estimate a time-window based on the magnitude of the event.
 
     keeping in mind that the minimum resolvable frequency is the inverse
@@ -16,11 +19,13 @@ def get_time_window(mag):
     assume a constant stress drop of 10 MPa and Brune's model.
 
     Parameters:
+    ----------
     mag (float), earthquake magnitude.
 
-    Returns:
+    Returns/Modificatoins:
+    ----------------------
     time_win(float), time window.
-    
+
     """
 
     Vs = 3750.

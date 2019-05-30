@@ -10,14 +10,16 @@ from obspy.core import UTCDateTime
 
 def read_ext_timetable(self):
     """
+    Description:
+    ------------
     Read arrival time from external timetale file and create a dict
     of the P and S arrival times.
 
-    time table format --> eventID station timepick(UTC) phasename(P,S)
-
     Parameters/Input:
     ----------
-    tt.dat: input trave time data. Please see full description in READ.ME 
+    tt.dat: input trave time table.
+    time table format --> eventID station timepick(UTC) phasename(P,S)
+    Please see full description in READ.ME
 
     Returns/Modifications:
     ---------------------

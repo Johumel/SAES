@@ -11,9 +11,13 @@ from obspy.core import UTCDateTime
 def get_arv_time_from_pyrocko(self):
 
     """
+    Description:
+    ------------
     Get arrival times from pyrock format data.
 
-    Parameters:
+    Parameters/Input:
+    -----------
+    'tt_pyrockp.dat':
     stream (obspy stream): Input 3 component waveform data
     evid (int): Event id.
 
@@ -21,7 +25,7 @@ def get_arv_time_from_pyrocko(self):
     P_tt (dict): P travel time data
     S_tt (dict): S travel time data
     """
-     
+
     evids = self.evlist.keys()
     markers = mk.load_markers(self.maindir+'/input/tt_pyrocko.dat')
     mk.associate_phases_to_events(markers)
