@@ -38,7 +38,7 @@ def get_bounds(spectra):
 
 
 def bestfit(freqbin,specratio,multiplier,maxf,freq,freq_calc,freqzy,fcmin,fcmax,model):
-        """
+    """
         Description:
         ------------
         Fit the spectra ratio
@@ -63,7 +63,7 @@ def bestfit(freqbin,specratio,multiplier,maxf,freq,freq_calc,freqzy,fcmin,fcmax,
         popt (),
         pcov (),
 
-        """
+    """
 #    try:
     specratio = np.multiply(specratio,multiplier,dtype=float)
 #        fcmin = fcmin*0.1
