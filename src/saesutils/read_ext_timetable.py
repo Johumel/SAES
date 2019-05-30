@@ -15,8 +15,9 @@ def read_ext_timetable(self):
 
     time table format --> eventID station timepick(UTC) phasename(P,S)
 
-    Parameters:
+    Parameters/Input:
     ----------
+    tt.dat: input trave time data. Please see full description in READ.ME 
 
     Returns/Modifications:
     ---------------------
