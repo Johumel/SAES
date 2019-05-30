@@ -39,29 +39,29 @@ def get_bounds(spectra):
 
 def bestfit(freqbin,specratio,multiplier,maxf,freq,freq_calc,freqzy,fcmin,fcmax,model):
     """
-        Description:
-        ------------
-        Fit the spectra ratio
+    Description:
+    ------------
+    Fit the spectra ratio
 
 
-        Parameters/Input:
-        -----------------
-        freqbin ():
-        specratio
-        multiplier
-        maxf
-        freq
-        freq_calc
-        freqzy
-        fcmin
-        fcmax
-        model
+    Parameters/Input:
+    -----------------
+    freqbin ():
+    specratio
+    multiplier
+    maxf
+    freq
+    freq_calc
+    freqzy
+    fcmin
+    fcmax
+    model
 
-        Returns/Modifications:
-        ----------------------
-        normresidua (),
-        popt (),
-        pcov (),
+    Returns/Modifications:
+    ----------------------
+    normresidua (),
+    popt (),
+    pcov (),
 
     """
 #    try:

@@ -47,51 +47,51 @@ def fit_sin_spec(pms,fn,station,fc1min,fc1max,trt,style,model):
      else:
         raise Exception("Style must be 'A', 'M', 'AUTO' or 'MANUAL'")
      Q1,Q2 = 200.,2000.
-     if 1==1:#try:
-         datas,boundregion = pms, np.asarray([])
-         try:
-            if min(fn) < 1:
-                brindex = np.where(fn >= 0.8)[0][0]
-            elif min(fn) > 1:
-                brindex = np.where(fn >= (min(fn)+2))[0][0]
-            boundregion = datas[slice(0,brindex)]
-         except:
-             pass
-         if boundregion.any():
-             lb = np.median(boundregion)*0.8
-         else:
-             lb = max(datas)*0.95
-         ub = lb*1.5
-         #Compute and Plot for variable Q
-         nn1 = np.arange(n1,n3,0.2)
-         nn2 = np.arange(n2,n4,0.2)
-         plotok = 'No'
-         while plotok is 'No':
-             for i in nn1:
-                     for j in nn2:
-                         if plotok == 'No':
-                             if style.upper()  == 'AUTO':
-                                 plotok = 1
-                             else:
-                                 n1 = i
-                                 n2 = j
-                             fn=fn[slice(0,len(datas))]
-                             popt, pcov = curve_fit(sinspec_model, fn,datas ,method='trf',absolute_sigma=True,bounds=((lb,fc1min,n1-0.01,n2-0.01,Q1,trt-0.0001),(ub,fc1max,n3,n4,Q2,trt)),maxfev=100000)
-                             if style.upper() == 'MANUAL':
-                                 print('fit for %s' % station)
-                                 figr = plt.figure(3,figsize=(8,5))
-                                 axb = figr.add_subplot(111)
-                                 axb.loglog(fn, sinspec_model(fn, *popt), 'k--', label='model fit',linewidth=2)
-                                 bb = np.log10(min(fn)).round()
-                                 axb.set_xlim([10**bb,fc1max*1.5])
-                                 axb.loglog(fn,datas,linewidth = 1,color = 'r',label = 'data')
-                                 figr.show()
-                             if plotok != 1:
-                                 plotok = input('Is the fit ok? ')
-                             if not plotok or int(plotok) != 1:
-                                plotok = 'No'
-                             else:
-                                break
+#     try:
+     datas,boundregion = pms, np.asarray([])
+     try:
+        if min(fn) < 1:
+            brindex = np.where(fn >= 0.8)[0][0]
+        elif min(fn) > 1:
+            brindex = np.where(fn >= (min(fn)+2))[0][0]
+        boundregion = datas[slice(0,brindex)]
+     except:
+         pass
+     if boundregion.any():
+         lb = np.median(boundregion)*0.8
+     else:
+         lb = max(datas)*0.95
+     ub = lb*1.5
+     #Compute and Plot for variable Q
+     nn1 = np.arange(n1,n3,0.2)
+     nn2 = np.arange(n2,n4,0.2)
+     plotok = 'No'
+     while plotok is 'No':
+         for i in nn1:
+                 for j in nn2:
+                     if plotok == 'No':
+                         if style.upper()  == 'AUTO':
+                             plotok = 1
+                         else:
+                             n1 = i
+                             n2 = j
+                         fn=fn[slice(0,len(datas))]
+                         popt, pcov = curve_fit(sinspec_model, fn,datas ,method='trf',absolute_sigma=True,bounds=((lb,fc1min,n1-0.01,n2-0.01,Q1,trt-0.0001),(ub,fc1max,n3,n4,Q2,trt)),maxfev=100000)
+                         if style.upper() == 'MANUAL':
+                             print('fit for %s' % station)
+                             figr = plt.figure(3,figsize=(8,5))
+                             axb = figr.add_subplot(111)
+                             axb.loglog(fn, sinspec_model(fn, *popt), 'k--', label='model fit',linewidth=2)
+                             bb = np.log10(min(fn)).round()
+                             axb.set_xlim([10**bb,fc1max*1.5])
+                             axb.loglog(fn,datas,linewidth = 1,color = 'r',label = 'data')
+                             figr.show()
+                         if plotok != 1:
+                             plotok = input('Is the fit ok? ')
+                         if not plotok or int(plotok) != 1:
+                            plotok = 'No'
+                         else:
+                            break
 #
 #
 #     except:
