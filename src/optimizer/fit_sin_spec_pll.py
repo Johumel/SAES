@@ -13,22 +13,21 @@ from joblib import Parallel, delayed
 #import matplotlib.pyplot as plt
 
 def fit_sin_spec_pll(pms,fn,station,fc1min,fc1max,trt,model,numworkers):
+     """
+     Description:
+     -------------
+ 	 Constraining the low frequency asymptote
+ 	 this will ensure that any bump in the spectrum does not bias the estimate
+     of the omega this part gives the user some room to determine good fit but
+     can also run without user input.
 
-         """
-         Description:
-         -------------
-     	 Constraining the low frequency asymptote
-     	 this will ensure that any bump in the spectrum does not bias the estimate
-         of the omega this part gives the user some room to determine good fit but
-         can also run without user input.
+     Parameters/Input:
+     -----------------
 
-         Parameters/Input:
-         -----------------
+     Returns/Modifications:
+     ----------------------
 
-         Returns/Modifications:
-         ----------------------
-
-         """
+     """
     popt,pcov = None,None
     if model.lower() == 'vb':
         Q1,Q2 = 200.,1500.
