@@ -16,10 +16,11 @@ def fit_sin_spec_pll(pms,fn,station,fc1min,fc1max,trt,model,numworkers):
      """
      Description:
      -------------
- 	 Constraining the low frequency asymptote
- 	 this will ensure that any bump in the spectrum does not bias the estimate
+    	 Constraining the low frequency asymptote
+    	 this will ensure that any bump in the spectrum does not bias the estimate
      of the omega this part gives the user some room to determine good fit but
      can also run without user input.
+
 
      Parameters/Input:
      -----------------
@@ -28,6 +29,7 @@ def fit_sin_spec_pll(pms,fn,station,fc1min,fc1max,trt,model,numworkers):
      ----------------------
 
      """
+
     popt,pcov = None,None
     if model.lower() == 'vb':
         Q1,Q2 = 200.,1500.
@@ -58,9 +60,11 @@ def fit_sin_spec_pll(pms,fn,station,fc1min,fc1max,trt,model,numworkers):
                     pcov1.append(k[1])
         numres = []
         popt1 = np.asarray(popt1)
+
         ''' here we use calculate the normalised RMS and select the fitting
         parameters with the least RMS. It comes with additional cost but is
         will mostly produce the best automated reliable fits'''
+
         for i in popt1:
             residua = np.power(np.subtract(datas,sinspec_model(fn, *i)),2) #L1 norm
             normresidua = np.sqrt(np.sum(residua)/np.sum(np.power(datas,2)))
@@ -72,10 +76,13 @@ def fit_sin_spec_pll(pms,fn,station,fc1min,fc1max,trt,model,numworkers):
 #            warnings.warn('The optimal RMS for station %s is %.3f hence it was discarded' %(station))
 #            popt = None; pcov  = None;
     else:
-        raise Exception("To run single spectrum fitting in parallel, \
-#                            set method to vb ")
+        raise Exception("To run single spectrum fitting in parallel", \
+                            " set method to vb ")
     return popt,pcov
 
 def ppl_omfc(fn,datas,lb,ub,fc1min,fc1max,trt,Q1,Q2,i,j):
-    popt,pcov = curve_fit(sinspec_model, fn,datas ,method='trf',absolute_sigma=True,bounds=((lb,fc1min+0.01,i-0.01,j-0.01,Q1,trt-0.0001),(ub,fc1max,3.,2.,Q2,trt)),maxfev = 100000)
+    popt,pcov = curve_fit(sinspec_model, fn,datas ,method='trf',
+                          absolute_sigma=True,
+                          bounds=((lb,fc1min+0.01,i-0.01,j-0.01,Q1,trt-0.0001),
+                                  (ub,fc1max,3.,2.,Q2,trt)),maxfev = 100000)
     return popt,pcov
