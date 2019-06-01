@@ -13,21 +13,23 @@ from joblib import Parallel, delayed
 #import matplotlib.pyplot as plt
 
 def fit_sin_spec_pll(pms,fn,station,fc1min,fc1max,trt,model,numworkers):
+     """
+     Description:
+     -------------
+     Constraining the low frequency asymptote
+     this will ensure that any bump in the spectrum does not bias the estimate
+     of the omega this part gives the user some room to determine good fit but
+     can also run without user input.
 
-    """
-    Description:
-    -------------
-    Constraining the low frequency asymptote this will ensure that any bump in 
-    the spectrum does not bias the estimate of the omega this part gives the 
-    user some room to determine good fit but can also run without user input.
-    
-    Parameters/Input:
-    -----------------
 
-    Returns/Modifications:
-    ----------------------
-    
-    """
+     Parameters/Input:
+     -----------------
+
+     Returns/Modifications:
+     ----------------------
+
+     """
+
     popt,pcov = None,None
     if model.lower() == 'vb':
         Q1,Q2 = 200.,1500.
@@ -58,11 +60,11 @@ def fit_sin_spec_pll(pms,fn,station,fc1min,fc1max,trt,model,numworkers):
                     pcov1.append(k[1])
         numres = []
         popt1 = np.asarray(popt1)
-        
+
         ''' here we use calculate the normalised RMS and select the fitting
         parameters with the least RMS. It comes with additional cost but is
         will mostly produce the best automated reliable fits'''
-        
+
         for i in popt1:
             residua = np.power(np.subtract(datas,sinspec_model(fn, *i)),2) #L1 norm
             normresidua = np.sqrt(np.sum(residua)/np.sum(np.power(datas,2)))

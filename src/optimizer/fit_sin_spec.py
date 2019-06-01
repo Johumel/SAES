@@ -11,7 +11,6 @@ from .sinspec_model import sinspec_model
 import matplotlib.pyplot as plt
 
 def fit_sin_spec(pms,fn,station,fc1min,fc1max,trt,style,model):
-
      """
      Description:
      -------------
@@ -26,7 +25,7 @@ def fit_sin_spec(pms,fn,station,fc1min,fc1max,trt,style,model):
      Returns/Modifications:
      ----------------------
 
-     
+
      """
      popt = [None]; pcov = [None]
      ''' style options: 'auto','manual' '''
