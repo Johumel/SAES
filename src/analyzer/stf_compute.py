@@ -11,6 +11,22 @@ from mtspec import mt_deconvolve
 
 # Read the data
 def stf_compute(st_main,st_egf,num_tapers):
+    '''
+    Designed to handle computation of relative source time function. This section is an 
+    excert from the tutorial of Mtspec by Krischer
+    
+    Inputs:
+    st_main: Main event waveform
+    st_egf: Auxilliary (eGF) event waveform
+    num_tapers: Desired number of taper to be applied during spectrum estimation
+    
+    Returns:
+    x: Time indexes of relative source time function
+    y: amplitudes of relative source time function
+    
+    
+    Note: This function is still being tested hence it is yet to be properly implemented.
+    '''
     nfftlen = max(1000,st_main[0].stats.npts)
     delta = st_main[0].stats.delta
     half_nyq = np.arange(0,nfftlen)
