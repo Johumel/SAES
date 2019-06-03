@@ -19,6 +19,9 @@ def free_surface_correction(self,stream,evid):
     This section computes free surface correction, which mostly
     affect surface station, based on the method in Aki & Richards, 1980 (pg. 185);
     House, L. and Boatwright, J., 1980; Kennett, B.L.N., 1991; Kim et al., 1997
+    By default, this functions uses iasp91 velocity model in Obspy.
+    Ray parameter required to calculate the free surface effect is estimated using the 
+    Taup module of obspy
 
     Inputs:
     stream (obspy stream): 3 component (ZRT) waveform data
