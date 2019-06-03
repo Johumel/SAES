@@ -36,9 +36,7 @@ def remove_ir(self,st,baz,evid,output):
     pre_filt = self.stationlist[st[0].stats.station.strip()]['pre_filt']
     if pre_filt:
         for tr in st:
-#            tr.plot()
             tr.remove_response(respf,pre_filt=pre_filt,output = output)
-#            tr.plot()
     else:
         for tr in st:
             tr.remove_response(respf,output = output)
