@@ -17,15 +17,15 @@ def free_surface_correction(self,stream,evid):
 
     """
     This section computes free surface correction, which mostly
-    affect surface station, based on the method in Aki & Richards, 1980;
-    House, L. and Boatwright, J., 1980; Kennett, B.L.N., 1991; Kim et al., ??
+    affect surface station, based on the method in Aki & Richards, 1980 (pg. 185);
+    House, L. and Boatwright, J., 1980; Kennett, B.L.N., 1991; Kim et al., 1997
 
-    Parameters:
-    stream (obspy stream): Input 3 component waveform data
-    evid (int): Event id.
+    Inputs:
+    stream (obspy stream): 3 component (ZRT) waveform data
+    evid (int): Event id
 
     Returns:
-    
+    3-component stream (obspy stream) corrected for free-surface effect
     """
 
     tr = stream.select(component='T')
