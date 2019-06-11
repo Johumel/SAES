@@ -6,78 +6,79 @@ SAES code is intended to perform a spectral analysis to calculate earthquake
 source parameters, i.e. corner frequencies and source radius, assuming
 a circular patch.
 
-## 2.Input files
-### 2.1 catalog.dat
-*Description:*
-
-*Parameter:*
-
-*Example:*
-
-### 2.2 cclist.dat
-*Description:*
-
-*Parameter:*
-
-*Example:*
-
-### 2.3 control.file
-*Description:*
-
-*Parameter:*
-
-*Example:*
-
-### 2.4 events.dat
-*Description:*
-
-*Parameter:*
-
-*Example:*
-
-### 2.5 pre_filt.dat
-*Description:*
-
-*Parameter:*
-
-*Example:*
-
-### 2.6 read.me
-*Description:*
-
-*Parameter:*
-
-*Example:*
-### 2.7 stations.xml
-*Description:*
-
-*Parameter:*
-
-*Example:*
-
-### 2.8 tt_pyrocky.dat
-*Description:*
-
-*Parameter:*
-
-*Example:*
-
-### 2.9 tt.dat
-*Description:*
-
-*Parameter:*
-
-*Example:*
-
-
-## 3.Installtion
+## 2.Installtion
 ```
 python setup.py install
 ```
-## 4.Usage
+## 3.Usage
 ```
 from saes.saes_core import saes_core
 saes_obj=saes_core('path/to/your/control.file')
 
 ```
-## 5.Example
+## 4.Example
+
+# Apendix
+## Input files format
+## catalog.dat
+*Description:*
+
+*Parameter:*
+
+*Example:*
+
+## cclist.dat
+*Description:*
+
+*Parameter:*
+
+*Example:*
+
+## control.file
+*Description:*
+
+*Parameter:*
+
+*Example:*
+
+## events.dat
+*Description:*
+
+*Parameter:*
+
+*Example:*
+
+## pre_filt.dat
+*Description:*
+
+*Parameter:*
+
+*Example:*
+
+## read.me
+*Description:*
+
+*Parameter:*
+
+*Example:*
+## stations.xml
+*Description:*
+
+*Parameter:*
+
+*Example:*
+
+## tt_pyrocky.dat
+*Description:*
+
+*Parameter:*
+
+*Example:*
+
+## tt.dat
+*Description:*
+
+*Parameter:*
+
+*Example:*
+
