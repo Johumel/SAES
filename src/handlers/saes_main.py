@@ -15,7 +15,15 @@ from .sin_spec_guru import sin_spec_guru
 import os,datetime
 
 def saes_main(self):
-    sol = self.method#input("Please enter 1 for sinspec, 2 for specratio or 3 for both: ")
+    
+    '''
+    Main program handler. This is the main function called to initialize
+    all the variables required for the rest of the computation. It calls other 
+    functions to read and organize P and S waves, cross-correlation table and 
+    initiate single spectrum and/or spectral ratio functions.
+    '''
+    
+    sol = self.method
     if int(sol) in [1,2,3]:
         if int(sol) == 1:
             self.do_ind_spec = 'Y'; self.do_spec_rat = 'N'
@@ -38,8 +46,7 @@ def saes_main(self):
         if self.do_spec_rat == 'Y':
             evid1 = read_cclist(self)
             dlist = []; dlist_ind = []
-            for j in range(0,len(evid1)):#51
-            #Set minimum CC value allowed in the computation
+            for j in range(0,len(evid1)):
                 if  '%s' %(evid1[j]) not in dlist:
                     self.output_dir  = self.maindir+'/output/'+evid1[j]+'/'
                     if not os.path.exists(self.output_dir ):
@@ -51,7 +58,6 @@ def saes_main(self):
                     dlist.append('%s' %(evid1[j]))
                     if self.method == 3:
                         dlist_ind.append(evid1[j])
-
         if self.do_ind_spec == 'Y':
             evid1 = list(set([i for i in self.evlist.keys()]))
             try:

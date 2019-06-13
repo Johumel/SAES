@@ -15,6 +15,44 @@ from ..create_plots import *
 #As the name goes, it begins the spectral analysis for spectra ratio
 def begin_spec_analysis(self,specmain,freqmain,egffile,mainfile,wm,wmfc,wmn,
                         trtm,we,wefc,wen,trte,time_win,ccvals,wv,stfy,stfx):
+    '''
+    Function that pre-arranges the station spectral ratios and their 
+    corresponding frequency bins to be of equal length. It discards spectral
+    ratios whose lowest frequency bin is more than 70% of the single spectrum 
+    corner frequency estimate for the given main event. Representative spectral
+    ratio and station weighting for each event pair is computed and applied.
+    It calls get_best_fit which returns optimum fitting parameters for the 
+    representative spectral ratio. It call the spectral ratio and single 
+    spectrum (if user requested both single spectrum calculations in addition 
+    to spectral ratio) figure generation functions and sends results to the
+    save_output function.
+    
+    Input:
+        specmain   --> dict of station spectral ratios
+        freqmain   --> dict of station spectral ratios frequency bins
+        egffile    --> filename of egf event for one station
+        mainfile   --> filename of main event for one station
+        wm         --> dict of main events's station single spectrum
+        wmfc       --> dict of imain events's  station single spectrum 
+                       frequency bins
+        wmn        --> dict of main events's  station single spectrum noise
+        trtm       --> dict of main event to stations first arrival travel time
+        we         --> dict of egf events's  station single spectrum
+        wefc       --> dict of egf events's  station single spectrum 
+                       frequency bins
+        wen        --> dict of egf events's  station single spectrum noise
+        trte       --> dict of egf event to stations first arrival travel time
+        time_win   --> time window length
+        ccvals     --> station spectral ratio weighting factors
+        wv         --> wave type
+        stfy       --> source time function amplitudes (not yet activated)
+        stfx       --> source time function time bins (not yet activated)
+        
+    Returns:
+        None
+    
+    '''
+        
     if bool(specmain) == True and bool(freqmain) == True:
             lste = list(specmain.keys())
             fcmainlist = {}
@@ -49,8 +87,6 @@ def begin_spec_analysis(self,specmain,freqmain,egffile,mainfile,wm,wmfc,wmn,
                 arre_freq[i] = freqmain[index][slice(startpoint,endpoint)]
                 i += 1
             if arre_freq:
-                #Just in case the length of the spectral ratios are not the same
-                #this will take care of it
                 lengths = [len(i) for i in arre]
                 maxlength = np.max(lengths)
                 indes = np.where(lengths == maxlength)[0][0]
@@ -86,7 +122,6 @@ def begin_spec_analysis(self,specmain,freqmain,egffile,mainfile,wm,wmfc,wmn,
                         save_output(self,popt, pcov,normresidua,None,None,None,wv)
                 save_fig(self,fig,'spec',0,wv)
                 stf_plot(self,stfx[lste[0]],rel_stf,wv)
-
     if self.method == 3 or bool(specmain) == False:
         make_figures_ind(self,wm,wmfc,wmn,trtm,wv)
     return None

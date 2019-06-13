@@ -15,6 +15,20 @@ import numpy as np
 
 
 def spec_ratio_guru(self,j,wv):
+    '''
+    Spectra ratio computations starts here. 
+    The spec_calc function is called from here to compute individual spectra
+    and spectra ratios for each event pair for each station. The spectra are
+    then passed onto another handler function that does teh rest of the job.
+    
+    Input:
+        j    --> main event
+        wv   --> wave type (P or S)
+        
+    Returns:
+        None
+        
+    '''
 
     if (j not in self.blacklist_evl and j in self.evdict.keys()) or (j in self.whitelist_evl and j in self.evdict.keys()):
         for k in self.evdict[j].keys():
@@ -37,8 +51,6 @@ def spec_ratio_guru(self,j,wv):
                     time1, time2 = self.P_tt[j],self.P_tt[k]
                 except:
                     pass        
-            
-            #create a list with event files
             foldera1 = sorted(glob.glob(evfold1))
             foldera2 = sorted(glob.glob(evfold2))
             if j != k and k not in self.blacklist_evl: #Double check that both events are not the same
@@ -59,9 +71,7 @@ def spec_ratio_guru(self,j,wv):
                                 if self.sumtype.lower() == 'weighted':
                                     xcor = cclist[indx] 
                                 else:
-                                    xcor = 1.
-                                    
-                        # If we are able to get main & egf files, then continue
+                                    xcor = 1.                                   
                                 if file1 and file2:
                                     if self.evlist[j][1][3] > self.evlist[k][1][3]:
                                         self.mainev = j

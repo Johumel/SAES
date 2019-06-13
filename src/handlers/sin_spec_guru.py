@@ -11,6 +11,23 @@ from obspy.core import read
 import glob,os
 
 def sin_spec_guru(self,evid1,wv,dlist):
+    '''
+    Single spectra computations begins here. This function calls spec_calc to
+    get the spectra of each station, then passes them on to make_figures_ind.
+    It performs most of the quality checks and only passes spectrum that meet
+    set conditions and thresholds (e.g. SNR threshold, minimum frequency range,
+    etc).
+    
+    Input:
+        evid1    --> individual events ID list
+        wv       --> wave type (P or S)
+        dlist    --> list of events to skip so as to avoid repetition as they 
+                     would have been already solved for.
+    
+    Returns:
+        None
+    '''                    
+    
     ind_spec = {}; freq_ind_spec = {};  ind_trtm = {};
     indv_noise = {}; time_window = {};
     for j in range(0,len(evid1)):
@@ -48,8 +65,7 @@ def sin_spec_guru(self,evid1,wv,dlist):
                 if ind_spec[i] is None:
                     del ind_spec[i],freq_ind_spec[i],indv_noise[i]
                     del ind_trtm[i],time_window[i]
-            lste = list(ind_spec.keys())
-            
+            lste = list(ind_spec.keys())           
             if lste:
                 make_figures_ind(self,ind_spec,freq_ind_spec,indv_noise,ind_trtm,wv)
         try:
