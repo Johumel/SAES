@@ -9,6 +9,20 @@ from obspy.core import Stream
 from .free_surface_correction import free_surface_correction
 
 def remove_ir(self,st,baz,evid,output):
+    '''
+    Handles instrument response and free-surface effects corrections
+    
+    Inputs:
+    st: input waveform
+    baz: event-station back_azimuth
+    evid: event ID
+    output: output waveform type (Disp, Vel or Accl)
+    
+    Returns:
+    st: instrument response corrected waveform
+    
+    '''
+    
     trn2 = Stream()
     respf = self.stationxml
     try:
@@ -22,9 +36,7 @@ def remove_ir(self,st,baz,evid,output):
     pre_filt = self.stationlist[st[0].stats.station.strip()]['pre_filt']
     if pre_filt:
         for tr in st:
-#            tr.plot()
             tr.remove_response(respf,pre_filt=pre_filt,output = output)
-#            tr.plot()
     else:
         for tr in st:
             tr.remove_response(respf,output = output)

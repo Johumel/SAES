@@ -11,6 +11,30 @@ from ..saesutils.get_time_window import *
 from obspy.core import read
 
 def spec_calc(self,file1,file2,wv):
+    '''
+    Handles spectra (including spectral ratios) computation and SNR analysis
+    
+    Inputs:
+    file1: filename of event 1
+    file2: filename of event 2 (if analysing spectral ratios)
+    wv: wave type (P or S)
+    
+    Returns:
+    specratio: spectral ratio (if analysing spectral ratios)
+    freqsignalm: spectral ratio frequency bins (if analysing spectral ratios)
+    rawefc: Uncorrected (instrument response corrected not applied) event 2 frequency bins (if analysing spectral ratios)
+    rawe:   Uncorrected (instrument response corrected not applied) event 2 signal spectrum (if analysing spectral ratios)
+    rawen:  Uncorrected (instrument response corrected not applied) event 2 noise spectrum (if analysing spectral ratios)
+    rawmfc: Uncorrected (instrument response corrected not applied) event 1 frequency bins 
+    rawm:   Uncorrected (instrument response corrected not applied) event 1 signal spectrum
+    rawmn:  Uncorrected (instrument response corrected not applied) event 1 noise spectrum
+    trt1:   Source-to-station travel time of event 1
+    trt2:   Source-to-station travel time of event 2 (if analysing spectral ratios)
+    time_win: Time window length (sec)
+    sts1:   Instrument response corrected event 1 signal spectrum
+    sts2:   Instrument response corrected event 2 signal spectrum (if analysing spectral ratios)
+    '''
+    
     ev1 = self.mainev
     ev2 = self.egfev
     if not self.fixed_window:
@@ -31,13 +55,11 @@ def spec_calc(self,file1,file2,wv):
         snr1, freqsignal1, signal1,noise1,snr_no_resp1,freq_no_resp1,signal_no_resp1,noise_no_resp1,\
         trt1,sts1 = analyze_spec(self,file1,ev1,'main',time_win,False,wv)
     rawm = signal_no_resp1; rawmfc = freq_no_resp1; rawmn = noise_no_resp1
-#    signalm = np.asarray([])
+    
     if file2 and len(sts1) != 0:
-
         if read(file1)[0].stats.channel != read(file2)[0].stats.channel or self.remove_resp.lower() == 'yes':
             snr2, freqsignal2, signal2,noise2,snr_no_resp2,freq_no_resp2,signal_no_resp2,\
             noise_no_resp2,trt2,sts2 = analyze_spec(self,file2,ev2,'egf',time_win,True,wv)
-
         else:
             snr2, freqsignal2, signal2,noise2,snr_no_resp2,freq_no_resp2,signal_no_resp2,\
             noise_no_resp2,trt2,sts2 = analyze_spec(self,file2,ev2,'egf',time_win,False,wv)
@@ -53,46 +75,3 @@ def spec_calc(self,file1,file2,wv):
     if len(specratio) == 0 or self.method == 1:
         specratio = float('Nan'); freqsignalm = None;
     return specratio, freqsignalm,rawefc,rawe,rawen,rawmfc,rawm,rawmn,trt1,trt2,time_win,sts1,sts2
-
-def get_good_snr_freq_range(snrthres,signal1,signal2,snr1,snr2,freqsignal1,freqsignal2,noise1,noise2):
-    datas = None; datae = None; fnm = None; fne = None;
-    noisem = None; noisee = None; #snrm = None; snre = None
-    quit_calc = 'N'
-    try:
-        try:
-            spm_low = np.where(snr1 >= snrthres )[0][0]
-        except:
-            spm_low = 0
-        try:
-            half_up = snr1[slice(spm_low,len(snr1)-1)]
-            spm_high = np.where(half_up < snrthres )[0][0] + spm_low
-        except:
-            spm_high = len(snr1) - 1
-    except:
-        quit_calc = 'Y'
-        pass
-    if signal2 is not None:
-        try:
-            spe_low = np.where(snr2 >= snrthres)[0][0]
-        except:
-            spe_low = 0
-        try:
-            half_up = snr2[slice(spe_low,len(snr2)-1)]
-            spe_high = np.where(half_up < snrthres )[0][0] + spe_low
-        except:
-            spe_high = len(snr2) - 1
-        low_end = max(spe_low,spm_low)
-        high_end = min(spe_high,spm_high)
-        fnm = freqsignal1[slice(low_end,high_end)] # change to sp later
-        fne = freqsignal2[slice(low_end,high_end)]
-        datas = signal1[slice(low_end,high_end)] # change to sp later
-        datae = signal2[slice(low_end,high_end)]
-
-        noisem = noise1[slice(low_end,high_end)]
-        noisee = noise2[slice(low_end,high_end)]
-    else:
-        if quit_calc == 'N':
-            fnm = freqsignal1[slice(spm_low,spm_high)] # change to sp later
-            datas = signal1[slice(spm_low,spm_high)] # change to sp later
-            noisem = noise1[slice(spm_low,spm_high)]
-    return datas,datae,fnm,fne,noisem,noisee

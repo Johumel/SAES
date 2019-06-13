@@ -17,11 +17,12 @@ def analyze_spec(self,fname,evid,evtype,time_win,rmv_instr_resp,wv):
     Gets event & noise waveforms, and spectra
 
     Parameters:
-    Event filename, event ID, waveform time window, wavetype, instrument response
-    removal hanb;e (boolean)
+    Event filename, event ID, waveform time window length, wavetype (P or S), instrument response
+    removal handle (boolean)
     
     Returns:
-    It returns the output of get_spectrum() plus phase travel time
+    It returns the output of get_spectrum() [sqrt of sum of x components power spectrum] plus phase travel time.
+    x = number of components (E, N, Z).
     
     """    
         

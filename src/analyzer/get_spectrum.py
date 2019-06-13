@@ -10,14 +10,17 @@ from mtspec import mtspec
 
 def get_spectrum(self,st1,ns1,st2,ns2):
  
-    """
+    '''
     Take waveforms of signal and noise (pre-Pphase arrrival waveform) and 
     generates spectra using the multiptaper spectrum estimation method of
-    Prieto et al., (2009) implemented in python by Krischer (2016).
+    Prieto et al., (2009) implemented in python by Krischer (2016). This function 
+    would naturally calculate the sqrt of the sum of the power spectrum from all
+    3 channels (E,N,& Z) if they are available otherwise it will estimate the spectrum with
+    the number (1 or 2) of available channels
 
-    Parameters:
-    st1 and st2 --> signal waveforms
-    ns1 and ns2 --> noise waveforms
+    Inputs:
+    st1 and st2 --> signal waveforms of event1 and event2 respectively
+    ns1 and ns2 --> noise waveforms of event1 and event2 respectively
     
     Returns:
     snr            --> signal-to-noise ratio (SNR)
@@ -29,7 +32,7 @@ def get_spectrum(self,st1,ns1,st2,ns2):
     signal_no_resp --> spectrum of instrument response corrected signal waveform
     noise_no_resp  --> spectrum of instrument response corrected noise waveform
    
-    """
+    '''
     
     numtapers,stationlist = self.num_tapers,self.stationlist
     pms = {}; fsds = {}; pmn ={}; fsdn = {}; fsd = {}; pms_no_ir = {}; pmn_no_ir = {};
@@ -37,14 +40,17 @@ def get_spectrum(self,st1,ns1,st2,ns2):
     snr_no_resp = None; signal_no_resp = None; noise_no_resp = None; freq_no_resp = None
     i = 0
     fact = 1.0e9
+    nfftlen = int(2**np.ceil(np.log2(len(st2[0].data))))
     if st2:
-        for tr in st2:
+        for tr in st2:     
             time_bandwidth = (numtapers+1)/2
-            pms_no_ir[i], fsd[i],jacknife,_,_ = mtspec(data=np.multiply(tr.data,fact,dtype=float), delta=tr.stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers), nfft=max(10000,len(tr.data)),statistics=True)
-            pmn_no_ir[i],_,jacknife,_,_ = mtspec(data=np.multiply(ns2[i].data,fact,dtype=float), delta=ns2[i].stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers), nfft=max(10000,len(ns2[i].data)),statistics=True)
+            pms_no_ir[i], fsd[i],jacknife,_,_ = mtspec(data=np.multiply(tr.data,fact,dtype=float), delta=tr.stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers), nfft=nfftlen,statistics=True)
+            pmn_no_ir[i],_,jacknife,_,_ = mtspec(data=np.multiply(ns2[i].data,fact,dtype=float), delta=ns2[i].stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers), nfft=nfftlen,statistics=True)
             i+=1
 #        for key in pms_no_ir.keys(): pms_no_ir[key] = np.divide(pms_no_ir[key],st2[0].stats.delta)
 #        for key in pmn_no_ir.keys(): pmn_no_ir[key] = np.divide(pmn_no_ir[key],st2[0].stats.delta)
+        #for key in pms_no_ir.keys(): pms_no_ir[key] = np.divide(pms_no_ir[key],st2[0].stats.delta)
+        #for key in pmn_no_ir.keys(): pmn_no_ir[key] = np.divide(pmn_no_ir[key],st2[0].stats.delta)
         signal_no_resp = np.sqrt(sum(pms_no_ir.values()))
         noise_no_resp = np.sqrt(sum(pmn_no_ir.values()))
         snr_no_resp = np.divide(signal_no_resp,noise_no_resp,dtype='float64')
@@ -53,15 +59,18 @@ def get_spectrum(self,st1,ns1,st2,ns2):
         fact = 1.0e9
     else:
         fact = 1.0
+    nfftlen = int(2**np.ceil(np.log2(len(st1[0].data))))
+    i = 0
     if st1:    
-        i = 0
         for tr in st1:
             time_bandwidth = (numtapers+1)/2
-            pms[i], fsds[i],jacknife,_,_ = mtspec(data=np.multiply(tr.data,fact,dtype=float), delta=tr.stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers),nfft=max(10000,len(tr.data)), statistics=True)
-            pmn[i],fsdn[i],jacknife,_,_ = mtspec(data=np.multiply(ns1[i].data,fact,dtype=float), delta=ns1[i].stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers), nfft=max(10000,len(ns1[i].data)),statistics=True)
+            pms[i], fsds[i],jacknife,_,_ = mtspec(data=np.multiply(tr.data,fact,dtype=float), delta=tr.stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers),nfft=nfftlen, statistics=True)
+            pmn[i],fsdn[i],jacknife,_,_ = mtspec(data=np.multiply(ns1[i].data,fact,dtype=float), delta=ns1[i].stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers), nfft=nfftlen,statistics=True)
             i += 1
 #        for key in pms.keys(): pms[key] = np.multiply(pms[key],st1[0].stats.delta)
 #        for key in pmn.keys(): pmn[key] = np.multiply(pmn[key],st1[0].stats.delta)
+        #for key in pms_no_ir.keys(): pms_no_ir[key] = np.divide(pms_no_ir[key],st1[0].stats.delta)
+        #for key in pmn_no_ir.keys(): pmn_no_ir[key] = np.divide(pmn_no_ir[key],st1[0].stats.delta)
         signal = np.sqrt(sum(pms.values()))           
         noise = np.sqrt(sum(pmn.values()))
         snr = np.divide(signal,noise,dtype='float64')

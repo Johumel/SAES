@@ -10,6 +10,30 @@ from .remove_ir import remove_ir
 import warnings
 
 def get_sig_nois_data(self,fname,origtime,Atime,Btime,time_win,wv_fig,phase,evid,baz,rmv_instr_resp):
+    
+    '''
+    Does the job of windowing the waveform to extract 'signal' and 'noise'
+    
+    Input:
+    fname: eventn filename
+    origtime: event catalog time (UTC)
+    Atime: P-phase arrival time (UTC)
+    Btime: S-phase arrival time (UTC)
+    time_win: Time window length (sec)
+    wv_fig: handle that windows the waveform appended in the spectral ratio plot
+    phase: Phase type (P or S) that is analysed
+    evid: event ID
+    baz: event-station back_azimuth
+    rmv_instr_resp: Instrument response corrected handle (boolean)
+    
+    Return:
+    sts: windowed uncorrected signal waveform
+    nss: windowed uncorrected noise waveform
+    nsstart: The start time of noise window in the waveform (UTC)
+    st: windowed instrument response corrected signal waveform
+    ns: windowed instrument response corrected noise waveform
+    '''
+    
     sts,nss,nsstart,st,ns = [],None,None,None,None
     st = read(fname)
     if Atime:
