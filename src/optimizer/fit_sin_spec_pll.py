@@ -16,18 +16,28 @@ def fit_sin_spec_pll(pms,fn,station,fc1min,fc1max,trt,model,numworkers):
      """
      Description:
      -------------
-     Constraining the low frequency asymptote
-     this will ensure that any bump in the spectrum does not bias the estimate
-     of the omega this part gives the user some room to determine good fit but
-     can also run without user input.
+     This function handles single spectrum fitting to determine all the free 
+     parameters (corner frequency, low frequency asymptote, Q-value, n-value,
+     gamma-value. It utilizes joblib parallel computing module to generate
+     a set of fitting model iwht different combinations of n & gamma and 
+     decides the best fit based on normalised RMS of each model; the model 
+     with the lowest RMS is selected as the optimum model.
 
 
-     Parameters/Input:
-     -----------------
+     Input:
+         pms        --> Spectrum
+         fn         --> frequency bins
+         fc1min     --> lower bound of fc
+         fc1max     --> upper bound of fc
+         trt        --> travel time of event
+         model      --> choice of source model
+         numworkers --> number of workers for parallel computation
 
-     Returns/Modifications:
-     ----------------------
-
+     Returns:
+     
+         popt --> container of determined optimum model parameters
+         pcov --> container for the covariance matrix of the optimum model
+     
      """
 
     popt,pcov = None,None

@@ -18,43 +18,72 @@ from matplotlib import colors as clors
 
 def colorlist(numspec):
     if numspec < 27:
-        colortype = [ 'r', 'y','skyblue','rebeccapurple','peru','sienna','indigo',\
-             'purple','pink','palevioletred','turquoise','coral','tomato','lightsteelblue',\
-             'teal','firebrick','orchid','olivedrab','bisque',\
-             'thistle','orangered','darkcyan','wheat','azure','salmon','linen']
+        colortype = [ 'r', 'y','skyblue','rebeccapurple','peru','sienna',\
+                     'indigo','purple','pink','palevioletred','turquoise',\
+                     'coral','tomato','lightsteelblue','teal','firebrick',\
+                     'orchid','olivedrab','bisque','thistle','orangered',\
+                     'darkcyan','wheat','azure','salmon','linen']
     else:
         colors = dict(clors.BASE_COLORS, **clors.CSS4_COLORS)
-        hsv_sort = sorted((tuple(clors.rgb_to_hsv(clors.to_rgba(color)[:3])), name)
+        hsv_sort = sorted((tuple(clors.rgb_to_hsv(clors.to_rgba(color)[:3])), 
+                           name)
                 for name, color in colors.items())
         colortype = list(set([name for hsv, name in hsv_sort]))
     return colortype
 
 def plot_waveform(self,stn,nsstart,Ptime,Stime,time_win,evtype,axz,wv):
+    
+    '''This is used to plot waveforms of the event pairs shown in the 
+    spectral ratio figure.
+    
+    Input: stn      --> event waveforms (3-components if available)
+           nsstart  --> noise start time (UTC)
+           Ptime    --> P-phase arrival time (UTC)
+           Stime    --> S-phase arrival time (UTC)
+           time_win --> Time window length (seconds)
+           evtype   --> event type (main or egf)
+           axz      --> figure axes of the spectral ratio plot
+           wv       --> wave type (P or S)
+    
+    Return:
+        None
+    '''
+    
     if axz:
         if wv.upper() == 'S':
             tr = stn.select(component= 'T')[0]
         elif wv.upper() == 'P':
             tr = stn.select(component='Z')[0]
         nsstart = nsstart - tr.stats.starttime
-        axz.plot(tr.times(reftime = tr.stats.starttime) , tr.data, "k-",label = tr.stats.channel)
+        axz.plot(tr.times(reftime = tr.stats.starttime) , tr.data, "k-",
+                 label = tr.stats.channel)
         axz.set_ylabel('Velocity (m/s)',fontsize = 23,fontweight='bold')
         leg = axz.legend(loc=3,fontsize = 18,handlelength=0, handletextpad=0)
         for item in leg.legendHandles:
             item.set_visible(False)
-        axz.annotate("", xy=(nsstart, max(tr.data)*0.15), xytext=(time_win+nsstart, max(tr.data)*0.15),
+        axz.annotate("", xy=(nsstart, max(tr.data)*0.15), 
+                     xytext=(time_win+nsstart, max(tr.data)*0.15),
                          arrowprops=dict(arrowstyle="<->",facecolor='k'))
-        axz.text(nsstart+(time_win*0.3), 0.65,'Ns',fontsize=20,fontweight='bold',
-                     transform=transforms.blended_transform_factory(axz.transData, axz.transAxes))
+        axz.text(nsstart+(time_win*0.3), 0.65,'Ns',fontsize=20,
+                 fontweight='bold',
+                 transform=transforms.blended_transform_factory(axz.transData,
+                                                                axz.transAxes))
         if Stime and self.wvtype2 == 'S':
             Stimex = Stime - tr.stats.starttime
-            axz.text(Stimex - 0.85, max(tr.data)*0.7,'S',fontsize=22,fontweight='bold')
-            axz.annotate("", xy=(Stimex - 0.55, max(tr.data)*0.75), xytext=(Stimex - 0.15, max(tr.data)*0.20),
-                         arrowprops=dict(arrowstyle="<-",facecolor='k',connectionstyle="arc3"))
+            axz.text(Stimex - 0.85, max(tr.data)*0.7,'S',fontsize=22,
+                     fontweight='bold')
+            axz.annotate("", xy=(Stimex - 0.55, max(tr.data)*0.75), 
+                         xytext=(Stimex - 0.15, max(tr.data)*0.20),
+                         arrowprops=dict(arrowstyle="<-",facecolor='k',
+                                         connectionstyle="arc3"))
         if Ptime and self.wvtype1 == 'P':
             Ptimex = Ptime - tr.stats.starttime
-            axz.text(Ptimex - 0.85, max(tr.data)*0.5,'P',fontsize=22,fontweight='bold')
-            axz.annotate("", xy=(Ptimex - 0.55, max(tr.data)*0.55), xytext=(Ptimex - 0.15, max(tr.data)*0.05),
-                         arrowprops=dict(arrowstyle="<-",facecolor='k',connectionstyle="arc3"))
+            axz.text(Ptimex - 0.85, max(tr.data)*0.5,'P',fontsize=22,
+                     fontweight='bold')
+            axz.annotate("", xy=(Ptimex - 0.55, max(tr.data)*0.55), 
+                         xytext=(Ptimex - 0.15, max(tr.data)*0.05),
+                         arrowprops=dict(arrowstyle="<-",facecolor='k',
+                                         connectionstyle="arc3"))
         axz.tick_params(axis='both',which='both',length=5.,labelsize='large')
         axz.get_yaxis().get_major_formatter().set_powerlimits((0, 0))
         for tick in axz.yaxis.get_major_ticks():
@@ -65,17 +94,27 @@ def plot_waveform(self,stn,nsstart,Ptime,Stime,time_win,evtype,axz,wv):
         axz.yaxis.get_offset_text().set_fontsize(24)
         axz.set_xlabel('Time (s)',fontsize = 26,fontweight='bold')
         if evtype[0] == 'e':
-            axz.set_title('%s' % ('Auxiliary event'),fontweight='bold',fontsize=22)
-            axz.text(0.2,0.10,tr.stats.station.strip(),fontsize=22,fontweight='bold',transform=axz.transAxes)
+            axz.set_title('%s' % ('Auxiliary event'),fontweight='bold',
+                          fontsize=22)
+            axz.text(0.2,0.10,tr.stats.station.strip(),fontsize=22,
+                     fontweight='bold',transform=axz.transAxes)
         else:
             axz.set_title('%s' % ('Main event'),fontweight='bold',fontsize=22)
-            axz.set_title('%s%s' % (evtype.capitalize(),' event'),fontweight='bold',fontsize=22)
-        axz.text(0.2,0.10,stn[0].stats.station.strip(),fontsize=22,fontweight='bold',transform=axz.transAxes)
+            axz.set_title('%s%s' % (evtype.capitalize(),' event'),
+                          fontweight='bold',fontsize=22)
+        axz.text(0.2,0.10,stn[0].stats.station.strip(),fontsize=22,
+                 fontweight='bold',transform=axz.transAxes)
         axz.yaxis.set_major_locator(MaxNLocator(integer=True,nbins=3))
         axz.xaxis.set_major_locator(MaxNLocator(integer=True,nbins=5))
     return None
 
-def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,time_win,mainfile,egffile,wv):
+def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,
+                      time_win,mainfile,egffile,wv):
+    
+    '''Function for creating and organizing the spectra ratio plots. 
+    All the subplots (axes) are initiated and organized here. '''
+    
+    
     from obspy.core import read
     from ..analyzer import get_sig_nois_data
     lste = list(specmain.keys())
@@ -102,7 +141,9 @@ def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,time
         baz = self.baz['egf']
         if baz < 0:
             baz = baz + 360
-        _,_,nsstart,stn,_ = get_sig_nois_data(self,et1,origtime,Ptime,Stime,time_win,True,None,self.egfev,baz,'yes')
+        _,_,nsstart,stn,_ = get_sig_nois_data(self,et1,origtime,Ptime,Stime,
+                                              time_win,True,None,self.egfev,
+                                              baz,'yes')
         trn = stn.select(component='N')
         trn += stn.select(component='E')
         trn.rotate('NE->RT',back_azimuth=baz)
@@ -121,7 +162,9 @@ def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,time
         baz = self.baz['main']
         if baz < 0:
             baz = baz + 360
-        _,_,nsstart,stn,_ = get_sig_nois_data(self,et2,origtime,Ptime,Stime,time_win,True,None,self.mainev,baz,'yes')
+        _,_,nsstart,stn,_ = get_sig_nois_data(self,et2,origtime,Ptime,Stime,
+                                              time_win,True,None,self.mainev,
+                                              baz,'yes')
         trn = stn.select(component='N')
         trn += stn.select(component='E')
         trn.rotate('NE->RT',back_azimuth=baz)
@@ -130,7 +173,9 @@ def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,time
         plot_waveform(self,stn,nsstart,Ptime,Stime,time_win,'main',axs,wv)
     for index in range(len(lste)):
         station=lste[index]
-        ax_spec.loglog(freqmain[lste[index]],specmain[lste[index]],linewidth = 1,color = colortype[colornum],label = station)
+        ax_spec.loglog(freqmain[lste[index]],specmain[lste[index]],
+                       linewidth = 1,color = colortype[colornum],
+                       label = station)
         if lste[index] == indexx:
             x_begin = min(freqmain[indexx])
             try:
@@ -138,21 +183,34 @@ def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,time
             except:
                 x_end = 45.
                 pass
-            ploting(x1 = wmfc[indexx],y1 = wm[indexx],y12 = wmn[indexx],x2 = wefc[indexx],
-                    y2 = we[indexx],y22 = wen[indexx],ax = axx,station = station,color = colortype[colornum],x_begin=x_begin,x_end=x_end,wv=wv)
+            ploting(x1 = wmfc[indexx],y1 = wm[indexx],y12 = wmn[indexx],
+                    x2 = wefc[indexx],
+                    y2 = we[indexx],y22 = wen[indexx],ax = axx,
+                    station = station,color = colortype[colornum],
+                    x_begin=x_begin,x_end=x_end,wv=wv)
             xlim1 = 10**(np.floor(np.log10(x_begin)))
             ax_spec.set_xlim([xlim1,x_end])
         colornum += 1
     return fig,ax_spec
 
 def ploting(x1,y1,y12,x2,y2,y22,ax,station,color,x_begin,x_end,wv):
+    
+    '''Handles example event pair plot shown on the bottom left of 
+    the spectral ratio figure. This figures gives an idea of the SNR for the
+    example events'''
+    
     ax.loglog(x1,y1,linewidth = 3, label =  'Main event',color = color ) # Main event
-    ax.loglog(x1,y12,linewidth = 2,ls='--', alpha=0.7,label =  'Main event noise',color=color)
-    ax.loglog(x2,y2,linewidth = 2, ls='-',label =  'Auxiliary event',color='darkgray') #EGFs for single EGF analysis
-    ax.loglog(x2,y22,linewidth = 1.5,ls='-.',label =  'Auxiliary event noise',color='lightgray')
-    ax.text(0.7,0.1,'%s wave' % wv,style = 'normal',weight='bold',size=16,transform=ax.transAxes)
+    ax.loglog(x1,y12,linewidth = 2,ls='--', alpha=0.7,
+              label =  'Main event noise',color=color)
+    ax.loglog(x2,y2,linewidth = 2, ls='-',label =  'Auxiliary event',
+              color='darkgray') #EGFs for single EGF analysis
+    ax.loglog(x2,y22,linewidth = 1.5,ls='-.',label =  'Auxiliary event noise',
+              color='lightgray')
+    ax.text(0.7,0.1,'%s wave' % wv,style = 'normal',weight='bold',size=16,
+            transform=ax.transAxes)
 
-    ax.text(0.7,0.9,station,style = 'normal',weight='bold',size=18,transform = ax.transAxes)
+    ax.text(0.7,0.9,station,style = 'normal',weight='bold',size=18,
+            transform = ax.transAxes)
     ax.set_xlim([x_begin,x_end])
     ax.set_ylim([y22[-1]*0.1,max(y1)*10])
     ax.yaxis.set_major_locator(LogLocator(base=10.0, numticks=5))
@@ -169,7 +227,14 @@ def ploting(x1,y1,y12,x2,y2,y22,ax,station,color,x_begin,x_end,wv):
     ax.legend(loc='lower left',ncol=1,prop={'size':17})
     return None
 
-def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,allresidua1,ax,popt,maxy): 
+def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,
+                     allresidua1,ax,popt,maxy): 
+    
+    ''' Function to create the bottom right figure (axes) of the spectral 
+    ratio plot. Individual spectral ratios of each station and the 
+    representative spectral ratio for the event pair is organised and plotted
+    by this function.'''
+    
     from mpl_toolkits.axes_grid1.inset_locator import inset_axes
     from ..optimizer import specr_model
     mtpl = mtpl
@@ -178,21 +243,31 @@ def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,allresidua1,ax,popt
     residua = np.power(np.subtract(specratio,specr_model(freqbin, *popt)),2)
     normresidua = np.sqrt(np.sum(residua)/np.sum(np.power(specratio,2)))
     if popt.any():
-        ax.loglog(freqbin,np.divide(specr_model(freqbin, *popt),mtpl), 'g--', label='model fit',linewidth = 5)
-        ax.text(0.55,0.1,'M$_L$$_($$_1$$_)$ = %s' % self.evlist[self.mainev][1][3],style = 'normal',weight='bold',size=14,transform=ax.transAxes)
-        ax.text(0.55,0.05,'M$_L$$_($$_2$$_)$ = %s' % self.evlist[self.egfev][1][3],style = 'normal',weight='bold',size=14,transform=ax.transAxes)
-        ax.text(0.55,0.15,'rms = %.2f' %(normresidua),style = 'normal',weight='bold',size=14,transform=ax.transAxes)
+        ax.loglog(freqbin,np.divide(specr_model(freqbin, *popt),mtpl), 
+                  'g--', label='model fit',linewidth = 5)
+        ax.text(0.55,0.1,'M$_L$$_($$_1$$_)$ = %s' % self.evlist[self.mainev][1][3],
+                style = 'normal',weight='bold',size=14,transform=ax.transAxes)
+        ax.text(0.55,0.05,'M$_L$$_($$_2$$_)$ = %s' % self.evlist[self.egfev][1][3],
+                style = 'normal',weight='bold',size=14,transform=ax.transAxes)
+        ax.text(0.55,0.15,'rms = %.2f' %(normresidua),style = 'normal',
+                weight='bold',size=14,transform=ax.transAxes)
 
         try:
             xbin = np.where(freqbin >= popt[0])[0][0]
             ybin = np.divide(specr_model(freqbin, *popt),mtpl)[xbin]
-            ax.text(popt[0]*0.95,ybin*1.25,'f$_c$$_($$_1$$_)$ =  %s' %(float(round(popt[0],1))),style = 'normal',weight='bold',size=14)
-            ax.loglog(popt[0]*1.0,ybin*1.12,marker="v",color='green',markersize=10)
+            ax.text(popt[0]*0.95,ybin*1.25,'f$_c$$_($$_1$$_)$ =  %s' \
+                    %(float(round(popt[0],1))),style = 'normal',
+                    weight='bold',size=14)
+            ax.loglog(popt[0]*1.0,ybin*1.12,marker="v",color='green',
+                      markersize=10)
             if self.showfc2.upper() == 'YES':
                 xbin2 = np.where(freqbin >= popt[1])[0][0]
                 ybin2 = np.divide(specr_model(freqbin, *popt),mtpl)[xbin2]
-                ax.text(popt[1]*0.55,ybin2*0.7,'f$_c$$_($$_2$$_)$ =  %s' %(float(round(popt[1],1))),style = 'normal',weight='bold',size=14)
-                ax.loglog(popt[1],ybin2*0.9,marker="^",color='green',markersize=10)
+                ax.text(popt[1]*0.55,ybin2*0.7,'f$_c$$_($$_2$$_)$ =  %s' \
+                        %(float(round(popt[1],1))),style = 'normal',
+                        weight='bold',size=14)
+                ax.loglog(popt[1],ybin2*0.9,marker="^",color='green',
+                          markersize=10)
         except:
             pass
         upl = 10**(np.floor(np.log10(maxy*10)))
@@ -244,6 +319,20 @@ def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,allresidua1,ax,popt
     return None
 
 def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
+    '''Handler for individual spectra analysis spectral fitting and figure 
+    creation.
+    
+    Input: wm   --> individual signal spectra
+           wmfc --> individual signal spectra frequency bins
+           wmn  --> individual noise spectra 
+           trtm --> Travel times of the events contained in wm
+           wv   --> wave type (P or S)
+           
+    Returns:
+        It returns None but fits individual spectra and dispatches spectrum 
+        fitting results.
+    '''
+    
     colornum = 0
     fig = plt.figure(figsize=(16,10),tight_layout=True)
     lste = list(wm.keys())
@@ -253,15 +342,21 @@ def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
         station = lste[index]
         fn = wmfc[lste[index]]
         if self.numworkers <= 1:
-            popt_ind,pcov_ind = fit_sin_spec(wm[lste[index]],fn,station,\
-                                         min(wmfc[lste[index]]),max(wmfc[lste[index]])*0.5,trtm[lste[index]],self.autofit_single_spec,\
+            popt_ind,pcov_ind = fit_sin_spec(wm[lste[index]],fn,station,
+                                         min(wmfc[lste[index]]),
+                                         max(wmfc[lste[index]])*0.5,
+                                         trtm[lste[index]],
+                                         self.autofit_single_spec,
                                          self.source_model)
         elif self.numworkers > 1:
-            popt_ind,pcov_ind = fit_sin_spec_pll(wm[lste[index]],fn,station,\
-                                         min(wmfc[lste[index]]),max(wmfc[lste[index]])*0.5,trtm[lste[index]],\
+            popt_ind,pcov_ind = fit_sin_spec_pll(wm[lste[index]],fn,station,
+                                         min(wmfc[lste[index]]),
+                                         max(wmfc[lste[index]])*0.5,
+                                         trtm[lste[index]],
                                          self.source_model,self.numworkers)
         axx2 = fig.add_subplot(2,3,n)
-        axx2.loglog(fn, sinspec_model(fn, *popt_ind), 'k--', label='model fit',linewidth=2)
+        axx2.loglog(fn, sinspec_model(fn, *popt_ind), 'k--', label='model fit',
+                    linewidth=2)
         bb = np.floor(np.log10(min(fn)))
         x_end = self.stationlist[station]['pre_filt'][2]
         axx2.set_xlim([10**bb,x_end])
@@ -306,6 +401,10 @@ def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
 
 
 def stf_plot(self,x,y,wv):
+    
+    ''' Designed to handle source time function plots but this option is not
+    yet activated, stay tuned!
+    '''
     fig = plt.figure(figsize=(8,5))
     ax = fig.add_subplot(111)
     ax.plot(x,y,'k',linewidth=1.5)
@@ -318,6 +417,10 @@ def stf_plot(self,x,y,wv):
     
     
 def save_fig(self,fig,figtype,mm,wv):
+    
+    '''All created figures are saved to by this function. The default dpi 
+    for each figure is 300.'''
+    
     if figtype == 'spec':
         fig.subplots_adjust(hspace = .1,wspace=0.1)
         fig.tight_layout()
