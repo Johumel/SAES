@@ -12,20 +12,21 @@ def save_output(self,popt_spec,pcov_spec,norm_spec,popt_ind,pcov_ind,station,wv)
     ''' Function that saves source parameter results in plain text format.
     
     Input:
-        popt_spec    --> spectral ratio fitting paramters
-        pcov_spec    --> spectral ratio fitting covariance matrix 
-        norm_spec    --> normalised root-mean-square from spectral ratio fits
-        popt_ind     --> single spectra fitting paramters
-        pcov_ind     --> single spectra fitting covariance matrix 
-        station      --> Station
-        wv           --> wave type (P or S)
+    -------
+    popt_spec    --> spectral ratio fitting paramters
+    pcov_spec    --> spectral ratio fitting covariance matrix 
+    norm_spec    --> normalised root-mean-square from spectral ratio fits
+    popt_ind     --> single spectra fitting paramters
+    pcov_ind     --> single spectra fitting covariance matrix 
+    station      --> Station
+    wv           --> wave type (P or S)
         
     Returns:
-        None
+    ---------
+    None
         
     '''
         
-    #Begin fitting the spectral ratio
     if self.do_spec_rat == 'Y':
         perr = np.sqrt(np.diag(pcov_spec))
         fcerr = round(float('%.3g' % perr[0]),2)

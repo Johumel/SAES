@@ -6,8 +6,6 @@ Created on Tue Apr 16 17:57:06 2019
 @author: john.onwuemeka
 """
 import numpy as np
-#import math
-
 
 def sinspec_model(fn,a,b,c,d,f,trt):
 
@@ -18,23 +16,22 @@ def sinspec_model(fn,a,b,c,d,f,trt):
     that anaelastic attenuatic and geometrical spreading effects
     are corrected by quality factor Q and distance term R
 
-    Parameters/Input:
+    Input:
     ----------
+    fn  --> frequency bins
+    a   --> seismic momemt
+    b   --> corner frequency
+    c   --> nvalue
+    d   --> gamma
+    e   --> travel time
+    f   --> Quality factor    
 
-
-    Returns/Modifications:
+    Returns:
     ---------------------
-
+    Theoretical single spectrum model
+    
     """
-
-    #fn = frequency bins
-    # a = seismic momemt
-    # b = corner frequency
-    # c = nvalue
-    # d = gamma
-    # e = travel time
-    # f = Quality factor
-    #fun = @(fc,fn) (fc(1)*exp(-pi*fn*t/fc(5)))./((1+(fn/fc(2)).^(fc(3)*fc(4))).^(1/fc(4)))
+    
     var1 = (-1 * np.pi * trt)/f
     var2 = np.exp([i*var1 for i in fn])
     var3 = [i*a for i in var2]

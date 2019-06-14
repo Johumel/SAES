@@ -28,28 +28,29 @@ def begin_spec_analysis(self,specmain,freqmain,egffile,mainfile,wm,wmfc,wmn,
     save_output function.
     
     Input:
-        specmain   --> dict of station spectral ratios
-        freqmain   --> dict of station spectral ratios frequency bins
-        egffile    --> filename of egf event for one station
-        mainfile   --> filename of main event for one station
-        wm         --> dict of main events's station single spectrum
-        wmfc       --> dict of imain events's  station single spectrum 
-                       frequency bins
-        wmn        --> dict of main events's  station single spectrum noise
-        trtm       --> dict of main event to stations first arrival travel time
-        we         --> dict of egf events's  station single spectrum
-        wefc       --> dict of egf events's  station single spectrum 
-                       frequency bins
-        wen        --> dict of egf events's  station single spectrum noise
-        trte       --> dict of egf event to stations first arrival travel time
-        time_win   --> time window length
-        ccvals     --> station spectral ratio weighting factors
-        wv         --> wave type
-        stfy       --> source time function amplitudes (not yet activated)
-        stfx       --> source time function time bins (not yet activated)
-        
+    -------
+    specmain   --> dict of station spectral ratios
+    freqmain   --> dict of station spectral ratios frequency bins
+    egffile    --> filename of egf event for one station
+    mainfile   --> filename of main event for one station
+    wm         --> dict of main events's station single spectrum
+    wmfc       --> dict of imain events's  station single spectrum 
+    frequency bins
+    wmn        --> dict of main events's  station single spectrum noise
+    trtm       --> dict of main event to stations first arrival travel time
+    we         --> dict of egf events's  station single spectrum
+    wefc       --> dict of egf events's  station single spectrum frequency bins
+    wen        --> dict of egf events's  station single spectrum noise
+    trte       --> dict of egf event to stations first arrival travel time
+    time_win   --> time window length
+    ccvals     --> station spectral ratio weighting factors
+    wv         --> wave type
+    stfy       --> source time function amplitudes (not yet activated)
+    stfx       --> source time function time bins (not yet activated)
+    
     Returns:
-        None
+    ---------
+    None
     
     '''
         

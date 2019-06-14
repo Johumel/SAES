@@ -15,11 +15,13 @@ def spec_calc(self,file1,file2,wv):
     Handles spectra (including spectral ratios) computation and SNR analysis
     
     Inputs:
+    ---------
     file1: filename of event 1
     file2: filename of event 2 (if analysing spectral ratios)
     wv: wave type (P or S)
     
     Returns:
+    ---------
     specratio: spectral ratio (if analysing spectral ratios)
     freqsignalm: spectral ratio frequency bins (if analysing spectral ratios)
     rawefc: Uncorrected (instrument response corrected not applied) event 2 frequency bins (if analysing spectral ratios)
@@ -55,7 +57,6 @@ def spec_calc(self,file1,file2,wv):
         snr1, freqsignal1, signal1,noise1,snr_no_resp1,freq_no_resp1,signal_no_resp1,noise_no_resp1,\
         trt1,sts1 = analyze_spec(self,file1,ev1,'main',time_win,False,wv)
     rawm = signal_no_resp1; rawmfc = freq_no_resp1; rawmn = noise_no_resp1
-    
     if file2 and len(sts1) != 0:
         if read(file1)[0].stats.channel != read(file2)[0].stats.channel or self.remove_resp.lower() == 'yes':
             snr2, freqsignal2, signal2,noise2,snr_no_resp2,freq_no_resp2,signal_no_resp2,\

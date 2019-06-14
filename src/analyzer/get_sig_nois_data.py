@@ -15,6 +15,7 @@ def get_sig_nois_data(self,fname,origtime,Atime,Btime,time_win,wv_fig,phase,evid
     Does the job of windowing the waveform to extract 'signal' and 'noise'
     
     Input:
+    -------
     fname: eventn filename
     origtime: event catalog time (UTC)
     Atime: P-phase arrival time (UTC)
@@ -27,6 +28,7 @@ def get_sig_nois_data(self,fname,origtime,Atime,Btime,time_win,wv_fig,phase,evid
     rmv_instr_resp: Instrument response corrected handle (boolean)
     
     Return:
+    --------
     sts: windowed uncorrected signal waveform
     nss: windowed uncorrected noise waveform
     nsstart: The start time of noise window in the waveform (UTC)
@@ -64,12 +66,8 @@ def get_sig_nois_data(self,fname,origtime,Atime,Btime,time_win,wv_fig,phase,evid
     st.taper(max_percentage=0.05)
     if wv_fig is not True:  
         sts = st.copy()       
-#        if self.method in [2,3] and st[0].stats.channel[1:3] in ['NN','NE','NZ'] and rmv_instr_resp is False:
-#            sts.integrate()
         if rmv_instr_resp is True:
             sts = remove_ir(self,sts,baz,evid,'DISP')
-#        elif self.method in [2,3] and st[0].stats.channel[1:3] in ['HN','HE','HZ'] and rmv_instr_resp is False:
-#            sts.integrate()
         st = remove_ir(self,st,baz,evid,'DISP')
         ns = st.copy()
         nss = sts.copy() 

@@ -14,60 +14,57 @@ def get_bounds(spectra):
     """
     Description:
     ------------
-    Get bounds of fitting parameters
+    Get the low frequency asymptote bounds for spectral ratio fitting
 
-    Parameters/Input:
+    Input:
     -----------------
-    spectral ():
+    spectra: Spectral ratio
 
-    Returns/Modifications:
+    Returns:
     ----------------------
-    ubm (float),
-    lbm (float),
-    ube (float),
-    lbm (float),
-
+    ubm  --> Upper asymptote bound for larger event
+    lbm  --> Lower asymptote bound for larger event
+    ube  --> Upper asymptote bound for smaller event
+    lbe  --> Lower asymptote bound for smaller event
     """
+    
     indx = np.where(spectra < spectra[0]*0.8)[0][0]
     boundregion = spectra[slice(0,indx)]
     lbm = max(boundregion)*0.9
     ubm = max(boundregion)*1.4
     lbe = min(spectra)*0.6
     ube = min(spectra)*1.2
+    
     return ubm,lbm,ube,lbe
 
 
-def bestfit(freqbin,specratio,multiplier,maxf,freq,freq_calc,freqzy,fcmin,fcmax,model):
+def bestfit(freqbin,specratio,multiplier,freq,freq_calc,freqzy,fcmin,fcmax,model):
     """
     Description:
     ------------
-    Fit the spectra ratio
+    Fucntion to refine and determine the optimum corner frequency
 
 
-    Parameters/Input:
+    Input:
     -----------------
-    freqbin ():
-    specratio
-    multiplier
-    maxf
-    freq
-    freq_calc
-    freqzy
-    fcmin
-    fcmax
-    model
+    freqbin     --> Spectral ratio frequency bin
+    specratio   --> Spectral ratio
+    multiplier  --> Spectral ratio scaler (Just a scaler nothing more)
+    freq        --> Range of possible corner frequencies
+    freq_calc   --> Boolean
+    freqzy      --> 
+    fcmin       --> lower bound of corner frequency
+    fcmax       --> upper bound of corner frequency
+    model       --> Source model type
 
-    Returns/Modifications:
+    Returns:
     ----------------------
-    normresidua (),
-    popt (),
-    pcov (),
+    normresidua --> Normalised model fit RMS
+    popt        --> Model fit parameters (i.e. fc1, fc2, omega, nvalue, gamma)
+    pcov        --> Model fit covariance matrix
 
     """
-#    try:
     specratio = np.multiply(specratio,multiplier,dtype=float)
-#        fcmin = fcmin*0.1
-#        fcmax = fcmax*1.5
     upper_fn = fcmin*2
     ubm,lbm,ube,lbe = get_bounds(specratio)
     if model.upper() == 'B':
@@ -85,21 +82,20 @@ def bestfit(freqbin,specratio,multiplier,maxf,freq,freq_calc,freqzy,fcmin,fcmax,
             popt, pcov = curve_fit(specr_model, freqbin,specratio ,method='trf',bounds=((fcmin,upper_fn,lbm,lbe,n1-0.01,n2-0.01),(fcmax,50.,ubm,ube,n3,n4)),loss='soft_l1',verbose=0,tr_solver='lsmr',maxfev=10000)
     residua = np.power(np.subtract(specratio,specr_model(freqbin, *popt)),2)
     normresidua = np.sqrt(np.sum(residua)/np.sum(np.power(specratio,2)))
-#        vc = max(specr_model(freqbin, *popt))
-#    except:
-#        normresidua = -1; popt = [];  pcov = []
+    
     return normresidua,popt,pcov
 
 #this section gets the best model fit for the data
 def get_best_fit(self,freqbin,specratio,fcmin,fcmax):
-
-#    try:
+    '''
+    Designed to get hte best model fit for the spectral ratio
+    '''
+    
     allresidua = []; allmultiplier = [];
-    allmultiplier = np.arange(0.1,2.0,0.1) #this is just used to scale the amplitude
-    maxf = max(freqbin)
+    allmultiplier = np.arange(0.1,2.0,0.1)
 
     #Get the fitting with the lowest rms
-    allresidua = Parallel(n_jobs=self.numworkers)(delayed(bestfit)(freqbin,specratio,allmultiplier[m],maxf,freq = None,freq_calc=False,freqzy = None,fcmin=fcmin,fcmax=fcmax,model=self.source_model) for m in range(len(allmultiplier)))
+    allresidua = Parallel(n_jobs=self.numworkers)(delayed(bestfit)(freqbin,specratio,allmultiplier[m],freq = None,freq_calc=False,freqzy = None,fcmin=fcmin,fcmax=fcmax,model=self.source_model) for m in range(len(allmultiplier)))
     if allresidua:
         allresidua1 =  [i[0] for i in allresidua]
         index = np.where(allresidua1 == min(allresidua1))[0][0]
@@ -107,10 +103,9 @@ def get_best_fit(self,freqbin,specratio,fcmin,fcmax):
         allfreq = [i[1][0] for i in allresidua]
         freqfinal = allfreq[index]
 
-    #So why am I recalculating this? Ok, I remember
-    # perturbing the frequency to improve fc value
+    # Just perturbing the frequency to improve fc value
     freqz = np.linspace(fcmin,fcmax,num = len(allmultiplier),endpoint=True)
-    allresidua = Parallel(n_jobs=self.numworkers)(delayed(bestfit)(freqbin,specratio,allmultiplier[index],maxf,freq = None,freq_calc=False,freqzy = freqz[m],fcmin=fcmin,fcmax=fcmax,model=self.source_model) for m in range(len(freqz)))
+    allresidua = Parallel(n_jobs=self.numworkers)(delayed(bestfit)(freqbin,specratio,allmultiplier[index],freq = None,freq_calc=False,freqzy = freqz[m],fcmin=fcmin,fcmax=fcmax,model=self.source_model) for m in range(len(freqz)))
     if allresidua:
         allresidua1 =  [i[0] for i in allresidua]
         index = np.where(allresidua1 == min(allresidua1))[0][0]
@@ -124,6 +119,4 @@ def get_best_fit(self,freqbin,specratio,fcmin,fcmax):
     else:
         freqperturb = None; freqfinal = None; multiplier = None; allresidua1 = None; popt = None; pcov = None
 
-#    except:
-#        freqperturb = None; freqfinal = None; multiplier = None; allresidua1 = None; popt = None; pcov = None
     return freqperturb,freqfinal,multiplier,allresidua1,popt,pcov

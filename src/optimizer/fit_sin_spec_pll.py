@@ -9,36 +9,35 @@ import numpy as np
 from scipy.optimize import curve_fit
 from .sinspec_model import sinspec_model
 from joblib import Parallel, delayed
-#import warnings
-#import matplotlib.pyplot as plt
+
 
 def fit_sin_spec_pll(pms,fn,station,fc1min,fc1max,trt,model,numworkers):
-     """
-     Description:
-     -------------
-     This function handles single spectrum fitting to determine all the free 
-     parameters (corner frequency, low frequency asymptote, Q-value, n-value,
-     gamma-value. It utilizes joblib parallel computing module to generate
-     a set of fitting model iwht different combinations of n & gamma and 
-     decides the best fit based on normalised RMS of each model; the model 
-     with the lowest RMS is selected as the optimum model.
+    '''
+    Description:
+    -------------
+    This function handles single spectrum fitting to determine all the free 
+    parameters (corner frequency, low frequency asymptote, Q-value, n-value,
+    gamma-value. It utilizes joblib parallel computing module to generate
+    a set of fitting model with different combinations of n & gamma and 
+    decides the best fit based on normalised RMS of each model; the model 
+    with the lowest RMS is selected as the optimum model.
 
+    Input:
+    ------    
+    pms        --> Spectrum
+    fn         --> frequency bins
+    fc1min     --> lower bound of fc
+    fc1max     --> upper bound of fc
+    trt        --> travel time of event
+    model      --> choice of source model
+    numworkers --> number of workers for parallel computation
 
-     Input:
-         pms        --> Spectrum
-         fn         --> frequency bins
-         fc1min     --> lower bound of fc
-         fc1max     --> upper bound of fc
-         trt        --> travel time of event
-         model      --> choice of source model
-         numworkers --> number of workers for parallel computation
-
-     Returns:
+    Returns:
+    ---------
+    popt --> container of determined optimum model parameters
+    pcov --> container for the covariance matrix of the optimum model
      
-         popt --> container of determined optimum model parameters
-         pcov --> container for the covariance matrix of the optimum model
-     
-     """
+    '''
 
     popt,pcov = None,None
     if model.lower() == 'vb':
@@ -79,12 +78,8 @@ def fit_sin_spec_pll(pms,fn,station,fc1min,fc1max,trt,model,numworkers):
             residua = np.power(np.subtract(datas,sinspec_model(fn, *i)),2) #L1 norm
             normresidua = np.sqrt(np.sum(residua)/np.sum(np.power(datas,2)))
             numres.append(normresidua)
-#        if min(numres) < 0.3:
         index = np.where(np.asarray(numres)== min(numres))[0][0]
         popt,pcov = popt1[index], pcov1[index]
-#        else:
-#            warnings.warn('The optimal RMS for station %s is %.3f hence it was discarded' %(station))
-#            popt = None; pcov  = None;
     else:
         raise Exception("To run single spectrum fitting in parallel", \
                             " set method to vb ")

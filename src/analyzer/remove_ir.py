@@ -13,12 +13,14 @@ def remove_ir(self,st,baz,evid,output):
     Handles instrument response and free-surface effects corrections
     
     Inputs:
+    --------
     st: input waveform
     baz: event-station back_azimuth
     evid: event ID
     output: output waveform type (Disp, Vel or Accl)
     
     Returns:
+    ----------
     st: instrument response corrected waveform
     
     '''

@@ -19,10 +19,12 @@ def get_spectrum(self,st1,ns1,st2,ns2):
     the number (1 or 2) of available channels
 
     Inputs:
+    --------
     st1 and st2 --> signal waveforms of event1 and event2 respectively
     ns1 and ns2 --> noise waveforms of event1 and event2 respectively
     
     Returns:
+    ---------
     snr            --> signal-to-noise ratio (SNR)
     freqsignal     --> frequency bins of spectra
     signal         --> signal spectrum

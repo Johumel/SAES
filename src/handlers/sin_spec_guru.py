@@ -19,13 +19,14 @@ def sin_spec_guru(self,evid1,wv,dlist):
     etc).
     
     Input:
-        evid1    --> individual events ID list
-        wv       --> wave type (P or S)
-        dlist    --> list of events to skip so as to avoid repetition as they 
-                     would have been already solved for.
+    ------
+    evid1    --> individual events ID list
+    wv       --> wave type (P or S)
+    dlist    --> list of events to skip so as to avoid repetition as they would have been already solved for.
     
     Returns:
-        None
+    ---------
+    None
     '''                    
     
     ind_spec = {}; freq_ind_spec = {};  ind_trtm = {};

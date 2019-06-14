@@ -14,17 +14,28 @@ def fit_sin_spec(pms,fn,station,fc1min,fc1max,trt,style,model):
      """
      Description:
      -------------
- 	 Constraining the low frequency asymptote
- 	 this will ensure that any bump in the spectrum does not bias the estimate
-     of the omega this part gives the user some room to determine good fit but
-     can also run without user input.
+ 	 Single spectrum fitting function for a user-defined source model.
+     This function searches for the combination of parameters that give the 
+     optimum result. It utilizes the least-square curve_fit function of scipy.
+     The 'manual' option allows user to review each spectrum fit and make 
+     'discard or keep' decision. 
 
-     Parameters/Input:
+     Input:
      -----------------
-
-     Returns/Modifications:
+     pms        --> single spectrum amplitudes
+     fn         --> single spectrum frequency bins
+     station    --> station
+     fc1min     --> lower bound of corner frequency
+     fc1max     --> upper bound of corner frequency
+     trt        --> travel time
+     style      --> user-defined parameter used if a user wants to review each 
+                    single spectrum model fit
+     model      --> Source model
+     
+     Returns:
      ----------------------
-
+     popt       --> model fit parameters
+     pcov       --> model fit covariance matrix
 
      """
      popt = [None]; pcov = [None]
@@ -46,7 +57,6 @@ def fit_sin_spec(pms,fn,station,fc1min,fc1max,trt,style,model):
      else:
         raise Exception("Style must be 'A', 'M', 'AUTO' or 'MANUAL'")
      Q1,Q2 = 200.,2000.
-#     try:
      datas,boundregion = pms, np.asarray([])
      try:
         if min(fn) < 1:
@@ -61,7 +71,6 @@ def fit_sin_spec(pms,fn,station,fc1min,fc1max,trt,style,model):
      else:
          lb = max(datas)*0.95
      ub = lb*1.5
-     #Compute and Plot for variable Q
      nn1 = np.arange(n1,n3,0.2)
      nn2 = np.arange(n2,n4,0.2)
      plotok = 'No'
@@ -91,9 +100,4 @@ def fit_sin_spec(pms,fn,station,fc1min,fc1max,trt,style,model):
                             plotok = 'No'
                          else:
                             break
-#
-#
-#     except:
-#         popt = [None]; pcov = [None]
-#         pass
      return popt,pcov

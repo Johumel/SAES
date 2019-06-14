@@ -11,9 +11,11 @@ import numpy as np
 def get_good_snr_freq_range(snrthres,signal1,signal2,snr1,snr2,freqsignal1,freqsignal2,noise1,noise2):
         
     """
-    Function to determine useable frequency range of spectra based on the signal-to-noise ratio [SNR]
+    Function to determine useable frequency range of spectra based on the 
+    signal-to-noise ratio [SNR]
     
     Inputs:
+    ---------
     snrthres: user-defined SNR (defaults to 2)
     signal1: signal spectrum of event 1
     signal2: signal spectrum of event 2 (if available)
@@ -25,6 +27,7 @@ def get_good_snr_freq_range(snrthres,signal1,signal2,snr1,snr2,freqsignal1,freqs
     noise2: noise spectrum of event 2
     
     Returns:
+    ----------
     datas: signal1 windowed over frequency range where SNR threshold is meet or surpassed
     datae: signal2 (if available) windowed over frequency range where SNR threshold is meet or surpassed
     fnm: frequency range of signal1 where SNR threshold is meet or surpassed
@@ -32,7 +35,8 @@ def get_good_snr_freq_range(snrthres,signal1,signal2,snr1,snr2,freqsignal1,freqs
     noisem: event1 noise windowed over frequency range where SNR threshold is meet or surpassed
     noisee: event2 noise windowed over frequency range where SNR threshold is meet or surpassed
     
-    Note: fnm and fne exactly the same when analysing spectral ratios; fne is None when analysing single spectrum
+    Note: fnm and fne exactly the same when analysing spectral ratios; fne is 
+    None when analysing single spectrum
     """
     
     datas = None; datae = None; fnm = None; fne = None;

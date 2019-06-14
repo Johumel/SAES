@@ -15,28 +15,28 @@ def specr_model(fn, a,b,c1,c2,d,e):
     Theoretical model for spectral ratio. Preferred model is
     determined by the values of d & e and they are user-defined.
 
-    Parameters/Input:
+    Input:
     -----------------
-
-    Returns/Modifications:
+    fn    --> freqeuncy bins
+    a     --> fc main event
+    b     --> fc egf
+    c1    --> moment  main
+    c2    --> moment  egf
+    d     --> n value
+    e     --> gamma
+    
+    Returns:
     ---------------------
+    Theor_model --> Theoretical spectral ratio model
 
     """
-    # fn = freqeuncy bins
-    # a = fc main event
-    # b = fc egf
-    # c1 = moment  main
-    # c2 = moment  egf
-    # d = n value
-    # e = gamma
-#    var0 = 1./e
-    var1 = [i/a for i in fn] # Main event
-    var2 = [i/b for i in fn] # egf
+    var1 = [i/a for i in fn] 
+    var2 = [i/b for i in fn] 
     var3 = np.multiply(e,d,dtype=float)
-    var4 = np.power(var1,var3,dtype='float64') # Main event
-    var5 = np.power(var2,var3,dtype='float64') # egf
-    var6 = [i+1. for i in var4] # Main event
-    var7 = [i+1. for i in var5] # egf
+    var4 = np.power(var1,var3,dtype='float64') 
+    var5 = np.power(var2,var3,dtype='float64') 
+    var6 = [i+1. for i in var4] 
+    var7 = [i+1. for i in var5] 
     var8 = [i/j for i,j in zip(var7,var6)]
     var9 = np.power(var8,1./e,dtype=float)
     theor_model = [i*(c1/c2) for i in var9]

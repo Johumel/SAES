@@ -7,22 +7,10 @@ Created on Tue May  7 09:16:40 2019
 """
 
 import os
-# from .saesutils.read_controlfile import read_controlfile
-# from .saesutils.get_prefilts import get_prefilts
-# from .saesutils.read_xml import read_xml
-
 
 class saes_core(object):
     """
-    A class used to ...
-
-    ...
-
-    Attributes
-    ----------
-
-    Methods
-    -------
+    A class used to handle initialization of the core program and control file
 
     """
     from .saesutils.read_controlfile import read_controlfile
@@ -66,13 +54,6 @@ class saes_core(object):
         self.baz['main'] = None
         self.baz['egf'] = None
         self.fixed_window = None
-        # read_controlfile(self)
-        # read_xml(self,1)
-        # if self.method in [1,3] and not self.stationxml:
-        #     raise FileNotFoundError('stationxml file not found')
-        # if self.stationlist and os.path.exists(self.maindir+'/input/pre_filt.list'):
-        #     get_prefilts(self)
-        #saes_main(self)
         self.read_controlfile()
         self.read_xml(1)
         if self.method in [1,3] and not self.stationxml:

@@ -22,11 +22,13 @@ def spec_ratio_guru(self,j,wv):
     then passed onto another handler function that does teh rest of the job.
     
     Input:
-        j    --> main event
-        wv   --> wave type (P or S)
+    ------
+    j    --> main event
+    wv   --> wave type (P or S)
         
     Returns:
-        None
+    ---------
+    None
         
     '''
 

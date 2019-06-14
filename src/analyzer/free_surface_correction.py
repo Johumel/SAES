@@ -24,10 +24,12 @@ def free_surface_correction(self,stream,evid):
     Taup module of obspy
 
     Inputs:
+    --------
     stream (obspy stream): 3 component (ZRT) waveform data
     evid (int): Event id
 
     Returns:
+    ---------
     3-component stream (obspy stream) corrected for free-surface effect
     """
 
