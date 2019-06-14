@@ -122,7 +122,7 @@ def begin_spec_analysis(self,specmain,freqmain,egffile,mainfile,wm,wmfc,wmn,
                         specrat_fit_plot(self,freqbin,specratio, tplier, frqprtub,allresidua0,ax_spec,popt,maxy)
                         save_output(self,popt, pcov,normresidua,None,None,None,wv)
                 save_fig(self,fig,'spec',0,wv)
-                stf_plot(self,stfx[lste[0]],rel_stf,wv)
+#                stf_plot(self,stfx[lste[0]],rel_stf,wv)
     if self.method == 3 or bool(specmain) == False:
         make_figures_ind(self,wm,wmfc,wmn,trtm,wv)
     return None

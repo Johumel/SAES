@@ -26,7 +26,10 @@ def read_controlfile(self):
         if not os.path.isdir(list2[index[0]]):
             warnings.warn('%s does not exist. Falling back to current working directory' % self.maindir)
         else:
-            self.maindir = list2[index[0]]
+            if list2[index[0]][-1] == '/':
+                self.maindir = os.path.dirname(list2[index[0]])
+            else:
+                self.maindir = list2[index[0]]
     index = np.where(list1 == 'method' )[0]
     if index.tolist():
         self.method = int(list2[index[0]])
@@ -77,17 +80,17 @@ def read_controlfile(self):
     if index.tolist():
         if not isinstance(list2[index[0]][1:-1].split(','), list):
             raise AttributeError('Blacklist must be a list of strings.')
-        self.blacklist_stations = [i.strip() for i in list2[index[0]][1:-1].split(',')]
+        self.blacklist_stations = [i.strip() for i in filter(None,re.split('[,]',list2[index[0]][1:-1]))]
     index = np.where(list1 == 'whitelist_events')[0]
     if index.tolist():
         if not isinstance(list2[index[0]][1:-1].split(','), list):
             raise AttributeError('Event must be a list of event IDs')
-        self.whitelist_evl = [i.strip() for i in list2[index[0]][1:-1].split(',')]
+        self.whitelist_evl = [i.strip() for i in filter(None,re.split('[,]',list2[index[0]][1:-1]))]
     index = np.where(list1 == 'blacklist_events')[0]
     if index.tolist():
         if not isinstance(list2[index[0]][1:-1].split(','), list):
             raise AttributeError('Event must be a list of event IDs')
-        self.blacklist_evl = [i.strip() for i in list2[index[0]][1:-1].split(',')]
+        self.blacklist_evl = [i.strip() for i in filter(None,re.split('[,]',list2[index[0]][1:-1]))]
     index = np.where(list1 == 'source_model')[0]
     if index.tolist():
         self.source_model = list2[index[0]]

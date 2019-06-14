@@ -219,10 +219,10 @@ def ploting(x1,y1,y12,x2,y2,y22,ax,station,color,x_begin,x_end,wv):
     ax.text(0.7,0.9,station,style = 'normal',weight='bold',size=18,
             transform = ax.transAxes)
     ax.set_xlim([x_begin,x_end])
-    ax.set_ylim([y22[-1]*0.1,max(y1)*10])
+    ax.set_ylim([y22[-1]*0.5,max(y1)*10])
     ax.yaxis.set_major_locator(LogLocator(base=10.0, numticks=5))
     ax.set_xlabel('Frequency (Hz)',fontsize=24,fontweight='bold')
-    ax.set_ylabel('Amplitude (nm)',fontsize=24,fontweight='bold')
+    ax.set_ylabel('Amplitude (nm/Hz)',fontsize=24,fontweight='bold')
     for tick in ax.yaxis.get_major_ticks():
         tick.label.set_fontsize(20)
     ax.get_xaxis().get_major_formatter().labelOnlyBase = True
@@ -386,7 +386,7 @@ def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
         for tick in axx2.yaxis.get_major_ticks():
             tick.label.set_fontsize(20)
         axx2.set_xlabel('Frequency (Hz)',fontsize=24)
-        axx2.set_ylabel('Amplitude (nm)',fontsize=24)
+        axx2.set_ylabel('Amplitude (nm/Hz)',fontsize=24)
         axx2.legend(loc='lower left',ncol=1,prop={'size':18})
         axx2.text(0.2, 0.5, station,fontsize=20, horizontalalignment='center',verticalalignment='center', transform=axx2.transAxes)
         lm,hm = axx2.get_ylim()

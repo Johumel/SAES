@@ -7,6 +7,7 @@ Created on Tue Apr 23 23:31:20 2019
 import numpy as np
 from ..create_plots import *
 from .analyze_spec import *
+from .get_good_snr_freq_range import *
 from ..saesutils.get_time_window import *
 from obspy.core import read
 

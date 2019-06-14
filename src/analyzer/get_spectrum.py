@@ -44,10 +44,14 @@ def get_spectrum(self,st1,ns1,st2,ns2):
     fact = 1.0e9
     nfftlen = int(2**np.ceil(np.log2(len(st2[0].data))))
     if st2:
+        st2.detrend('demean')
+        st2.detrend('linear')
+        ns2.detrend('demean')
+        ns2.detrend('linear')
         for tr in st2:     
             time_bandwidth = (numtapers+1)/2
-            pms_no_ir[i], fsd[i],jacknife,_,_ = mtspec(data=np.multiply(tr.data,fact,dtype=float), delta=tr.stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers), nfft=nfftlen,statistics=True)
-            pmn_no_ir[i],_,jacknife,_,_ = mtspec(data=np.multiply(ns2[i].data,fact,dtype=float), delta=ns2[i].stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers), nfft=nfftlen,statistics=True)
+            pms_no_ir[i], fsd[i],jacknife,_,_ = mtspec(data=np.multiply(tr.data,fact,dtype=float), delta=tr.stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers), nfft=nfftlen,statistics=True,quadratic=True)
+            pmn_no_ir[i],_,jacknife,_,_ = mtspec(data=np.multiply(ns2[i].data,fact,dtype=float), delta=ns2[i].stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers), nfft=nfftlen,statistics=True,quadratic=True)
             i+=1
 #        for key in pms_no_ir.keys(): pms_no_ir[key] = np.divide(pms_no_ir[key],st2[0].stats.delta)
 #        for key in pmn_no_ir.keys(): pmn_no_ir[key] = np.divide(pmn_no_ir[key],st2[0].stats.delta)
@@ -64,10 +68,14 @@ def get_spectrum(self,st1,ns1,st2,ns2):
     nfftlen = int(2**np.ceil(np.log2(len(st1[0].data))))
     i = 0
     if st1:    
+        st1.detrend('demean')
+        st1.detrend('linear')
+        ns1.detrend('demean')
+        ns1.detrend('linear')
         for tr in st1:
             time_bandwidth = (numtapers+1)/2
-            pms[i], fsds[i],jacknife,_,_ = mtspec(data=np.multiply(tr.data,fact,dtype=float), delta=tr.stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers),nfft=nfftlen, statistics=True)
-            pmn[i],fsdn[i],jacknife,_,_ = mtspec(data=np.multiply(ns1[i].data,fact,dtype=float), delta=ns1[i].stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers), nfft=nfftlen,statistics=True)
+            pms[i], fsds[i],jacknife,_,_ = mtspec(data=np.multiply(tr.data,fact,dtype=float), delta=tr.stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers),nfft=nfftlen, statistics=True,quadratic=True)
+            pmn[i],fsdn[i],jacknife,_,_ = mtspec(data=np.multiply(ns1[i].data,fact,dtype=float), delta=ns1[i].stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers), nfft=nfftlen,statistics=True,quadratic=True)
             i += 1
 #        for key in pms.keys(): pms[key] = np.multiply(pms[key],st1[0].stats.delta)
 #        for key in pmn.keys(): pmn[key] = np.multiply(pmn[key],st1[0].stats.delta)

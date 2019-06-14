@@ -12,8 +12,15 @@ from obspy.core import read
 from mtspec import mt_deconvolve
 from obspy.signal.filter import lowpass
 
-def plot_source_time_func(self,file1,file2,evname):
-    #adapted from mtspec manual
+
+def plot_source_time_func(self,file1,file2,time_win):
+    #adapted from mtspec manual (krischer, 2016)
+    if self.wvtype == 'P':
+        starttime1 = self.P_tt[self.mainev]
+        starttime2 = self.P_tt[self.egfev]
+    elif self.wvtype == 'S':
+        starttime1 = self.S_tt[self.mainev]
+        starttime2 = self.S_tt[self.egfev]
     st1 = read(file1)
     st2 = read(file2)
     delt = st1[0].stats.delta
@@ -22,15 +29,15 @@ def plot_source_time_func(self,file1,file2,evname):
     RSTF = {}
     for i in chalist:
         try:
-            st1 = read(file1.replace(chalist[0],i))
-            st2 = read(file2.replace(chalist[0],i))
+            st1 = read(file1.replace(chalist[0],i),starttime=starttime1,endtime=starttime1+time_win)
+            st2 = read(file2.replace(chalist[0],i),starttime=starttime2,endtime=starttime2+time_win)
             st_mtd = mt_deconvolve(st1[0].data, st2[0].data, delt,nfft=len(st1[0].data),
                       time_bandwidth=4, number_of_tapers=7,weights='constant',
                       demean=True)
         except OSError:
             pass
         st_dec = st_mtd['deconvolved']
-        freq_dec = st_mtd['frequencies']
+#        freq_dec = st_mtd['frequencies']
         xlen = len(st_dec)
         time = np.linspace(0, xlen*delt,xlen)
         l1 = np.arange(0, xlen)
@@ -49,10 +56,6 @@ def plot_source_time_func(self,file1,file2,evname):
         RSTF[i] = []
         RSTF[i] = slba
     RSTF = sum(RSTF.values())
-    fig = plt.figure(5,figsize=(4,3))
-    ax = fig.add_subplot(111)
-    ax.plot(RSTF)#(time, RSTF, 'r-', linewidth=2,label='Source Time function')
-    ax.set_xlabel("Time [s]")
-    ax.legend(loc='top right')
-    plt.tight_layout()
-    fig.save(self.output_dir+'/'+evname+'_STF.pdf',dpi=200)
+    RSTF /= RSTF.max() 
+    return time,RSTF
+#    fig.save(self.output_dir+'/'+evname1+'_STF.pdf',dpi=200)

@@ -1,9 +1,9 @@
-maindir: /Users/john.onwuemeka/Documents/GitHub/  #Path to Main directory --> optional
+maindir: /Users/john.onwuemeka/Documents/GitHub/SAES  #Path to Main directory --> optional
 method:  2                       # 1: single spectrum; 2: spectral ratio; 3: both --> required
-wave_type: S                     # P: P-wave;  S: S-wave  --> required
+wave_type: S                     # P: P-wave;  S: S-wave;  BOTH: P & S --> required
 whitelist_events: [201307112016,201307112058]              #list specific events to be solved for --> optional
 blacklist_events: []            #list events to be excluded --> optional
-blacklist_stations: [CN.A11,CN.A54]    #list stations to be excluded {NET.STA} --> optional
+blacklist_stations: [CN.A11,CN.A54,]    #list stations to be excluded {NET.STA} --> optional
 remove_resp: no                #yes: to compute SR from corrected waveform; NO: to compute from raw waveform (default) --> optional
 showfc2: yes                    #yes: to show fc2 in the SR figure (default); NO: otherwise --> optional
 sumtype:median                  #options [average, median (default), & weighted]. Choose how station SRs will be summed. CC values are used as weights --> optional

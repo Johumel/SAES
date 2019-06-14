@@ -5,8 +5,8 @@ Created on Mon Apr 22 08:16:36 2019
 
 @author: john.onwuemeka
 """
-
 import numpy as np
+
 
 def get_good_snr_freq_range(snrthres,signal1,signal2,snr1,snr2,freqsignal1,freqsignal2,noise1,noise2):
         
