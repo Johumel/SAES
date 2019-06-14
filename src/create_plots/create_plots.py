@@ -420,7 +420,7 @@ def stf_plot(self,x,y,wv):
     yet activated, stay tuned!
     '''
     
-    y = [i*np.sign(i) for i in y]
+#    y = [i*np.sign(i) for i in y]
     fig = plt.figure(figsize=(6,3))
     ax = fig.add_subplot(111)
     ax.plot(x,y,'k',linewidth=1.5)
