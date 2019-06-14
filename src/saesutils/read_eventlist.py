@@ -15,13 +15,14 @@ def read_eventlist(self):
     ------------
     Read events infomation.
 
-    Parameters/Input:
-    -----------------
+    Input:
+    -------
     events.dat:
     year month day hour minute second lat lon depth magnitude eventID
 
-    Returns/Modifications:
-    ----------------------
+    Returns:
+    ---------
+    None
     
     """
     data = np.genfromtxt(self.maindir+'/input/events.dat',skip_header=1,dtype='U24')

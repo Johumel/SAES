@@ -15,14 +15,14 @@ def read_ext_timetable(self):
     Read arrival time from external timetale file and create a dict
     of the P and S arrival times.
 
-    Parameters/Input:
-    ----------
+    Input:
+    -------
     tt.dat: input trave time table.
     time table format --> eventID station timepick(UTC) phasename(P,S)
     Please see full description in READ.ME
 
-    Returns/Modifications:
-    ---------------------
+    Returns:
+    --------
     P_tt(dict) dictionary of P wave travel times
     S_tt(dict) dictionary of S wave travel times
     """
@@ -35,7 +35,6 @@ def read_ext_timetable(self):
             P_tt[evid_tt[i]].append([UTCDateTime(data[i][2]),data[i][1]])
         elif data[i][3].upper() == 'S':
             S_tt[evid_tt[i]].append([UTCDateTime(data[i][2]),data[i][1]])
-#    evid_tt = sorted(list(set(evid_tt)))
     self.P_tt = P_tt
     self.S_tt = S_tt
     return None

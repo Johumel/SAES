@@ -12,9 +12,11 @@ def read_cclist(self):
     Read cross-correlation data from file 'cclist.dat'.
 
     Parameters:
+    -----------
     self (saes_core), an instance of the saes_core class.
 
-    Returns/Modificatoins:
+    Returns:
+    ---------
     evid1
     evid2
     sta_cc

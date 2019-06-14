@@ -8,23 +8,23 @@ import numpy as np
 def get_time_window(mag):
 
     """
-
     Description:
     ------------
     This is to estimate a time-window based on the magnitude of the event.
 
-    keeping in mind that the minimum resolvable frequency is the inverse
-    of the data length in second. Here we assume Vs = 3.75, future release
-    with use maybe iasp91 velocity model or user-defined velocity model. We
-    assume a constant stress drop of 10 MPa and Brune's model.
+    keeping in mind that in adherence to Parseval theorem, the minimum 
+    resolvable frequency is the inverse of the data length in second. Here we 
+    assume Vs = 3.75, future release with use maybe iasp91 velocity model or 
+    user-defined velocity model. We assume a constant stress drop of 10 MPa 
+    and Brune's model.
 
     Parameters:
     ----------
-    mag (float), earthquake magnitude.
+    mag     --> earthquake magnitude.
 
     Returns/Modificatoins:
     ----------------------
-    time_win(float), time window.
+    time_win    --> time window.
 
     """
 

@@ -15,7 +15,8 @@ def read_xml(self,xml_format):
     Parameters:
     xml_format (int): input_file_type, 1--obspy; 2--pyrocko;
 
-    Returns/Modifications:
+    Returns:
+    --------
     stationxml (): station metadata, e.g. location and name network, and response file.
     stationlist (dict): two-level dictionary contains the stations info.
         [station_name][station_info],
@@ -32,14 +33,14 @@ def read_xml(self,xml_format):
         from obspy import read_inventory
         stationxml = read_inventory(self.maindir+'/input/stations.xml',format='STATIONXML')
         if len(stationxml._networks) == 1:
-            for i in stationxml._networks[0]:#                for j in i:
+            for i in stationxml._networks[0]:
                 stationlist[i._code] = {}
                 stationlist[i._code]['lat'] = i._latitude
                 stationlist[i._code]['lon'] = i._longitude
                 stationlist[i._code]['elev'] = i._elevation/1000.
                 stationlist[i._code]['pre_filt'] = []
         else:
-            for i in stationxml._networks:#                for j in i:
+            for i in stationxml._networks:
                 stationlist[i._stations[0].code] = {}
                 stationlist[i._stations[0].code]['lat'] = i._stations[0].latitude
                 stationlist[i._stations[0].code]['lon'] = i._stations[0].longitude
