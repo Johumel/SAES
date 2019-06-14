@@ -419,7 +419,9 @@ def stf_plot(self,x,y,wv):
     Designed to handle source time function plots but this option is not
     yet activated, stay tuned!
     '''
-    fig = plt.figure(figsize=(8,5))
+    
+    y = [i*np.sign(i) for i in y]
+    fig = plt.figure(figsize=(6,3))
     ax = fig.add_subplot(111)
     ax.plot(x,y,'k',linewidth=1.5)
     ax.set_xlabel('Time (s)',fontsize=20)
