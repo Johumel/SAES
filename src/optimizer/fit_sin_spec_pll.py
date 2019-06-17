@@ -86,8 +86,11 @@ def fit_sin_spec_pll(pms,fn,station,fc1min,fc1max,trt,model,numworkers):
     return popt,pcov
 
 def ppl_omfc(fn,datas,lb,ub,fc1min,fc1max,trt,Q1,Q2,i,j):
-    popt,pcov = curve_fit(sinspec_model, fn,datas ,method='trf',
+    try:
+        popt,pcov = curve_fit(sinspec_model, fn,datas ,method='trf',
                           absolute_sigma=True,
                           bounds=((lb,fc1min+0.01,i-0.01,j-0.01,Q1,trt-0.0001),
-                                  (ub,fc1max,3.,2.,Q2,trt)),maxfev = 100000)
+                                  (ub,fc1max,3.,2.,Q2,trt)),max_nfev = 100000)
+    except:
+        popt,pcov = None,None
     return popt,pcov

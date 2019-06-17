@@ -32,20 +32,21 @@ def read_xml(self,xml_format):
     if xml_format == 1:
         from obspy import read_inventory
         stationxml = read_inventory(self.maindir+'/input/stations.xml',format='STATIONXML')
-        if len(stationxml._networks) == 1:
-            for i in stationxml._networks[0]:
+#        if len(stationxml._networks) == 1:
+#            for i in stationxml._networks[0]:
+#                stationlist[i._code] = {}
+#                stationlist[i._code]['lat'] = i._latitude
+#                stationlist[i._code]['lon'] = i._longitude
+#                stationlist[i._code]['elev'] = i._elevation/1000.
+#                stationlist[i._code]['pre_filt'] = []
+#        else:
+        for j in stationxml._networks:
+            for i in j:
                 stationlist[i._code] = {}
                 stationlist[i._code]['lat'] = i._latitude
                 stationlist[i._code]['lon'] = i._longitude
                 stationlist[i._code]['elev'] = i._elevation/1000.
                 stationlist[i._code]['pre_filt'] = []
-        else:
-            for i in stationxml._networks:
-                stationlist[i._stations[0].code] = {}
-                stationlist[i._stations[0].code]['lat'] = i._stations[0].latitude
-                stationlist[i._stations[0].code]['lon'] = i._stations[0].longitude
-                stationlist[i._stations[0].code]['elev'] = i._stations[0].elevation/1000.
-                stationlist[i._stations[0].code]['pre_filt'] = []
         self.stationxml = stationxml
         self.stationlist = stationlist
     elif xml_format == 2:
