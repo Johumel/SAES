@@ -42,7 +42,7 @@ def get_spectrum(self,st1,ns1,st2,ns2):
     snr_no_resp = None; signal_no_resp = None; noise_no_resp = None; freq_no_resp = None
     i = 0
     fact = 1.0e9
-    nfftlen = int(2**np.ceil(np.log2(len(st2[0].data))))
+    nfftlen = len(st2[0].data)+1#int(2**np.ceil(np.log2(len(st2[0].data))))
     if st2:
         st2.detrend('demean')
         st2.detrend('linear')
@@ -65,7 +65,7 @@ def get_spectrum(self,st1,ns1,st2,ns2):
         fact = 1.0e9
     else:
         fact = 1.0
-    nfftlen = int(2**np.ceil(np.log2(len(st1[0].data))))
+    nfftlen = len(st1[0].data)+1#int(2**np.ceil(np.log2(len(st1[0].data))))
     i = 0
     if st1:    
         st1.detrend('demean')
