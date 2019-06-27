@@ -113,14 +113,14 @@ def get_sig_nois_data(self,fname,origtime,Atime,Btime,time_win,wv_fig,phase,evid
         elif  Atime and not Btime :
             st.trim(starttime = (Atime - (time_win+2)),endtime = (Atime + time_win+time_win_add+.1))
             nsstart = Atime - (time_win+1)
-    l = sts.get_gaps()
-    if l:
-        for i in l:
-            sts.remove(sts.select(component=str(i[3][2]))[0]) 
-            nss.remove(nss.select(component=str(i[3][2]))[0])
-    l = st.get_gaps()
-    if l:
-        for i in l:
-            st.remove(st.select(component=str(i[3][2]))[0]) 
-            ns.remove(ns.select(component=str(i[3][2]))[0])
+#    l = sts.get_gaps()
+#    if l:
+#        for i in l:
+#            sts.remove(sts.select(component=str(i[3][2]))[0]) 
+#            nss.remove(nss.select(component=str(i[3][2]))[0])
+#    l = st.get_gaps()
+#    if l:
+#        for i in l:
+#            st.remove(st.select(component=str(i[3][2]))[0]) 
+#            ns.remove(ns.select(component=str(i[3][2]))[0])
     return sts,nss,nsstart,st,ns
