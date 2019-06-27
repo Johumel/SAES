@@ -182,7 +182,10 @@ def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,
                        linewidth = 1,color = colortype[colornum],
                        label = station)
         if lste[index] == indexx:
-            x_begin = min(freqmain[indexx])
+            if freqmain[indexx][0] == 0:
+                x_begin = freqmain[indexx][1]
+            else:
+                x_begin = freqmain[indexx][0]
             try:
                 x_end = self.stationlist[indexx]['pre_filt'][2]
             except:
@@ -193,8 +196,8 @@ def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,
                     y2 = we[indexx],y22 = wen[indexx],ax = axx,
                     station = station,color = colortype[colornum],
                     x_begin=x_begin,x_end=x_end,wv=wv)
-            xlim1 = 10**(np.floor(np.log10(x_begin)))
-            ax_spec.set_xlim([xlim1,x_end])
+#            xlim1 = 10**(np.floor(np.log10(x_begin)))
+            ax_spec.set_xlim([x_begin,x_end])
         colornum += 1
     return fig,ax_spec
 
@@ -370,9 +373,13 @@ def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
         axx2 = fig.add_subplot(2,3,n)
         axx2.loglog(fn, sinspec_model(fn, *popt_ind), 'k--', label='model fit',
                     linewidth=2)
-        bb = np.floor(np.log10(min(fn)))
+        if fn[0] == 0:
+            bb = fn[1]
+        else:
+            bb = fn[0]
+#        bb = np.floor(np.log10(min(fn)))
         x_end = self.stationlist[station]['pre_filt'][2]
-        axx2.set_xlim([10**bb,x_end])
+        axx2.set_xlim([bb,x_end])
         fig.subplots_adjust(hspace = .2,wspace = 0.0)
         dlim = int(min(len(wmfc[lste[index]]),len(wmn[lste[index]])) - 1)
         axx2.loglog(wmfc[lste[index]][0:dlim],wm[lste[index]][0:dlim],linewidth = 1,color = colortype[colornum],label = 'data')
