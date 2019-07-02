@@ -49,13 +49,13 @@ def sin_spec_guru(self,evid1,wv,dlist):
                 except:
                     pass
             foldera2 = sorted(glob.glob(evfold1))
+            self.mainev = evid1[j]
             for x in range(0,len(foldera2)):
                 file1  = foldera2[x]
                 mt = read(file1)
                 station = mt[0].stats.station.strip()
                 netsta = mt[0].stats.network.strip()+'.'+mt[0].stats.station.strip()
-                if time1 and netsta  not in self.blacklist_stations:
-                    self.mainev = evid1[j]
+                if time1 and netsta  not in self.blacklist_stations:                    
                     _,_,_,_,_,rawmfc,rawm,rawmn,trt1,_,time_win,_,_ = spec_calc(self,file1,None,wv)
                     ind_spec[station] = rawm; freq_ind_spec[station] = rawmfc;
                     time_window[station] = time_win;indv_noise[station] = rawmn
@@ -69,8 +69,8 @@ def sin_spec_guru(self,evid1,wv,dlist):
             lste = list(ind_spec.keys())           
             if lste:
                 make_figures_ind(self,ind_spec,freq_ind_spec,indv_noise,ind_trtm,wv)
-        try:
-            os.rmdir(self.output_dir)
-        except OSError:
-            pass
+            try:
+                os.rmdir(self.output_dir)
+            except OSError:
+                pass
     return None

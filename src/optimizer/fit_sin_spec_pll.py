@@ -43,14 +43,15 @@ def fit_sin_spec_pll(pms,fn,station,fc1min,fc1max,trt,model,numworkers):
     if model.lower() == 'vb':
         Q1,Q2 = 200.,1500.
         datas,boundregion = pms,np.asarray([])
-        try:
-            if min(fn) < 1:
-                brindex = np.where(fn <= 1.)[0][-1]
-            elif min(fn) > 1:
-                brindex = np.where(fn >= (min(fn)+2))[0][0]
-            boundregion = datas[slice(0,brindex)]
-        except:
-            pass
+#        try:
+#            if min(fn) < 1:
+#                brindex = np.where(fn <= 1.)[0][-1]
+#            elif min(fn) > 1:
+#                brindex = np.where(fn >= (min(fn)+2))[0][0]
+#            boundregion = datas[slice(0,brindex)]
+#        except:
+#            pass
+        boundregion = datas[slice(0,4)]
         if boundregion.any():
             lb = np.median(boundregion)*0.9
             ub = lb*1.5
