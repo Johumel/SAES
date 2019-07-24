@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
     name='saes',
     version='0.0.1',
-    author='Jon Onwuemeka and Ge Li',
+    author='Jonh Onwuemeka and Ge Li',
     author_email='john.onwuemeka@mail.mcgill.ca;ge.li2@mail.mcgill.ca',
     description='Earthquake source parameter calculation based on spectral analysis methods ',
     keywords=['earthquake source parameters','spectral analysis'],
