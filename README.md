@@ -1,4 +1,4 @@
-# STILL UNDER DEVELOPMENT!
+# MANUAL TO BE COMPLETED!
 # Spectral Analysis for Earthquake Source (SAES) Parameters
 
 ## 1.Description
