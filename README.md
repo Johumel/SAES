@@ -4,7 +4,7 @@
 ## 1.Description
 SAES code is intended to perform a spectral analysis to calculate earthquake
 source parameters, i.e. corner frequencies and source radius, assuming
-a circular patch.
+a circular nucleation patch.
 
 ## 2.Installtion
 ```
@@ -16,7 +16,8 @@ from saes.saes_core import saes_core
 saes_obj=saes_core('path/to/your/control.file')
 
 ```
-## 4.Example
+## 4. Output
+## 5.Example
 
 # Apendix
 ## Input files format
