@@ -1,41 +1,49 @@
-# MANUAL TO BE COMPLETED!
+
+
 # Spectral Analysis for Earthquake Source (SAES) Parameters
 
 ## 1.Description
-SAES code is intended to perform a spectral analysis to calculate earthquake
-source parameters, i.e. corner frequencies and source radius, assuming
-a circular nucleation patch.
+SAES code is intended to perform a spectral analysis to calculate earthquake source parameters, i.e. corner frequencies, $f_c$, and long-period spectral amplitude, $\Omega_0$ , which can be used to calcualte seismic moment, $M_w$,  stress drop, $\Delta \sigma$, and source dimension, $r$ in subsequent analysis. Through the input control file, the code allows the user to specify the following:
+1. desired source model (e.g., Brune's model, Boatwright model) 
+2. choice of single spectrum fitting and/or spectral ratio fitting 
+3. stations and events blacklisting or whitelisting 
+4. signal-to-noise (SNR) threshold
+5. instrument response removal
+6. free-surface effect correction^[1]
+
+Computation can be performed in parallel by setting ```numworkers``` larger than 1 in the control file. 
 
 ## 2.Installtion
 ```
+cd $SAES_DIR
 python setup.py install
 ```
 ## 3.Usage
 ```
 from saes.saes_core import saes_core
 saes_obj=saes_core('path/to/your/control.file')
-
 ```
-## 4. Output
-## 5.Example
 
-# Apendix
-## Input files format
-## catalog.dat
+## 4. Input 
+**catalog.dat**
+It includes the list of events to be analyzed in ***Pyrocko*** format. Alternatatively, the users can provide event list in a 11-column table, for example:
+| yyyy	|	mm	|	dd 	|hr	| min	|sec|	lat	|lon	|depth	|$M_w$|ID|
+|--|--|--|--|--|--|--|--|--|--|--|
+|2002  |  |
+
+![Example input table](https://github.com/Johumel/SAES/images/image1.png)
+
+
+See example in ```/input```
+
+**cclist.dat**
 *Description:*
 
 *Parameter:*
 
 *Example:*
 
-## cclist.dat
-*Description:*
-
-*Parameter:*
-
-*Example:*
-
-## control.file
+**control.file**
 *Description:*
 
 *Parameter:*
@@ -83,3 +91,9 @@ saes_obj=saes_core('path/to/your/control.file')
 
 *Example:*
 
+
+
+## 5. Output
+## 6. Example
+
+> Written with [StackEdit](https://stackedit.io/).
