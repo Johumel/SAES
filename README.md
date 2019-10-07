@@ -31,7 +31,7 @@ It includes the list of events to be analyzed in ***Pyrocko*** format. Alternata
 |--|--|--|--|--|--|--|--|--|--|--|
 |2002  |  |
 
-![Example input table](https://github.com/Johumel/SAES/images/image1.png)
+![Example input table](https://github.com/Johumel/SAES/blob/master/images/image1.png)
 
 
 See example in ```/input```
