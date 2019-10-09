@@ -3,7 +3,7 @@
 """
 Created on Mon Apr 22 08:37:53 2019
 
-@author: john.onwuemeka
+@author: John Onwuemeka; Ge Li
 """
 from obspy.core import read
 from .get_sig_nois_data import *
