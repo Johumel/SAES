@@ -3,7 +3,7 @@
 """
 Created on Mon Apr 22 22:03:22 2019
 
-@author: john.onwuemeka
+@author: john.onwuemeka; Ge Li
 """
 import numpy as np
 from scipy.optimize import curve_fit
@@ -27,14 +27,14 @@ def get_bounds(spectra):
     ube  --> Upper asymptote bound for smaller event
     lbe  --> Lower asymptote bound for smaller event
     """
-    
+
     indx = np.where(spectra < spectra[0]*0.8)[0][0]
     boundregion = spectra[slice(0,indx)]
     lbm = max(boundregion)*0.9
     ubm = max(boundregion)*1.4
     lbe = min(spectra)*0.6
     ube = min(spectra)*1.2
-    
+
     return ubm,lbm,ube,lbe
 
 
@@ -52,7 +52,7 @@ def bestfit(freqbin,specratio,multiplier,freq,freq_calc,freqzy,fcmin,fcmax,model
     multiplier  --> Spectral ratio scaler (Just a scaler nothing more)
     freq        --> Range of possible corner frequencies
     freq_calc   --> Boolean
-    freqzy      --> 
+    freqzy      -->
     fcmin       --> lower bound of corner frequency
     fcmax       --> upper bound of corner frequency
     model       --> Source model type
@@ -82,7 +82,7 @@ def bestfit(freqbin,specratio,multiplier,freq,freq_calc,freqzy,fcmin,fcmax,model
             popt, pcov = curve_fit(specr_model, freqbin,specratio ,method='trf',bounds=((fcmin,upper_fn,lbm,lbe,n1-0.01,n2-0.01),(fcmax,50.,ubm,ube,n3,n4)),loss='soft_l1',verbose=0,tr_solver='lsmr',maxfev=10000)
     residua = np.power(np.subtract(specratio,specr_model(freqbin, *popt)),2)
     normresidua = np.sqrt(np.sum(residua)/np.sum(np.power(specratio,2)))
-    
+
     return normresidua,popt,pcov
 
 #this section gets the best model fit for the data
@@ -90,7 +90,7 @@ def get_best_fit(self,freqbin,specratio,fcmin,fcmax):
     '''
     Designed to get hte best model fit for the spectral ratio
     '''
-    
+
     allresidua = []; allmultiplier = [];
     allmultiplier = np.arange(0.1,2.0,0.1)
 

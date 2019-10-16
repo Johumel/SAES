@@ -3,29 +3,29 @@
 """
 Created on Mon Apr 22 08:16:36 2019
 
-@author: john.onwuemeka
+@author: john.onwuemeka; Ge Li
 """
 import numpy as np
 
 
 def get_good_snr_freq_range(snrthres,signal1,signal2,snr1,snr2,freqsignal1,freqsignal2,noise1,noise2):
-        
+
     """
-    Function to determine useable frequency range of spectra based on the 
+    Function to determine useable frequency range of spectra based on the
     signal-to-noise ratio [SNR]
-    
+
     Inputs:
     ---------
     snrthres: user-defined SNR (defaults to 2)
     signal1: signal spectrum of event 1
     signal2: signal spectrum of event 2 (if available)
     snr1: SNR of event 1
-    snr2: SNR of event 2 (if available)   
+    snr2: SNR of event 2 (if available)
     freqsignal1: frequency bins of signal 1
     freqsignal2: frequency bins of signal 2
     noise1: noise spectrum of event 1
     noise2: noise spectrum of event 2
-    
+
     Returns:
     ----------
     datas: signal1 windowed over frequency range where SNR threshold is meet or surpassed
@@ -34,13 +34,13 @@ def get_good_snr_freq_range(snrthres,signal1,signal2,snr1,snr2,freqsignal1,freqs
     fne: frequency range of signal2 where SNR threshold is meet or surpassed
     noisem: event1 noise windowed over frequency range where SNR threshold is meet or surpassed
     noisee: event2 noise windowed over frequency range where SNR threshold is meet or surpassed
-    
-    Note: fnm and fne exactly the same when analysing spectral ratios; fne is 
+
+    Note: fnm and fne exactly the same when analysing spectral ratios; fne is
     None when analysing single spectrum
     """
-    
+
     datas = None; datae = None; fnm = None; fne = None;
-    noisem = None; noisee = None; 
+    noisem = None; noisee = None;
     quit_calc = 'N'
     try:
         try:

@@ -3,7 +3,7 @@
 """
 Created on Tue Apr 30 17:31:14 2019
 
-@author: john.onwuemeka
+@author: john.onwuemeka; Ge Li
 """
 from ..analyzer import spec_calc
 from ..create_plots import *
@@ -17,18 +17,18 @@ def sin_spec_guru(self,evid1,wv,dlist):
     It performs most of the quality checks and only passes spectrum that meet
     set conditions and thresholds (e.g. SNR threshold, minimum frequency range,
     etc).
-    
+
     Input:
     ------
     evid1    --> individual events ID list
     wv       --> wave type (P or S)
     dlist    --> list of events to skip so as to avoid repetition as they would have been already solved for.
-    
+
     Returns:
     ---------
     None
-    '''                    
-    
+    '''
+
     ind_spec = {}; freq_ind_spec = {};  ind_trtm = {};
     indv_noise = {}; time_window = {};
     for j in range(0,len(evid1)):
@@ -55,7 +55,7 @@ def sin_spec_guru(self,evid1,wv,dlist):
                 mt = read(file1)
                 station = mt[0].stats.station.strip()
                 netsta = mt[0].stats.network.strip()+'.'+mt[0].stats.station.strip()
-                if time1 and netsta  not in self.blacklist_stations:                    
+                if time1 and netsta  not in self.blacklist_stations:
                     _,_,_,_,_,rawmfc,rawm,rawmn,trt1,_,time_win,_,_ = spec_calc(self,file1,None,wv)
                     ind_spec[station] = rawm; freq_ind_spec[station] = rawmfc;
                     time_window[station] = time_win;indv_noise[station] = rawmn
@@ -66,7 +66,7 @@ def sin_spec_guru(self,evid1,wv,dlist):
                 if ind_spec[i] is None:
                     del ind_spec[i],freq_ind_spec[i],indv_noise[i]
                     del ind_trtm[i],time_window[i]
-            lste = list(ind_spec.keys())           
+            lste = list(ind_spec.keys())
             if lste:
                 make_figures_ind(self,ind_spec,freq_ind_spec,indv_noise,ind_trtm,wv)
             try:

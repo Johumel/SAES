@@ -3,7 +3,7 @@
 """
 Created on Mon Apr 22 08:04:42 2019
 
-@author: john.onwuemeka
+@author: john.onwuemeka; Ge Li
 """
 import numpy as np
 from scipy.signal import hilbert
@@ -20,7 +20,7 @@ def free_surface_correction(self,stream,evid):
     affect surface station, based on the method in Aki & Richards, 1980 (pg. 185);
     House, L. and Boatwright, J., 1980; Kennett, B.L.N., 1991; Kim et al., 1997
     By default, this functions uses iasp91 velocity model in Obspy.
-    Ray parameter required to calculate the free surface effect is estimated using the 
+    Ray parameter required to calculate the free surface effect is estimated using the
     Taup module of obspy
 
     Inputs:

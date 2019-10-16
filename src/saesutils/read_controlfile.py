@@ -3,7 +3,7 @@
 """
 Created on Tue May  7 11:03:26 2019
 
-@author: john.onwuemeka
+@author: john.onwuemeka; Ge Li
 """
 import numpy as np
 import re, warnings,os

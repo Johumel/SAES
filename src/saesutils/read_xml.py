@@ -3,7 +3,7 @@
 """
 Created on Mon Apr 22 08:20:07 2019
 
-@author: john.onwuemeka
+@author: john.onwuemeka; Ge Li
 """
 
 def read_xml(self,xml_format):

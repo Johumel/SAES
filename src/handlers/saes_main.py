@@ -3,7 +3,7 @@
 """
 Created on Tue Apr 23 10:27:01 2019
 
-@author: john.onwuemeka
+@author: john.onwuemeka; Ge Li
 """
 
 
@@ -15,14 +15,14 @@ from .sin_spec_guru import sin_spec_guru
 import os,datetime
 
 def saes_main(self):
-    
+
     '''
     Main program handler. This is the main function called to initialize
-    all the variables required for the rest of the computation. It calls other 
-    functions to read and organize P and S waves, cross-correlation table and 
+    all the variables required for the rest of the computation. It calls other
+    functions to read and organize P and S waves, cross-correlation table and
     initiate single spectrum and/or spectral ratio functions.
     '''
-    
+
     sol = self.method
     if int(sol) in [1,2,3]:
         if int(sol) == 1:

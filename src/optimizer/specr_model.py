@@ -3,7 +3,7 @@
 """
 Created on Tue Apr 16 18:09:06 2019
 
-@author: john.onwuemeka
+@author: john.onwuemeka; Ge Li
 """
 import numpy as np
 
@@ -24,19 +24,19 @@ def specr_model(fn, a,b,c1,c2,d,e):
     c2    --> moment  egf
     d     --> n value
     e     --> gamma
-    
+
     Returns:
     ---------------------
     Theor_model --> Theoretical spectral ratio model
 
     """
-    var1 = [i/a for i in fn] 
-    var2 = [i/b for i in fn] 
+    var1 = [i/a for i in fn]
+    var2 = [i/b for i in fn]
     var3 = np.multiply(e,d,dtype=float)
-    var4 = np.power(var1,var3,dtype='float64') 
-    var5 = np.power(var2,var3,dtype='float64') 
-    var6 = [i+1. for i in var4] 
-    var7 = [i+1. for i in var5] 
+    var4 = np.power(var1,var3,dtype='float64')
+    var5 = np.power(var2,var3,dtype='float64')
+    var6 = [i+1. for i in var4]
+    var7 = [i+1. for i in var5]
     var8 = [i/j for i,j in zip(var7,var6)]
     var9 = np.power(var8,1./e,dtype=float)
     theor_model = [i*(c1/c2) for i in var9]

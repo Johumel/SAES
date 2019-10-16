@@ -3,17 +3,17 @@
 """
 Created on Mon Apr 22 11:07:48 2019
 
-@author: john.onwuemeka
+@author: john.onwuemeka; Ge Li
 """
 import numpy as np
 from mtspec import mtspec
 
 def get_spectrum(self,st1,ns1,st2,ns2):
- 
+
     '''
-    Take waveforms of signal and noise (pre-Pphase arrrival waveform) and 
+    Take waveforms of signal and noise (pre-Pphase arrrival waveform) and
     generates spectra using the multiptaper spectrum estimation method of
-    Prieto et al., (2009) implemented in python by Krischer (2016). This function 
+    Prieto et al., (2009) implemented in python by Krischer (2016). This function
     would naturally calculate the sqrt of the sum of the power spectrum from all
     3 channels (E,N,& Z) if they are available otherwise it will estimate the spectrum with
     the number (1 or 2) of available channels
@@ -22,7 +22,7 @@ def get_spectrum(self,st1,ns1,st2,ns2):
     --------
     st1 and st2 --> signal waveforms of event1 and event2 respectively
     ns1 and ns2 --> noise waveforms of event1 and event2 respectively
-    
+
     Returns:
     ---------
     snr            --> signal-to-noise ratio (SNR)
@@ -33,12 +33,12 @@ def get_spectrum(self,st1,ns1,st2,ns2):
     freq_no_resp   --> frequency bins of instrument response corrected signal
     signal_no_resp --> spectrum of instrument response corrected signal waveform
     noise_no_resp  --> spectrum of instrument response corrected noise waveform
-   
+
     '''
-    
+
     numtapers,stationlist = self.num_tapers,self.stationlist
     pms = {}; fsds = {}; pmn ={}; fsdn = {}; fsd = {}; pms_no_ir = {}; pmn_no_ir = {};
-    snr = None; freqsignal = None; signal = None; noise = None; 
+    snr = None; freqsignal = None; signal = None; noise = None;
     snr_no_resp = None; signal_no_resp = None; noise_no_resp = None; freq_no_resp = None
     i = 0
     fact = 1.0e9
@@ -48,7 +48,7 @@ def get_spectrum(self,st1,ns1,st2,ns2):
         st2.detrend('linear')
         ns2.detrend('demean')
         ns2.detrend('linear')
-        for tr in st2:     
+        for tr in st2:
             time_bandwidth = (numtapers+1)/2
             pms_no_ir[i], fsd[i],jacknife,_,_ = mtspec(data=np.multiply(tr.data,fact,dtype=float), delta=tr.stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers), nfft=nfftlen,statistics=True,quadratic=True)
             pmn_no_ir[i],_,jacknife,_,_ = mtspec(data=np.multiply(ns2[i].data,fact,dtype=float), delta=ns2[i].stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers), nfft=nfftlen,statistics=True,quadratic=True)
@@ -67,7 +67,7 @@ def get_spectrum(self,st1,ns1,st2,ns2):
         fact = 1.0
     nfftlen = len(st1[0].data)+1#int(2**np.ceil(np.log2(len(st1[0].data))))
     i = 0
-    if st1:    
+    if st1:
         st1.detrend('demean')
         st1.detrend('linear')
         ns1.detrend('demean')
@@ -81,12 +81,12 @@ def get_spectrum(self,st1,ns1,st2,ns2):
 #        for key in pmn.keys(): pmn[key] = np.multiply(pmn[key],st1[0].stats.delta)
         #for key in pms_no_ir.keys(): pms_no_ir[key] = np.divide(pms_no_ir[key],st1[0].stats.delta)
         #for key in pmn_no_ir.keys(): pmn_no_ir[key] = np.divide(pmn_no_ir[key],st1[0].stats.delta)
-        signal = np.sqrt(sum(pms.values()))           
+        signal = np.sqrt(sum(pms.values()))
         noise = np.sqrt(sum(pmn.values()))
         snr = np.divide(signal,noise,dtype='float64')
         freqsignal=fsds[0];
         fe1 = len(signal)
-        fe2 = len(noise)    
+        fe2 = len(noise)
         if fe1 < fe2:
             padlen = fe2-fe1
             signal = np.lib.pad(signal,(0,padlen),'edge')
@@ -97,7 +97,7 @@ def get_spectrum(self,st1,ns1,st2,ns2):
     if pre_filt:
         highend = np.where(freq_no_resp >= pre_filt[2] )[0][0]
         lowend = np.where(freq_no_resp >= pre_filt[1] )[0][0]
-    else:       
+    else:
         lowend = 0
         highend = np.where(freq_no_resp >= max(freq_no_resp)-5)[0][0]
         pass

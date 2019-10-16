@@ -3,7 +3,7 @@
 """
 Created on Tue Apr 16 17:57:06 2019
 
-@author: john.onwuemeka
+@author: john.onwuemeka; Ge Li
 """
 import numpy as np
 
@@ -24,14 +24,14 @@ def sinspec_model(fn,a,b,c,d,f,trt):
     c   --> nvalue
     d   --> gamma
     e   --> travel time
-    f   --> Quality factor    
+    f   --> Quality factor
 
     Returns:
     ---------------------
     Theoretical single spectrum model
-    
+
     """
-    
+
     var1 = (-1 * np.pi * trt)/f
     var2 = np.exp([i*var1 for i in fn])
     var3 = [i*a for i in var2]

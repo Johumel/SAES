@@ -3,7 +3,7 @@
 """
 Created on Tue Apr 16 18:16:46 2019
 
-@author: john.onwuemeka
+@author: john.onwuemeka; Ge Li
 """
 import numpy as np
 from scipy.optimize import curve_fit
@@ -15,10 +15,10 @@ def fit_sin_spec(pms,fn,station,fc1min,fc1max,trt,style,model):
      Description:
      -------------
  	 Single spectrum fitting function for a user-defined source model.
-     This function searches for the combination of parameters that give the 
+     This function searches for the combination of parameters that give the
      optimum result. It utilizes the least-square curve_fit function of scipy.
-     The 'manual' option allows user to review each spectrum fit and make 
-     'discard or keep' decision. 
+     The 'manual' option allows user to review each spectrum fit and make
+     'discard or keep' decision.
 
      Input:
      -----------------
@@ -28,10 +28,10 @@ def fit_sin_spec(pms,fn,station,fc1min,fc1max,trt,style,model):
      fc1min     --> lower bound of corner frequency
      fc1max     --> upper bound of corner frequency
      trt        --> travel time
-     style      --> user-defined parameter used if a user wants to review each 
+     style      --> user-defined parameter used if a user wants to review each
                     single spectrum model fit
      model      --> Source model
-     
+
      Returns:
      ----------------------
      popt       --> model fit parameters

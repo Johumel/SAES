@@ -3,7 +3,7 @@
 """
 Created on Mon Apr 22 21:46:30 2019
 
-@author: john.onwuemeka
+@author: john.onwuemeka; Ge Li
 """
 import matplotlib.transforms as transforms
 from matplotlib.ticker import MaxNLocator, LogLocator
@@ -25,19 +25,19 @@ def colorlist(numspec):
                      'darkcyan','wheat','azure','salmon','linen']
     else:
         colors = dict(clors.BASE_COLORS, **clors.CSS4_COLORS)
-        hsv_sort = sorted((tuple(clors.rgb_to_hsv(clors.to_rgba(color)[:3])), 
+        hsv_sort = sorted((tuple(clors.rgb_to_hsv(clors.to_rgba(color)[:3])),
                            name)
                 for name, color in colors.items())
         colortype = list(set([name for hsv, name in hsv_sort]))
     return colortype
 
 def plot_waveform(self,stn,nsstart,Ptime,Stime,time_win,evtype,axz,wv):
-    
+
     '''
-    This is used to plot waveforms of the event pairs shown in the 
+    This is used to plot waveforms of the event pairs shown in the
     spectral ratio figure.
-    
-    Input: 
+
+    Input:
     -------
     stn      --> event waveforms (3-components if available)
     nsstart  --> noise start time (UTC)
@@ -47,12 +47,12 @@ def plot_waveform(self,stn,nsstart,Ptime,Stime,time_win,evtype,axz,wv):
     evtype   --> event type (main or egf)
     axz      --> figure axes of the spectral ratio plot
     wv       --> wave type (P or S)
-    
+
     Return:
     --------
     None
     '''
-    
+
     if axz:
         if wv.upper() == 'S':
             tr = stn.select(component= 'T')[0]
@@ -65,7 +65,7 @@ def plot_waveform(self,stn,nsstart,Ptime,Stime,time_win,evtype,axz,wv):
         leg = axz.legend(loc=3,fontsize = 18,handlelength=0, handletextpad=0)
         for item in leg.legendHandles:
             item.set_visible(False)
-        axz.annotate("", xy=(nsstart, max(tr.data)*0.15), 
+        axz.annotate("", xy=(nsstart, max(tr.data)*0.15),
                      xytext=(time_win+nsstart, max(tr.data)*0.15),
                          arrowprops=dict(arrowstyle="<->",facecolor='k'))
         axz.text(nsstart+(time_win*0.3), 0.65,'Ns',fontsize=20,
@@ -76,7 +76,7 @@ def plot_waveform(self,stn,nsstart,Ptime,Stime,time_win,evtype,axz,wv):
             Stimex = Stime - tr.stats.starttime
             axz.text(Stimex - 0.85, max(tr.data)*0.7,'S',fontsize=22,
                      fontweight='bold')
-            axz.annotate("", xy=(Stimex - 0.55, max(tr.data)*0.75), 
+            axz.annotate("", xy=(Stimex - 0.55, max(tr.data)*0.75),
                          xytext=(Stimex - 0.15, max(tr.data)*0.20),
                          arrowprops=dict(arrowstyle="<-",facecolor='k',
                                          connectionstyle="arc3"))
@@ -84,7 +84,7 @@ def plot_waveform(self,stn,nsstart,Ptime,Stime,time_win,evtype,axz,wv):
             Ptimex = Ptime - tr.stats.starttime
             axz.text(Ptimex - 0.85, max(tr.data)*0.5,'P',fontsize=22,
                      fontweight='bold')
-            axz.annotate("", xy=(Ptimex - 0.55, max(tr.data)*0.55), 
+            axz.annotate("", xy=(Ptimex - 0.55, max(tr.data)*0.55),
                          xytext=(Ptimex - 0.15, max(tr.data)*0.05),
                          arrowprops=dict(arrowstyle="<-",facecolor='k',
                                          connectionstyle="arc3"))
@@ -114,12 +114,12 @@ def plot_waveform(self,stn,nsstart,Ptime,Stime,time_win,evtype,axz,wv):
 
 def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,
                       time_win,mainfile,egffile,wv):
-    
+
     '''
-    Function for creating and organizing the spectra ratio plots. 
-    All the subplots (axes) are initiated and organized here. 
+    Function for creating and organizing the spectra ratio plots.
+    All the subplots (axes) are initiated and organized here.
     '''
-       
+
     from obspy.core import read
     from ..analyzer import get_sig_nois_data
     lste = list(specmain.keys())
@@ -202,13 +202,13 @@ def make_figures_spec(self,specmain,freqmain,wmfc,wm,wmn,wefc,we,wen,indexx,
     return fig,ax_spec
 
 def ploting(x1,y1,y12,x2,y2,y22,ax,station,color,x_begin,x_end,wv):
-    
+
     '''
-    Handles example event pair plot shown on the bottom left of 
+    Handles example event pair plot shown on the bottom left of
     the spectral ratio figure. This figures gives an idea of the SNR for the
     example events
     '''
-    
+
     ax.loglog(x1,y1,linewidth = 3, label =  'Main event',color = color ) # Main event
     ax.loglog(x1,y12,linewidth = 2,ls='--', alpha=0.7,
               label =  'Main event noise',color=color)
@@ -238,15 +238,15 @@ def ploting(x1,y1,y12,x2,y2,y22,ax,station,color,x_begin,x_end,wv):
     return None
 
 def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,
-                     allresidua1,ax,popt,maxy): 
-    
-    ''' 
-    Function to create the bottom right figure (axes) of the spectral 
-    ratio plot. Individual spectral ratios of each station and the 
+                     allresidua1,ax,popt,maxy):
+
+    '''
+    Function to create the bottom right figure (axes) of the spectral
+    ratio plot. Individual spectral ratios of each station and the
     representative spectral ratio for the event pair is organised and plotted
     by this function.
     '''
-    
+
     from mpl_toolkits.axes_grid1.inset_locator import inset_axes
     from ..optimizer import specr_model
     mtpl = mtpl
@@ -255,7 +255,7 @@ def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,
     residua = np.power(np.subtract(specratio,specr_model(freqbin, *popt)),2)
     normresidua = np.sqrt(np.sum(residua)/np.sum(np.power(specratio,2)))
     if popt.any():
-        ax.loglog(freqbin,np.divide(specr_model(freqbin, *popt),mtpl), 
+        ax.loglog(freqbin,np.divide(specr_model(freqbin, *popt),mtpl),
                   'g--', label='model fit',linewidth = 5)
         ax.text(0.55,0.1,'M$_L$$_($$_1$$_)$ = %s' % self.evlist[self.mainev][1][3],
                 style = 'normal',weight='bold',size=14,transform=ax.transAxes)
@@ -332,23 +332,23 @@ def specrat_fit_plot(self,freqbin,specratio,mtpl,freqperturb,
 
 def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
     '''
-    Handler for individual spectra analysis spectral fitting and figure 
+    Handler for individual spectra analysis spectral fitting and figure
     creation.
-    
-    Input: 
+
+    Input:
     -------
     wm   --> individual signal spectra
     wmfc --> individual signal spectra frequency bins
-    wmn  --> individual noise spectra 
+    wmn  --> individual noise spectra
     trtm --> Travel times of the events contained in wm
     wv   --> wave type (P or S)
-           
+
     Returns:
     ---------
-    It returns None but fits individual spectra and dispatches spectrum 
+    It returns None but fits individual spectra and dispatches spectrum
     fitting results.
     '''
-    
+
     colornum = 0
     fig = plt.figure(figsize=(16,10),tight_layout=True)
     lste = list(wm.keys())
@@ -424,12 +424,12 @@ def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
 
 
 def stf_plot(self,x,y,wv):
-    
-    ''' 
+
+    '''
     Designed to handle source time function plots but this option is not
     yet activated, stay tuned!
     '''
-    
+
 #    y = [i*np.sign(i) for i in y]
     fig = plt.figure(figsize=(6,3))
     ax = fig.add_subplot(111)
@@ -437,18 +437,18 @@ def stf_plot(self,x,y,wv):
     ax.set_xlabel('Time (s)',fontsize=20)
     ax.fill_between(x, y, facecolor='gray', alpha=0.5)
     for tick in ax.xaxis.get_major_ticks():tick.label.set_fontsize(18)
-    for tick in ax.yaxis.get_major_ticks():tick.label.set_fontsize(18)  
+    for tick in ax.yaxis.get_major_ticks():tick.label.set_fontsize(18)
     save_fig(self,fig,'stf',None,wv)
     return None
-    
-    
+
+
 def save_fig(self,fig,figtype,mm,wv):
-    
+
     '''
-    All created figures are saved to by this function. The default dpi 
+    All created figures are saved to by this function. The default dpi
     for each figure is 300.
     '''
-    
+
     if figtype == 'spec':
         fig.subplots_adjust(hspace = .1,wspace=0.1)
         fig.tight_layout()

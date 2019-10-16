@@ -3,7 +3,7 @@
 """
 Created on Mon Apr 22 08:34:52 2019
 
-@author: john.onwuemeka
+@author: john.onwuemeka; Ge Li
 """
 import numpy as np
 from obspy.core import UTCDateTime

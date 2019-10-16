@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Apr 23 23:31:20 2019
-@author: john.onwuemeka
+@author: john.onwuemeka; Ge Li
 """
 import numpy as np
 from ..create_plots import *
@@ -14,13 +14,13 @@ from obspy.core import read
 def spec_calc(self,file1,file2,wv):
     '''
     Handles spectra (including spectral ratios) computation and SNR analysis
-    
+
     Inputs:
     ---------
     file1: filename of event 1
     file2: filename of event 2 (if analysing spectral ratios)
     wv: wave type (P or S)
-    
+
     Returns:
     ---------
     specratio: spectral ratio (if analysing spectral ratios)
@@ -28,7 +28,7 @@ def spec_calc(self,file1,file2,wv):
     rawefc: Uncorrected (instrument response corrected not applied) event 2 frequency bins (if analysing spectral ratios)
     rawe:   Uncorrected (instrument response corrected not applied) event 2 signal spectrum (if analysing spectral ratios)
     rawen:  Uncorrected (instrument response corrected not applied) event 2 noise spectrum (if analysing spectral ratios)
-    rawmfc: Uncorrected (instrument response corrected not applied) event 1 frequency bins 
+    rawmfc: Uncorrected (instrument response corrected not applied) event 1 frequency bins
     rawm:   Uncorrected (instrument response corrected not applied) event 1 signal spectrum
     rawmn:  Uncorrected (instrument response corrected not applied) event 1 noise spectrum
     trt1:   Source-to-station travel time of event 1
@@ -37,7 +37,7 @@ def spec_calc(self,file1,file2,wv):
     sts1:   Instrument response corrected event 1 signal spectrum
     sts2:   Instrument response corrected event 2 signal spectrum (if analysing spectral ratios)
     '''
-    
+
     ev1 = self.mainev
     ev2 = self.egfev
     if not self.fixed_window:

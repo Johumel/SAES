@@ -3,17 +3,17 @@
 """
 Created on Mon Apr 22 09:39:20 2019
 
-@author: john.onwuemeka
+@author: john.onwuemeka; Ge Li
 """
 from obspy.core import read
 from .remove_ir import remove_ir
 import warnings
 
 def get_sig_nois_data(self,fname,origtime,Atime,Btime,time_win,wv_fig,phase,evid,baz,rmv_instr_resp):
-    
+
     '''
     Does the job of windowing the waveform to extract 'signal' and 'noise'
-    
+
     Input:
     -------
     fname: eventn filename
@@ -26,7 +26,7 @@ def get_sig_nois_data(self,fname,origtime,Atime,Btime,time_win,wv_fig,phase,evid
     evid: event ID
     baz: event-station back_azimuth
     rmv_instr_resp: Instrument response corrected handle (boolean)
-    
+
     Return:
     --------
     sts: windowed uncorrected signal waveform
@@ -35,20 +35,20 @@ def get_sig_nois_data(self,fname,origtime,Atime,Btime,time_win,wv_fig,phase,evid
     st: windowed instrument response corrected signal waveform
     ns: windowed instrument response corrected noise waveform
     '''
-    
+
     sts,nss,nsstart,st,ns = [],None,None,None,None
     st = read(fname)
     if Atime:
-        Atime = Atime - max(0.05,st[0].stats.delta)  
+        Atime = Atime - max(0.05,st[0].stats.delta)
     if Btime:
-        Btime = Btime - max(0.05,st[0].stats.delta)  
+        Btime = Btime - max(0.05,st[0].stats.delta)
     comp1 = st[0].stats.channel.strip()
     if 'Z' in comp1:
         comp2,comp3 = comp1[0:2]+'E',comp1[0:2]+'N'
     elif 'E' in comp1:
         comp2,comp3 = comp1[0:2]+'N',comp1[0:2]+'Z'
     elif 'N' in comp1:
-        comp2,comp3 = comp1[0:2]+'E',comp1[0:2]+'Z' 
+        comp2,comp3 = comp1[0:2]+'E',comp1[0:2]+'Z'
     try:
         st += read(fname.replace(comp1,comp2))
     except:
@@ -64,13 +64,13 @@ def get_sig_nois_data(self,fname,origtime,Atime,Btime,time_win,wv_fig,phase,evid
     st.detrend(type='linear')
     st.detrend(type='demean')
     st.taper(max_percentage=0.05)
-    if wv_fig is not True:  
-        sts = st.copy()       
+    if wv_fig is not True:
+        sts = st.copy()
         if rmv_instr_resp is True:
             sts = remove_ir(self,sts,baz,evid,'DISP')
         st = remove_ir(self,st,baz,evid,'DISP')
         ns = st.copy()
-        nss = sts.copy() 
+        nss = sts.copy()
         if Btime or Atime:
             if phase == 'S':
                 sts.trim(starttime = Btime, endtime = Btime + time_win)
@@ -86,23 +86,23 @@ def get_sig_nois_data(self,fname,origtime,Atime,Btime,time_win,wv_fig,phase,evid
                 nsstart = st[0].stats.starttime + 1.
             elif Atime and phase == 'S':
                 nss.trim(starttime = Atime - (time_win+1) ,\
-                            endtime = Atime - 1) 
+                            endtime = Atime - 1)
                 ns.trim(starttime = Atime - (time_win+1) ,\
-                            endtime = Atime - 1) 
+                            endtime = Atime - 1)
                 nsstart = Atime - (time_win+1)
             elif phase == 'P':
                 nss.trim(starttime = Atime - (time_win+1) ,\
-                            endtime = Atime - 1) 
+                            endtime = Atime - 1)
                 ns.trim(starttime = Atime - (time_win+1) ,\
-                            endtime = Atime - 1) 
+                            endtime = Atime - 1)
                 nsstart = Atime - (time_win+1)
         else:
-            st,ns,sts,nss,nsstart  = None,None,[],None,None           
+            st,ns,sts,nss,nsstart  = None,None,[],None,None
     elif wv_fig is True:
         st = remove_ir(self,st,baz,evid,'VEL')
         nsstart = None
         time_win_add = 5.0
-        if Btime and not Atime:    
+        if Btime and not Atime:
             st.trim(starttime = origtime,endtime = \
                        (Btime + time_win+time_win_add+.1))
             nsstart = sts[0].stats.starttime + 1.
@@ -116,11 +116,11 @@ def get_sig_nois_data(self,fname,origtime,Atime,Btime,time_win,wv_fig,phase,evid
 #    l = sts.get_gaps()
 #    if l:
 #        for i in l:
-#            sts.remove(sts.select(component=str(i[3][2]))[0]) 
+#            sts.remove(sts.select(component=str(i[3][2]))[0])
 #            nss.remove(nss.select(component=str(i[3][2]))[0])
 #    l = st.get_gaps()
 #    if l:
 #        for i in l:
-#            st.remove(st.select(component=str(i[3][2]))[0]) 
+#            st.remove(st.select(component=str(i[3][2]))[0])
 #            ns.remove(ns.select(component=str(i[3][2]))[0])
     return sts,nss,nsstart,st,ns

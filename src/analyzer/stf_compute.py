@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Apr 19 02:53:55 2019
-@author: john.onwuemeka
+@author: john.onwuemeka;Ge Li
 """
 
 import numpy as np

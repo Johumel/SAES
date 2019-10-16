@@ -3,7 +3,7 @@
 """
 Created on Sat May  4 01:58:44 2019
 
-@author: john.onwuemeka
+@author: john.onwuemeka; Ge Li
 """
 import numpy as np
 from scipy.optimize import curve_fit
@@ -15,15 +15,15 @@ def fit_sin_spec_pll(pms,fn,station,fc1min,fc1max,trt,model,numworkers):
     '''
     Description:
     -------------
-    This function handles single spectrum fitting to determine all the free 
+    This function handles single spectrum fitting to determine all the free
     parameters (corner frequency, low frequency asymptote, Q-value, n-value,
     gamma-value. It utilizes joblib parallel computing module to generate
-    a set of fitting model with different combinations of n & gamma and 
-    decides the best fit based on normalised RMS of each model; the model 
+    a set of fitting model with different combinations of n & gamma and
+    decides the best fit based on normalised RMS of each model; the model
     with the lowest RMS is selected as the optimum model.
 
     Input:
-    ------    
+    ------
     pms        --> Spectrum
     fn         --> frequency bins
     fc1min     --> lower bound of fc
@@ -36,7 +36,7 @@ def fit_sin_spec_pll(pms,fn,station,fc1min,fc1max,trt,model,numworkers):
     ---------
     popt --> container of determined optimum model parameters
     pcov --> container for the covariance matrix of the optimum model
-     
+
     '''
 
     popt,pcov = None,None

@@ -3,7 +3,7 @@
 """
 Created on Wed Apr 24 22:35:41 2019
 
-@author: john.onwuemeka
+@author: john.onwuemeka; Ge Li
 """
 
 import numpy as np
@@ -56,6 +56,6 @@ def plot_source_time_func(self,file1,file2,time_win):
         RSTF[i] = []
         RSTF[i] = slba
     RSTF = sum(RSTF.values())
-    RSTF /= RSTF.max() 
+    RSTF /= RSTF.max()
     return time,RSTF
 #    fig.save(self.output_dir+'/'+evname1+'_STF.pdf',dpi=200)

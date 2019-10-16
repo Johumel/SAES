@@ -3,7 +3,7 @@
 """
 Created on Mon Apr 22 08:49:20 2019
 
-@author: john.onwuemeka
+@author: john.onwuemeka; Ge Li
 """
 import numpy as np
 from obspy.core import UTCDateTime
@@ -23,7 +23,7 @@ def read_eventlist(self):
     Returns:
     ---------
     None
-    
+
     """
     data = np.genfromtxt(self.maindir+'/input/events.dat',skip_header=1,dtype='U24')
     if self.whitelist_evl and not self.blacklist_evl:
