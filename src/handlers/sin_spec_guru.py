@@ -69,8 +69,9 @@ def sin_spec_guru(self,evid1,wv,dlist):
             lste = list(ind_spec.keys())
             if lste:
                 make_figures_ind(self,ind_spec,freq_ind_spec,indv_noise,ind_trtm,wv)
-            try:
-                os.rmdir(self.output_dir)
-            except OSError:
-                pass
+            if not os.listdir(self.output_dir):os.rmdir(self.output_dir)
+#            try:
+#                os.rmdir(self.output_dir)
+#            except OSError:
+#                pass
     return None
