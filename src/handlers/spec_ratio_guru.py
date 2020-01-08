@@ -82,23 +82,29 @@ def spec_ratio_guru(self,j,wv):
                                         self.mainev = k
                                         self.egfev = j
                                         file1,file2 = file2,file1
-                                    if time1 and time2 and netsta  not in self.blacklist_stations and xcor:
-                                        specratio,freqbin,rawefc,rawe,rawen,\
-                                        rawmfc,rawm,rawmn,trav_time_main,trav_time_egf,time_win,st_main,st_egf = \
-                                        spec_calc(self,file1,file2,wv)
-                                        xx,yy = stf_compute(st_main,st_egf,self.num_tapers)
-                                        if (np.isnan(specratio)).any() != True:
-                                             specmain[station] = specratio; freqmain[station] = freqbin
-                                             egffile[station] = file2; mainfile[station] = file1
-                                             wefc[station] = rawefc; we[station]=rawe;wen[station]=rawen;
-                                             wmfc[station] = rawmfc;wm[station]=rawm;wmn[station]=rawmn;
-                                             trtm[station] = trav_time_main;
-                                             trte[station] = trav_time_egf;
-                                             ccvals[station] = xcor;
-                                             stfy[station] = yy; stfx[station] = xx;
+                                    try:
+                                        if time1 and time2 and netsta  not in self.blacklist_stations and xcor:
+                                            specratio,freqbin,rawefc,rawe,rawen,\
+                                            rawmfc,rawm,rawmn,trav_time_main,trav_time_egf,time_win,st_main,st_egf = \
+                                            spec_calc(self,file1,file2,wv)
+                                            xx,yy = stf_compute(st_main,st_egf,self.num_tapers)
+                                            if (np.isnan(specratio)).any() != True:
+                                                 specmain[station] = specratio; freqmain[station] = freqbin
+                                                 egffile[station] = file2; mainfile[station] = file1
+                                                 wefc[station] = rawefc; we[station]=rawe;wen[station]=rawen;
+                                                 wmfc[station] = rawmfc;wm[station]=rawm;wmn[station]=rawmn;
+                                                 trtm[station] = trav_time_main;
+                                                 trte[station] = trav_time_egf;
+                                                 ccvals[station] = xcor;
+                                                 stfy[station] = yy; stfx[station] = xx;
+                                    except:
+                                        pass
 
             if specmain:
-                begin_spec_analysis(self,specmain,freqmain,egffile,mainfile,wm,
+                try:
+                    begin_spec_analysis(self,specmain,freqmain,egffile,mainfile,wm,
                                     wmfc,wmn,trtm,we,wefc,wen,trte,time_win,
                                     ccvals,wv,stfy,stfx)
+                except:
+                    pass
     return None

@@ -44,7 +44,7 @@ def sin_spec_guru(self,evid1,wv,dlist):
                     pass
             elif wv == 'P':
                 try:
-                    evfold1 = self.maindir+'/data/'+str(evid1[j])+'/*.*Z.*.SAC' #Event1 files
+                    evfold1 = self.maindir+'/data/'+str(evid1[j])+'/*.*HZ.*.SAC' #Event1 files
                     time1 = self.P_tt[evid1[j]]
                 except:
                     pass

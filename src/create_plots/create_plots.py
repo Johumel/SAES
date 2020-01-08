@@ -357,23 +357,22 @@ def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
     for index in range(len(lste)):
         station = lste[index]
         fn = wmfc[lste[index]]
-        if self.numworkers <= 1:
-            popt_ind,pcov_ind = fit_sin_spec(wm[lste[index]],fn,station,
-                                         min(wmfc[lste[index]]),
-                                         max(wmfc[lste[index]])*2.5,
-                                         trtm[lste[index]],
-                                         self.autofit_single_spec,
-                                         self.source_model)
-        elif self.numworkers > 1:
-            popt_ind,pcov_ind = fit_sin_spec_pll(wm[lste[index]],fn,station,
-                                         min(wmfc[lste[index]]),
-                                         max(wmfc[lste[index]])*2.5,
-                                         trtm[lste[index]],
-                                         self.source_model,self.numworkers)
-        axx2 = fig.add_subplot(2,3,n)
         try:
-            axx2.loglog(fn, sinspec_model(fn, *popt_ind), 'k--', label='model fit',
-                        linewidth=2)
+            if self.numworkers <= 1:
+                popt_ind,pcov_ind = fit_sin_spec(wm[lste[index]],fn,station,
+                                             min(wmfc[lste[index]]),
+                                             max(wmfc[lste[index]])*2.5,
+                                             trtm[lste[index]],
+                                             self.autofit_single_spec,
+                                             self.source_model)
+            elif self.numworkers > 1:
+                popt_ind,pcov_ind = fit_sin_spec_pll(wm[lste[index]],fn,station,
+                                             min(wmfc[lste[index]]),
+                                             max(wmfc[lste[index]])*2.5,
+                                             trtm[lste[index]],
+                                             self.source_model,self.numworkers)
+        
+            axx2 = fig.add_subplot(2,3,n)
             if fn[0] == 0:
                 bb = fn[1]
             else:
@@ -384,6 +383,8 @@ def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
             fig.subplots_adjust(hspace = .2,wspace = 0.0)
             dlim = int(min(len(wmfc[lste[index]]),len(wmn[lste[index]])) - 1)
             axx2.loglog(wmfc[lste[index]][0:dlim],wm[lste[index]][0:dlim],linewidth = 1,color = colortype[colornum],label = 'data')
+            axx2.loglog(fn, sinspec_model(fn, *popt_ind), 'k--', label='model fit',
+                        linewidth=2)
             axx2.loglog(wmfc[lste[index]][0:dlim],wmn[lste[index]][0:dlim],linewidth = 1,color = 'gray',alpha = 0.6,label = 'noise')
             axx2.get_xaxis().get_major_formatter().labelOnlyBase = True
             axx2.get_xaxis().get_minor_formatter().labelOnlyBase = False
@@ -399,7 +400,11 @@ def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
             axx2.text(0.2, 0.5, station,fontsize=20, horizontalalignment='center',verticalalignment='center', transform=axx2.transAxes)
             lm,hm = axx2.get_ylim()
             axx2.set_ylim([lm,hm*10])
-            xbin = np.where(fn >= popt_ind[1])[0][0]
+            try:
+                xbin = np.where(fn >= popt_ind[1])[0][0]
+            except:
+                fig.delaxes(fig.axes[len(fig.axes)-1])
+                pass
             axx2.text(popt_ind[1]*.8,wm[lste[index]][xbin]*1.8,'f$_c$ =  %s' %(float(round(popt_ind[1],1))),style = 'normal',weight='bold',size=17)
             axx2.loglog(popt_ind[1],wm[lste[index]][xbin]*1.2,marker="v",color='green',markersize=10)
             axx2.yaxis.set_major_locator(LogLocator(base=10.0, numticks=4))
@@ -407,9 +412,11 @@ def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
             colornum += 1
             if pcov_ind[0] is not None:
                 save_output(self,None,None, None,popt_ind, pcov_ind,station,wv)
+#            popt_ind,pcov_ind = [],[]
             n = len(fig.axes)+1
             if n > 6:
                 save_fig(self,fig,'ind', m,wv)
+                plt.close()
                 fig = plt.figure(figsize=(16,10),tight_layout=True)
                 n = 1
                 m += 1
@@ -418,6 +425,7 @@ def make_figures_ind(self,wm,wmfc,wmn,trtm,wv):
     try:
         if fig.axes[0]:
             save_fig(self,fig,'ind',m,wv)
+            plt.close()
     except:
         pass
     return None
