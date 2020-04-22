@@ -31,6 +31,10 @@ def read_ext_timetable(self):
     evid_tt = [data[i][0] for i in range(len(data))]
     P_tt,S_tt = {},{}
     for i in range(len(data)):
+        if evid_tt[i] not in P_tt:
+            P_tt[evid_tt[i]] = []
+        if evid_tt[i] not in S_tt:
+            S_tt[evid_tt[i]] = []
         if data[i][3].upper() == 'P':
             P_tt[evid_tt[i]].append([UTCDateTime(data[i][2]),data[i][1]])
         elif data[i][3].upper() == 'S':
