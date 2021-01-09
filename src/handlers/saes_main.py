@@ -37,10 +37,11 @@ def saes_main(self):
     try:
         get_arv_time_from_pyrocko(self)
     except:
-        pass
-    try:
-        read_ext_timetable(self)
-    except:
+        #pass
+        try:
+            read_ext_timetable(self)
+        except:
+            pass
         pass
     if  bool(self.S_tt) == True or bool(self.P_tt) == True:
         if self.do_spec_rat == 'Y':
