@@ -32,27 +32,35 @@ def sin_spec_guru(self,evid1,wv,dlist):
     ind_spec = {}; freq_ind_spec = {};  ind_trtm = {};
     indv_noise = {}; time_window = {};
     for j in range(0,len(evid1)):
-        if  evid1[j] not in dlist and evid1[j] not in self.blacklist_evl:
+        if  evid1[j] not in dlist or evid1[j] not in self.blacklist_evl:
+            print(evid1[j])
             self.output_dir = self.maindir+'/output/'+evid1[j]+'/'
             if not os.path.exists(self.output_dir ):
-                os.makedirs(self.output_dir )
+                os.makedirs(self.output_dir)
+            
             if wv == 'S':
                 try:
-                    evfold1 = self.maindir+'/data/'+str(evid1[j])+'/*.?HN.*.SAC' #Event1 files
+                    evfold1 = self.maindir+'/data/'+str(evid1[j])+'/*.*HN*.SAC' #Event1 files
                     time1 = self.S_tt[evid1[j]]
+                    
                 except:
                     pass
             elif wv == 'P':
                 try:
-                    evfold1 = self.maindir+'/data/'+str(evid1[j])+'/*.*HZ.*.SAC' #Event1 files
+                    evfold1 = self.maindir+'/data/'+str(evid1[j])+'/*.*HZ*.SAC'
+                    #foldera2 = sorted(glob.glob(evfold1))
+                    #if not foldera2:
+                    #    evfold1 = self.maindir+'/data/'+str(evid1[j])+'/*.*HZ.SAC'
                     time1 = self.P_tt[evid1[j]]
                 except:
                     pass
             foldera2 = sorted(glob.glob(evfold1))
             self.mainev = evid1[j]
+            print(evfold1)
             for x in range(0,len(foldera2)):
                 file1  = foldera2[x]
                 mt = read(file1)
+                mt.plot()
                 station = mt[0].stats.station.strip()
                 netsta = mt[0].stats.network.strip()+'.'+mt[0].stats.station.strip()
                 if time1 and netsta  not in self.blacklist_stations:

@@ -1,0 +1,18 @@
+maindir: /Users/john.onwuemeka/Documents/GitHub/SAES  #Path to Main directory --> optional
+method:  2                       # 1: single spectrum; 2: spectral ratio; 3: both --> required
+wave_type: S                     # P: P-wave;  S: S-wave;  BOTH: P & S --> required
+whitelist_events: [201307112016,201307112058]              #list specific events to be solved for --> optional
+blacklist_events: []            #list events to be excluded --> optional
+blacklist_stations: [CN.A11,CN.A54,]    #list stations to be excluded {NET.STA} --> optional
+remove_resp: no                #yes: to compute SR from corrected waveform; NO: to compute from raw waveform (default) --> optional
+showfc2: yes                    #yes: to show fc2 in the SR figure (default); NO: otherwise --> optional
+sumtype:median                  #options [average, median (default), & weighted]. Choose how station SRs will be summed. CC values are used as weights --> optional
+source_model: vb                #Source model type [b -- Brune, fb -- Boatwright (for n=4, y=2), vb -- for 2<=n<=3; 1<=y<=2 (default)] --> optional
+snr_threshold: 2                #Set SNR threshold; default: 2 --> optional
+numworkers: 6                   #no. of processors for single spectrum fitting only used when source_model = vb. Values > 1 give better fits but take a longer computation time --> optional
+num_tapers: 7                   #No of tapers for spectrum estimation. Default: 7 --> optional
+fixed_window: 4                 #Optionally specify time window length in seconds
+freesurface_cor: no             #yes: if free surface correction is desired; NO: otherwise (default) --> optional
+freesurface_vs: 2.5             #Optionally specify near surface Vs. Used when freesurface_cor = 'yes'
+freesurface_vp: 5.5             #Optionally specify near surface Vp. Used when freesurface_cor = 'yes'
+autofit_single_spec: yes        #enter NO if you want to see each single spectrum fit and decide on best fit, works when source_model = 'vb'. Default: yes

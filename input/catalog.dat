@@ -1,16 +1,16 @@
-name = 201307112016
-time = 2013-07-11 20:16:07.000
-latitude = 47.808695
-longitude = -70.077515
-magnitude = 4
-moment = 1.12202e+15
-depth = 14900
+name = 20201030
+time = 2020-10-30 11:51:27.000
+latitude = 37.897
+longitude = 26.784
+magnitude = 7
+moment = 4.087e+19
+depth = 11900
 --------------------------------------------
-name = 201307112058
-time = 2013-07-11 20:58:10.000
-latitude = 47.796204
-longitude = -70.046126
-magnitude = 2.8
-moment = 1.77828e+13
-depth = 14400
+name = 20200717
+time = 2020-07-17 02:50:22.000
+latitude = -7.836
+longitude = 147.770
+magnitude = 7
+moment = 3.557e+19
+depth = 73000
 --------------------------------------------
