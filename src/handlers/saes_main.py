@@ -24,7 +24,6 @@ def saes_main(self):
     '''
 
     sol = self.method
-    print(sol)
     if int(sol) in [1,2,3]:
         if int(sol) == 1:
             self.do_ind_spec = 'Y'; self.do_spec_rat = 'N'
