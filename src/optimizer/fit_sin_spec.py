@@ -38,6 +38,7 @@ def fit_sin_spec(pms,fn,station,fc1min,fc1max,trt,style,model):
      pcov       --> model fit covariance matrix
 
      """
+     
      popt = [None]; pcov = [None]
      ''' style options: 'auto','manual' '''
      ''' model options: 'B' - Brune, 'fB' -- fixed Boatwright,
@@ -79,7 +80,7 @@ def fit_sin_spec(pms,fn,station,fc1min,fc1max,trt,style,model):
                  for j in nn2:
                      if plotok == 'No':
                          if style.upper()  == 'AUTO':
-                             plotok = 1
+                             plotok = 'yes'
                          else:
                              n1 = i
                              n2 = j
@@ -94,9 +95,12 @@ def fit_sin_spec(pms,fn,station,fc1min,fc1max,trt,style,model):
                              axb.set_xlim([10**bb,fc1max*1.5])
                              axb.loglog(fn,datas,linewidth = 1,color = 'r',label = 'data')
                              figr.show()
-                         if plotok != 1:
-                             plotok = input('Is the fit ok? ')
-                         if not plotok or int(plotok) != 1:
+                         if plotok not in  ['1','yes','y']:
+                            plot = None
+                            while plotok not in ['1','0','no','yes','y','n']:
+                                print("Please tell me if the plot is ok. Valid options are: 1, 0, no, yes, y or n")
+                                plotok = input('Is the fit ok? ')
+                         if not plotok or plotok in ['0','no','n']:
                             plotok = 'No'
                          else:
                             break

@@ -31,7 +31,7 @@ class saes_core(object):
         self.output_dir  = None
         self.wvtype2 = None
         self.wvtype1 = None
-        self.remove_resp = 'NO'
+        self.remove_resp = 'YES'
         self.snrthres = 2
         self.showfc2 = 'YES'
         self.freesurface_cor = 'NO'

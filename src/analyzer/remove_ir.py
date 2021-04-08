@@ -36,12 +36,17 @@ def remove_ir(self,st,baz,evid,output):
     except:
         pass
     pre_filt = self.stationlist[st[0].stats.station.strip()]['pre_filt']
-    if pre_filt:
-        for tr in st:
-            tr.remove_response(respf,pre_filt=pre_filt,output = output)
+    #if pre_filt:
+    if self.remove_resp.lower() == 'yes':
+        if pre_filt:
+            for tr in st:
+                tr.remove_response(respf,pre_filt=pre_filt,output = output)
+        else:
+            raise ValueError('Frequency range for {} instrument response removal must be provided in the pre_filt file'.format(st[0].stats.station.strip()))
     else:
         for tr in st:
             tr.remove_response(respf,output = output)
+            
     if len(trn2) == 2:
         trn2.rotate('NE->RT',back_azimuth=baz)
         for tr in st:
@@ -52,4 +57,5 @@ def remove_ir(self,st,baz,evid,output):
         if self.freesurface_cor is True:
             st = free_surface_correction(self,st,evid)
         trn2.rotate('RT->NE',back_azimuth=baz)
+
     return st

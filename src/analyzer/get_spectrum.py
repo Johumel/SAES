@@ -77,6 +77,7 @@ def get_spectrum(self,st1,ns1,st2,ns2):
             pms[i], fsds[i],jacknife,_,_ = mtspec(data=np.multiply(tr.data,fact,dtype=float), delta=tr.stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers),nfft=nfftlen, statistics=True,quadratic=True)
             pmn[i],fsdn[i],jacknife,_,_ = mtspec(data=np.multiply(ns1[i].data,fact,dtype=float), delta=ns1[i].stats.delta,time_bandwidth=time_bandwidth, number_of_tapers=int(numtapers), nfft=nfftlen,statistics=True,quadratic=True)
             i += 1
+        
 #        for key in pms.keys(): pms[key] = np.multiply(pms[key],st1[0].stats.delta)
 #        for key in pmn.keys(): pmn[key] = np.multiply(pmn[key],st1[0].stats.delta)
         #for key in pms_no_ir.keys(): pms_no_ir[key] = np.divide(pms_no_ir[key],st1[0].stats.delta)

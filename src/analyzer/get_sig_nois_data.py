@@ -9,7 +9,7 @@ from obspy.core import read
 from .remove_ir import remove_ir
 import warnings
 
-def get_sig_nois_data(self,fname,origtime,Atime,Btime,time_win,wv_fig,phase,evid,baz,rmv_instr_resp):
+def get_sig_nois_data(self,fname,origtime,Atime,Btime,time_win,wv_fig,phase,evid,baz):
 
     '''
     Does the job of windowing the waveform to extract 'signal' and 'noise'
@@ -25,7 +25,7 @@ def get_sig_nois_data(self,fname,origtime,Atime,Btime,time_win,wv_fig,phase,evid
     phase: Phase type (P or S) that is analysed
     evid: event ID
     baz: event-station back_azimuth
-    rmv_instr_resp: Instrument response corrected handle (boolean)
+
 
     Return:
     --------
@@ -66,9 +66,12 @@ def get_sig_nois_data(self,fname,origtime,Atime,Btime,time_win,wv_fig,phase,evid
     st.taper(max_percentage=0.05)
     if wv_fig is not True:
         sts = st.copy()
-        if rmv_instr_resp is True:
+        if self.remove_resp.lower() == 'yes':
             sts = remove_ir(self,sts,baz,evid,'DISP')
+        resfilt = self.remove_resp+''
+        self.remove_resp = 'no'
         st = remove_ir(self,st,baz,evid,'DISP')
+        self.remove_resp = resfilt.strip()
         ns = st.copy()
         nss = sts.copy()
         if Btime or Atime:
@@ -99,7 +102,10 @@ def get_sig_nois_data(self,fname,origtime,Atime,Btime,time_win,wv_fig,phase,evid
         else:
             st,ns,sts,nss,nsstart  = None,None,[],None,None
     elif wv_fig is True:
-        st = remove_ir(self,st,baz,evid,'VEL')
+        if self.remove_resp.lower() == 'yes':
+            st = remove_ir(self,st,baz,evid,'VEL')
+        else:
+            st = remove_ir(self,st,baz,evid,'VEL')
         nsstart = None
         time_win_add = 5.0
         if Btime and not Atime:

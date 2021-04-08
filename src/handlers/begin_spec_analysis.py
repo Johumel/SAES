@@ -53,7 +53,7 @@ def begin_spec_analysis(self,specmain,freqmain,egffile,mainfile,wm,wmfc,wmn,
     None
 
     '''
-
+    
     if bool(specmain) == True and bool(freqmain) == True:
             lste = list(specmain.keys())
             fcmainlist = {}

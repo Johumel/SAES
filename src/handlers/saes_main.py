@@ -36,13 +36,16 @@ def saes_main(self):
             self.soltype = 'both'
     try:
         get_arv_time_from_pyrocko(self)
-    except:
-        #pass
-        try:
-            read_ext_timetable(self)
-        except:
-            pass
-        pass
+    except Exception:
+        print('tt_pyrocko.dat not found.')
+        
+    if bool(self.S_tt) != True and bool(self.P_tt) != True:
+        print('Trying to get the arrival times from tt.dat')
+        #try:
+        read_ext_timetable(self)
+        #except:
+        #    raise OSError("Could not find tt.dat. Make sure it available in the input folder and try again")
+            
     if  bool(self.S_tt) == True or bool(self.P_tt) == True:
         if self.do_spec_rat == 'Y':
             evid1 = read_cclist(self)
@@ -61,7 +64,6 @@ def saes_main(self):
                         dlist_ind.append(evid1[j])
         if self.do_ind_spec == 'Y':
             evid1 = list(set([i for i in self.evlist.keys()]))
-            #print(evid1)
             try:
                 dlist_ind = list(set(dlist_ind))
             except NameError:
@@ -71,6 +73,6 @@ def saes_main(self):
                 sin_spec_guru(self,evid1,'S',evid1)#dlist_ind)
             if self.wvtype1=='P':
                 sin_spec_guru(self,evid1,'P',evid1)#dlist_ind)
-    else:
-        raise FileNotFoundError('Travel time file could not be found')
+    #else:
+    #    raise FileNotFoundError('Travel time file could not be found')
     return None

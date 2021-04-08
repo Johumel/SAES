@@ -37,7 +37,7 @@ def spec_calc(self,file1,file2,wv):
     sts1:   Instrument response corrected event 1 signal spectrum
     sts2:   Instrument response corrected event 2 signal spectrum (if analysing spectral ratios)
     '''
-
+    
     ev1 = self.mainev
     ev2 = self.egfev
     if not self.fixed_window:
@@ -53,18 +53,19 @@ def spec_calc(self,file1,file2,wv):
     rawmn = []; trt1 = None; trt2 = None; sts1 = []; sts2 = []
     if (read(file1)[0].stats.channel != read(file2)[0].stats.channel and self.method in [2,3]) or self.method == 1 or self.remove_resp.lower() == 'yes':
         snr1, freqsignal1, signal1,noise1,snr_no_resp1,freq_no_resp1,signal_no_resp1,noise_no_resp1,\
-        trt1,sts1 = analyze_spec(self,file1,ev1,'main',time_win,True,wv)
-    elif read(file1)[0].stats.channel == read(file2)[0].stats.channel and self.method in [2,3]:
+        trt1,sts1 = analyze_spec(self,file1,ev1,'main',time_win,wv)
+    elif read(file1)[0].stats.channel == read(file2)[0].stats.channel and self.method in [2,3] or self.remove_resp.lower() == 'no':
         snr1, freqsignal1, signal1,noise1,snr_no_resp1,freq_no_resp1,signal_no_resp1,noise_no_resp1,\
         trt1,sts1 = analyze_spec(self,file1,ev1,'main',time_win,False,wv)
     rawm = signal_no_resp1; rawmfc = freq_no_resp1; rawmn = noise_no_resp1
+    
     if file2 and len(sts1) != 0:
-        if read(file1)[0].stats.channel != read(file2)[0].stats.channel or self.remove_resp.lower() == 'yes':
-            snr2, freqsignal2, signal2,noise2,snr_no_resp2,freq_no_resp2,signal_no_resp2,\
-            noise_no_resp2,trt2,sts2 = analyze_spec(self,file2,ev2,'egf',time_win,True,wv)
-        else:
-            snr2, freqsignal2, signal2,noise2,snr_no_resp2,freq_no_resp2,signal_no_resp2,\
-            noise_no_resp2,trt2,sts2 = analyze_spec(self,file2,ev2,'egf',time_win,False,wv)
+        #if read(file1)[0].stats.channel != read(file2)[0].stats.channel or self.remove_resp.lower() == 'yes':
+        #    snr2, freqsignal2, signal2,noise2,snr_no_resp2,freq_no_resp2,signal_no_resp2,\
+        #    noise_no_resp2,trt2,sts2 = analyze_spec(self,file2,ev2,'egf',time_win,wv)
+        #else:
+        snr2, freqsignal2, signal2,noise2,snr_no_resp2,freq_no_resp2,signal_no_resp2,\
+        noise_no_resp2,trt2,sts2 = analyze_spec(self,file2,ev2,'egf',time_win,wv)
         rawe = signal_no_resp2; rawefc = freq_no_resp2; rawen = noise_no_resp2
         if signal1.any() and signal2.any():
             signalm,signale,freqsignalm,freqsignale,_,_ = get_good_snr_freq_range(self.snrthres,signal1,signal2,snr1,snr2,freqsignal1,

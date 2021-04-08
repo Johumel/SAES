@@ -31,7 +31,8 @@ def sinspec_model(fn,a,b,c,d,f,trt):
     Theoretical single spectrum model
 
     """
-
+    print(f)
+    print(trt)
     var1 = (-1 * np.pi * trt)/f
     var2 = np.exp([i*var1 for i in fn])
     var3 = [i*a for i in var2]
